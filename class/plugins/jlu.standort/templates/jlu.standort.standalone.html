@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{title}</title>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+<link rel="stylesheet" type="text/css" href="{cssurl}bootstrap4.css" media="screen">
+<link rel="stylesheet" type="text/css" href="{cssurl}jlu.standort.standalone.css">
+
+<script src="{jsurl}jquery.min.js"></script>
+<script src="{jsurl}bootstrap4.min.js"></script>
+<script src="{jsurl}jlu.standort.standalone.js"></script>
+{script}
+</head>
+
+<body>
+<div id="Page">
+
+	<div id="Header">
+		<div id="Logobar">
+			<div>
+				<div>
+					<div class="mainlogo" style="width:158px;">
+						<a onclick="treebuilder.wait();" href="{thisfile}?lang={lang}">
+							<img alt="{logo_alt}" src="{imgurl}logo.png">
+						</a>
+					</div>
+					<div id="Label"><a onclick="treebuilder.wait();" tabindex="-1" href="{thisfile}?lang={lang}">{label}</a></div>
+					<div class="sublogo" style="width: 158px;"><a onclick="treebuilder.wait();" tabindex="-1" href="{thisfile}?lang={lang}"><img alt="{logo_alt}" src="{imgurl}sublogo.jpg"></a></div>
+				</div>
+			</div>
+		</div>
+
+		<div id="Topbar" class="navbar navbar-expand-sm noprint">
+			<button type="button" id="LeftbarToggler" title="{toggle_left}" class="navbar-light btn btn-default" style="color:black;">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="navbar-nav ml-auto">
+				<div id="Langselect" class="nav-item dropdown">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						<span class="langlabel"></span>
+					</button>
+					<div class="dropdown-menu" role="menu" style="min-width:100px;"></div>
+				</div>
+				<button type="button" id="SearchToggler" title="{search_title}" class="btn btn-default" onclick="searchbuilder.init();">
+					<span class="search-icon"><img src="bootstrap-icons/search.svg"></span>
+				</button>
+				<button type="button" id="RightbarToggler" title="{toggle_right}" class="navbar-light btn btn-default" style="color:black;">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="Content">
+		<div style="display: table-row;">
+			<div class="cell1 noprint">
+				<nav id="Leftbar">
+					<div id="navbar-left"></div>
+					<div id="LeftbarContent"></div>
+				</nav>
+			</div>
+			<div class="cell2">
+				<div id="History" class="noprint"><span class="previous" title="{previous}"></span><span class="next" title="{next}"></span></div>
+				<div id="Canvas">&#160;</div>
+				<div id="Breadcrumps">&#160;</div>
+			</div>
+			<div class="cell3 noprint">
+				<nav id="Rightbar">
+					<span class="copylink">{link}</span>
+					<span class="print">{print}</span>
+					<div id="RightbarContent"></div>
+				</nav>
+			</div>
+		</div>
+	</div>
+
+	<div id="Search" style="display:none;">
+		<div id="SearchLoader"></div>
+		<div id="SearchHeader" style="display:none;">
+			<div class="clearfix" style="text-align:center;margin: 0 0 20px 0;">
+				<input style="width: 400px;margin-right:100px;display: block;" id="SearchInput" type="text" class="float-left form-control" placeholder="{search}" onkeyup="searchbuilder.seek()">
+				<button type="button" title="{close}" onfocus="this.blur();" onclick="searchbuilder.close();" class="float-right close">&times;</button>
+			</div>
+		</div>
+		<div id="SearchResult"></div>
+	</div>
+
+	<div id="Footer" class="clearfix noprint">
+		<div class="float-left">
+			<span class="copyright">{copyright}</span>
+		</div>
+		<div class="footer-right float-right">
+			<span class="privacynotice">{privacynotice}</span>
+			<span class="imprint">{imprint}</span>
+			<span class="contact">{contact}</span>
+		</div>
+	</div>
+
+</div>
+
+<!-- Left Modal -->
+<div class="modal noprint" data-backdrop="true" data-keyboard="true" id="LeftModal">
+	<div class="modal-dialog modal-dialog-scrollable modal-lg h-100">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header clearfix" style="display:block;">
+				<h4 class="modal-title" style="float:left;"></h4>
+				<button title="{close}" onfocus="this.blur();" type="button" class="close" data-dismiss="modal">&times;</button>
+				<input class="form-control" style="float:right; width:40%;">
+			</div>
+			<!-- Modal body -->
+			<div class="modal-body"></div>
+		</div>
+	</div>
+</div>
+
+<!-- Usage Modal -->
+<div class="modal noprint" data-backdrop="true" data-keyboard="true" id="UsageModal">
+	<div class="modal-dialog modal-dialog-scrollable modal-lg h-100">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header clearfix" style="display:block;">
+				<h4 class="modal-title" style="float:left;"></h4>
+				<button title="{close}" onfocus="this.blur();" type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<!-- Modal body -->
+			<div class="modal-body" id="UsageCanvas"></div>
+		</div>
+	</div>
+</div>
+
+<!-- Access Modal -->
+<div class="modal noprint" data-backdrop="true" data-keyboard="true" id="AccessModal">
+	<div class="modal-dialog modal-dialog-scrollable modal-lg h-100">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header clearfix" style="display:block;">
+				<h4 class="modal-title" style="float:left;">{accessibility}</h4>
+				<button title="{close}" onfocus="this.blur();" type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<!-- Modal body -->
+			<div class="modal-body" id="AccessCanvas"></div>
+		</div>
+	</div>
+</div>
+
+<!-- Wait -->
+<div class="modal noprint" data-backdrop="static" data-keyboard="false" id="Wait">
+	<div class="modal-dialog modal-sm modal-dialog-centered">
+		<div class="modal-content">
+			<!-- Modal body -->
+			<div class="modal-body clearfix" style="opacity:0.5;">
+				<div class="spinner-border float-left"></div>
+				<div class="float-left" style="margin: 5px 0 0 15px;" id="PageStatus">{loading}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script language="JavaScript" type="text/javascript">
+$(document).ready(function () {
+	treebuilder.init();
+	$('#LeftbarToggler').on('click', function () {
+		$('#Leftbar').toggleClass('active');
+	});
+	$('#RightbarToggler').on('click', function () {
+		$('#Rightbar').toggleClass('active');
+	});
+});
+</script>
+</body>
+</html>
