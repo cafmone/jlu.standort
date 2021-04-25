@@ -371,6 +371,8 @@ var $lang = array(
 				$rightbar .= '<span class="access"><a href="#" onclick="accessbuilder.init('.$this->id.');" title="'.$this->translation['accessibility_title'].'">'.$this->translation['accessibility'].'</a></span>';
 			}
 
+/* Usage (Nutzungsart)
+
 			// handle usage (only level 3 and 4)
 			if($level === 3 || $level === 4) {
 				$usagepath = $this->response->html->thisdir.'cache/usage.json';
@@ -439,6 +441,7 @@ var $lang = array(
 					}
 				}
 			}
+*/
 
 			// template
 			$t = $this->response->html->template($this->tpldir.'jlu.standort.standalone.api.html');
