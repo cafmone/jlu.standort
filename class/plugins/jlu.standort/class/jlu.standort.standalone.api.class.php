@@ -68,6 +68,8 @@ var $language = 'en';
 */
 
 var $lang = array(
+	'print' => 'Print',
+	'print_title' => 'Print Page',
 	'link1' => 'Link 1',
 	'link2' => 'Link 2',
 	'link3' => 'Link 3',
@@ -196,6 +198,9 @@ var $lang = array(
 				break;
 				case 'download':
 					$this->download(true);
+				break;
+				case 'pdf':
+					$this->pdf(true);
 				break;
 			}
 		}
@@ -351,12 +356,23 @@ var $lang = array(
 				}
 			}
 
+			$rightbar = '';
+
+			// handle pdf
+			$pdfpath = $this->PROFILESDIR.'/jlu.standort/pdf/'.$this->id.'.pdf';
+			if($this->file->exists($pdfpath)) {
+				$a = $this->response->html->a();
+				$a->label = $this->translation['print'];
+				$a->title = $this->translation['print_title'];
+				$a->href = $this->response->get_url($this->actions_name, 'pdf').'&file='.urlencode($this->id.'.pdf');
+				$rightbar .= '<span class="print">'.$a->get_string().'</span>';
+			}
+
 			// handle links
 			$linkspath = $this->response->html->thisdir.'cache/links.json';
 			if($this->file->exists($linkspath)) {
 				$tmp = json_decode($this->file->get_contents($linkspath), true);
 				if(isset($tmp[$this->id]) && is_array($tmp[$this->id])) {
-					$rightbar = '';
 					foreach($tmp[$this->id] as $k => $link) {
 						$rightbar .= '<span class="'.$k.'"><a title="'.$this->translation[$k.'_title'].'" href="'.$link.'" target="_blank">'.$this->translation[$k].'</a></span>';
 					}
@@ -365,9 +381,6 @@ var $lang = array(
 
 			// handle accessibility
 			if($level >= 3) {
-				if(!isset($rightbar)) {
-					$rightbar = '';
-				}
 				$rightbar .= '<span class="access"><a href="#" onclick="accessbuilder.init('.$this->id.');" title="'.$this->translation['accessibility_title'].'">'.$this->translation['accessibility'].'</a></span>';
 			}
 
@@ -511,6 +524,40 @@ var $lang = array(
 			if(isset($this->id)) {
 				$file = $this->response->html->request()->get('file');
 				$path = $this->PROFILESDIR.'/jlu.standort/data/'.$this->id.'/'.$file;
+				if($path !== '' && $this->file->exists($path)) {
+					require_once(realpath(CLASSDIR).'/lib/file/file.mime.class.php');
+					$mime = detect_mime($path);
+					$file = $this->file->get_fileinfo($path);
+					header("Pragma: public");
+					header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+					header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+					header("Cache-Control: must-revalidate");
+					header("Content-type: $mime");
+					header("Content-Length: ".$file['filesize']);
+					header("Content-disposition: attachment; filename=".$file['name']);
+					header("Accept-Ranges: ".$file['filesize']);
+					#ob_end_flush();
+					flush();
+					readfile($path);
+					exit(0);
+				}
+			}
+		}
+	}
+
+	//--------------------------------------------
+	/**
+	 * PDF download
+	 *
+	 * @access public
+	 * @return null
+	 */
+	//--------------------------------------------
+	function pdf($visible = false) {
+		if($visible === true) {
+			if(isset($this->id)) {
+				$file = $this->response->html->request()->get('file');
+				$path = $this->PROFILESDIR.'/jlu.standort/pdf/'.$file;
 				if($path !== '' && $this->file->exists($path)) {
 					require_once(realpath(CLASSDIR).'/lib/file/file.mime.class.php');
 					$mime = detect_mime($path);
