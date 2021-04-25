@@ -59,7 +59,7 @@ a {
 	text-align: left;
 }
 #Topbar #SearchToggler {
-	margin: 0 7px 0 0;
+	margin: 0 0 0 7px;
 }
 #Topbar #SearchToggler img {
 	width: 24px;

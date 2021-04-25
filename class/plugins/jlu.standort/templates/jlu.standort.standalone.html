@@ -36,6 +36,11 @@
 			<button type="button" id="LeftbarToggler" title="{toggle_left}" class="navbar-light btn btn-default" style="color:black;">
 				<span class="navbar-toggler-icon"></span>
 			</button>
+	
+			<button type="button" id="SearchToggler" title="{search_title}" class="btn btn-default" onclick="searchbuilder.init();">
+				<span class="search-icon"><img src="bootstrap-icons/search.svg"></span>
+			</button>
+
 			<div class="navbar-nav ml-auto">
 				<div id="Langselect" class="nav-item dropdown">
 					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -43,9 +48,6 @@
 					</button>
 					<div class="dropdown-menu" role="menu" style="min-width:100px;"></div>
 				</div>
-				<button type="button" id="SearchToggler" title="{search_title}" class="btn btn-default" onclick="searchbuilder.init();">
-					<span class="search-icon"><img src="bootstrap-icons/search.svg"></span>
-				</button>
 				<button type="button" id="RightbarToggler" title="{toggle_right}" class="navbar-light btn btn-default" style="color:black;">
 					<span class="navbar-toggler-icon"></span>
 				</button>
