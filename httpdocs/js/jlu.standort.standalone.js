@@ -314,14 +314,11 @@ var treebuilder = {
 	//---------------------------------------------
 	history : function() {
 
-		nextimg = '<img src="bootstrap-icons/arrow-bar-right.svg">';
-		previmg = '<img src="bootstrap-icons/arrow-bar-left.svg">';
-
 		next = $('#History .next');
-		next.html('<a class="btn btn-sm btn-default disabled">'+nextimg+'</a>');
+		next.html('<a class="btn btn-sm btn-default disabled"></a>');
 
 		previous = $('#History .previous');
-		previous.html('<a class="btn btn-sm btn-default disabled">'+previmg+'</a>');
+		previous.html('<a class="btn btn-sm btn-default disabled"></a>');
 
 		cookie = (result = new RegExp('(?:^|; )'+encodeURIComponent(this.__cookie)+'=([^;]*)').exec(document.cookie)) ? (result[1]) : '';
 		if(cookie !== '') {
@@ -331,17 +328,17 @@ var treebuilder = {
 				index = tmp.indexOf(this.__id);
 				if(index != -1) {
 					if(typeof tmp[index+1] != 'undefined') {
-						str = '<a onclick="treebuilder.wait();" class="btn btn-sm btn-default" href="?id='+tmp[index+1]+'&lang='+lang+'">'+nextimg+'</a>';
+						str = '<a onclick="treebuilder.wait();" class="btn btn-sm btn-default" href="?id='+tmp[index+1]+'&lang='+lang+'"></a>';
 						next.html(str);
 					}
 					if(typeof tmp[index-1] != 'undefined') {
-						str = '<a onclick="treebuilder.wait();" class="btn btn-sm btn-default" href="?id='+tmp[index-1]+'&lang='+lang+'">'+previmg+'</a>';
+						str = '<a onclick="treebuilder.wait();" class="btn btn-sm btn-default" href="?id='+tmp[index-1]+'&lang='+lang+'"></a>';
 						previous.html(str);
 					}
 				}
 			} else {
 				if(typeof tmp[tmp.length-1] != 'undefined') {
-					str = '<a onclick="treebuilder.wait();" class="btn btn-sm btn-default" href="?id='+tmp[tmp.length-1]+'&lang='+lang+'">'+previmg+'</a>';
+					str = '<a onclick="treebuilder.wait();" class="btn btn-sm btn-default" href="?id='+tmp[tmp.length-1]+'&lang='+lang+'"></a>';
 					previous.html(str);
 				}
 			}

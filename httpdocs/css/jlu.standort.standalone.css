@@ -102,14 +102,26 @@ a {
 }
 #History .previous{
 	display: inline-block;
-	text-align: center;
-	width: 30px;
+}
+#History .previous a{
+	display: inline-block;
+	background-image: url("../bootstrap-icons/chevron-left.svg");
+	background-repeat: no-repeat;
+	padding: 12px 12px;
+	background-position: center;
+	opacity: 0.8;
 }
 #History .next{
 	display: inline-block;
 	margin: 0 0 0 6px;
-	text-align: center;
-	width: 30px;
+}
+#History .next a{
+	display: inline-block;
+	background-image: url("../bootstrap-icons/chevron-right.svg");
+	background-repeat: no-repeat;
+	padding: 12px 12px;
+	background-position: center;
+	opacity: 0.8;
 }
 
 /*
