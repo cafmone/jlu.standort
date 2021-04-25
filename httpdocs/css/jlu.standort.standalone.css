@@ -284,14 +284,6 @@ a {
 	padding: 0 0 0 22px;
 	background-position: 0;
 }
-
-#Footer .privacynotice a{
-	background-image: url("../bootstrap-icons/lock.svg");
-	background-repeat: no-repeat;
-	padding: 0 0 0 22px;
-	background-position: 0;
-}
-
 #LeftbarToggler .navbar-toggler-icon {
 	background-image: url("../bootstrap-icons/caret-left.svg");
 	background-repeat: no-repeat;
