@@ -270,19 +270,19 @@ a {
 	background-image: url("../bootstrap-icons/envelope.svg");
 	background-repeat: no-repeat;
 	padding: 0 0 0 22px;
-	background-position: 0 2px;
+	background-position: 0;
 }
 #Footer .imprint a{
 	background-image: url("../bootstrap-icons/exclamation-circle.svg");
 	background-repeat: no-repeat;
 	padding: 0 0 0 22px;
-	background-position: 0 2px;
+	background-position: 0;
 }
 #Footer .privacynotice a{
 	background-image: url("../bootstrap-icons/lock.svg");
 	background-repeat: no-repeat;
 	padding: 0 0 0 22px;
-	background-position: 0 2px;
+	background-position: 0;
 }
 
 
