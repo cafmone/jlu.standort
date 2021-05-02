@@ -465,7 +465,9 @@ var searchbuilder = {
 			links = this.__searchlinks;
 			regex = new RegExp(filter, "gi");
 			for(var i=0; i < links.length; i++) {
-				text = links[i].innerText;
+				tt = links[i].innerHTML;
+				// remove marked block from search
+				text = tt.replace(/(<span>[^<>]*<\/span>)/i, "");
 				result = regex.test(text);
 				if(result != false) {
 					links[i].style.display = 'inline-block';
@@ -482,6 +484,7 @@ var searchbuilder = {
 		str = '';
 		for(idx in tree) {
 			crump = this.__set(idx);
+			str += '<div style="display:block;">';
 			str += '<a';
 			str += ' href="?id='+idx+'&lang='+lang+'"';
 			str += ' onclick="treebuilder.cookie('+idx+');treebuilder.wait();"';
@@ -489,6 +492,7 @@ var searchbuilder = {
 			str += '>';
 			str += idx+' : '+crump;
 			str += '</a>';
+			str += '</div>';
 		}
 		this.__result.innerHTML = str;
 		// reset crumps
@@ -506,8 +510,16 @@ var searchbuilder = {
 		crumps = '';
 		for( view in identifiers ) {
 			if(typeof this.__crumps[view] != 'undefined') {
+				// exclude from search start marker
+				if(i == 0) {
+					crumps += '<span>';
+				}
 				if(i != 0) {
 					crumps += ' / ';
+				}
+				// exclude from search stop marker
+				if(i == 2) {
+					crumps += '</span>';
 				}
 				crumps += this.__crumps[view].label;
 			}
