@@ -207,7 +207,9 @@ a {
 	background-size: 150px;
 	margin-bottom: 20px;
 }
-
+#Rightbar a.disabled {
+	opacity: 0.3;
+}
 #Footer {
 	border-top: 1px solid #DADADA;
 	padding: 15px;
