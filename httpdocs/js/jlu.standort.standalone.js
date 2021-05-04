@@ -161,7 +161,8 @@ var treebuilder = {
 							str  = '<a';
 							str += ' class="list-group-item list-group-item-action active"';
 							str += ' href="?id='+pid+'&lang='+lang+'"';
-							str += ' onclick="treebuilder.cookie('+pid+'); treebuilder.wait();"';
+							//str += ' onclick="treebuilder.cookie('+pid+'); treebuilder.wait();"';
+							str += ' onclick="treebuilder.wait();"';
 							str += '>';
 							str += label+'<span class="close">&times;</span>';
 							str += '</a>';
@@ -169,7 +170,8 @@ var treebuilder = {
 							str  = '<a';
 							str += ' class="list-group-item list-group-item-action active"';
 							str += ' href="?id='+tid+'&lang='+lang+'"';
-							str += ' onclick="treebuilder.cookie('+tid+'); treebuilder.wait();"';
+							//str += ' onclick="treebuilder.cookie('+tid+'); treebuilder.wait();"';
+							str += ' onclick="treebuilder.wait();"';
 							str += '>';
 							str += label;
 							str += '</a>';
@@ -178,7 +180,8 @@ var treebuilder = {
 						str  = '<a';
 						str += ' class="list-group-item list-group-item-action"';
 						str += ' href="?id='+tid+'&lang='+lang+'"';
-						str += ' onclick="treebuilder.cookie('+tid+'); treebuilder.wait();"';
+						//str += ' onclick="treebuilder.cookie('+tid+'); treebuilder.wait();"';
+						str += ' onclick="treebuilder.wait();"';
 						str += '>';
 						str += label;
 						str += '</a>';

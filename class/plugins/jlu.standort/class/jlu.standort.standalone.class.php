@@ -196,6 +196,25 @@ var $lang = array(
 		$id = $this->response->html->request()->get('id');
 		if($id !== '') {
 			$id = substr(htmlspecialchars($id), 0, 30);
+			// handle tree
+			$treeurl = $this->response->html->thisdir.$this->treeurl;
+			if($this->file->exists($treeurl)) {
+				$tree = json_decode(str_replace('var tree = ', '', $this->file->get_contents($treeurl)), true);
+			}
+			// handle liegenschaft
+			if(isset($tree[$id]) && isset($tree[$id]['v']) && $tree[$id]['v'] === 'liegenschaft') {
+				$children = array();
+				foreach( $tree as $k => $v ) {
+					if(isset($v['p']) && $v['p'] === $id) {
+						$children[] = $k;
+					}
+				}
+				// redirect if liegenschaft has only 1 gebauede
+				if(count($children) === 1) {
+					$url = $this->response->get_url('id',$children[0]).'&lang='.$lang;
+					$this->response->redirect($url);
+				}
+			}
 		}
 
 		$timestamp = 0;
