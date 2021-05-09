@@ -307,10 +307,17 @@ var $lang = array(
 				}
 			}
 
+			// change imageid to parent if level = 2 (liegenschaft)
+			$imageid = $this->id;
+			if($level === 2) {
+				if(isset($tree[$this->id]['p'])) {
+					$imageid = $tree[$this->id]['p'];
+				}
+			}
 			// handle image
 			$filetypes = $this->imagetypes;
 			foreach($filetypes as $type) {
-				$imgpath = $this->PROFILESDIR.'/jlu.standort/bilder/'.$this->id.'.'.$type;
+				$imgpath = $this->PROFILESDIR.'/jlu.standort/bilder/'.$imageid.'.'.$type;
 				if($this->file->exists($imgpath)) {
 					$type = strtolower($type);
 					if($type === 'jpg') {
