@@ -149,7 +149,8 @@ var treebuilder = {
 				}
 
 				// sort voodoo part 2
-				container.sort();
+				container.sort( sortAlphaNum );
+
 				for(x in container) {
 					tmp   = container[x].split('[[*]]');
 					tid   = tmp[1];
@@ -635,4 +636,44 @@ var accessbuilder = {
 	},
 }
 
+
+
+function sortAlphaNum(a, b) {
+
+	a = 'XX'+a.split('[[*]]')[0];
+	b = 'XX'+b.split('[[*]]')[0];
+
+	aa = a.replace(/(.*?)([0-9].*)/, '$1');
+	bb = b.replace(/(.*?)([0-9].*)/, '$1');
+
+	var reA = /[^a-zA-Z]/g;
+	var reN = /[^0-9]/g;
+	var aA = aa.replace(reA, "");
+	var bA = bb.replace(reA, "");
+
+	if (aA === bA) {
+
+		var aN = a.replace(/(.*?)([0-9])/, "$2");
+		var bN = b.replace(/(.*?)([0-9])/, "$2");
+
+		aN == a ? aN = 0 : null;
+		bN == b ? bN = 0 : null;
+
+		aO = parseInt(aN);
+		bO = parseInt(bN);
+
+		// if aO == bO revert parseInt
+		if(aO == bO) {
+			aO = aN;
+			bO = bN;
+		}
+
+		return aO === bO ? 0 : aO > bO ? 1 : -1;
+
+	} else {
+
+		return aA > bA ? 1 : -1;
+
+	}
+}
 
