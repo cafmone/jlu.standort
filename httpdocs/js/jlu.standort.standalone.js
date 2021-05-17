@@ -118,7 +118,10 @@ var treebuilder = {
 				select += ' <div class="input-group active" title="'+identifiers[view]+'">';
 				select += '  <input class="form-control" disabled="disabled" placeholder="'+identifiers[view]+' ..." ';
 				if (typeof this.__crumps[view] != 'undefined') {
-					select += 'value="'+this.__crumps[view].label+'"';
+					label = this.__crumps[view].label;
+					// handle raum
+					view === 'raum' ? label = identifiers[view]+' '+label : null;
+					select += 'value="'+label+'"';
 				} else {
 					select += '';
 				}
@@ -144,7 +147,12 @@ var treebuilder = {
 				for (tid in tree) {
 					if(view == tree[tid]['v']) {
 						if(pid != '' && pid != tree[tid]['p']) { continue; }
-						container.push(tree[tid]['l']+'[[*]]'+tid+'[[*]]'+pid);
+
+						label = tree[tid]['l'];
+						// handle raum
+						view === 'raum' ? label = identifiers[view]+' '+label : null;
+
+						container.push(label+'[[*]]'+tid+'[[*]]'+pid);
 					}
 				}
 
@@ -403,7 +411,11 @@ var treebuilder = {
 				if(i != 0) {
 					crumps += ' / ';
 				}
-				crumps += '<a onclick="treebuilder.wait();" href="?id='+this.__crumps[view].id+'&lang='+lang+'">'+this.__crumps[view].label+'</a>';
+				label = this.__crumps[view].label;
+				// handle room
+				view === 'raum' ? label = identifiers[view]+' '+label : null;
+
+				crumps += '<a onclick="treebuilder.wait();" href="?id='+this.__crumps[view].id+'&lang='+lang+'">'+label+'</a>';
 			}
 			i = i+1;
 		}
