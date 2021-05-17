@@ -79,13 +79,17 @@ class jlu_standort_import_tree
 				// check key label
 				if(isset($r['label']) && $r['label'] !== '') {
 					$key = $r['label'];
-					$matches = @preg_match('~^[A-Z]+$~', $key);
+					$matches = @preg_match('~^[A-Z,]+$~', $key);
 					if(!$matches) {
 						echo 'ERROR: misspelled key label "'.$key.'" in '.$file.' section ['.$ection.']';
 						$this->response->html->help($r);
 						exit();
 					} else {
-						$cols['label'] = $key;
+						$tmp = explode(',',$key);
+						$num_labels = count($tmp);
+						foreach($tmp as $k => $v) {
+							$cols['label_'.$k] = $v;
+						}
 					}
 				} else {
 					echo 'ERROR: Missing or empty key label in '.$file.' section ['.$ection.']';
@@ -166,7 +170,7 @@ class jlu_standort_import_tree
 
 					foreach($content as $k => $c) {
 						// check values not empty
-						if( $c[$cols['id']] === '' || $c[$cols['parent']] === '' || $c[$cols['label']] === '') {
+						if( $c[$cols['id']] === '' || $c[$cols['parent']] === '' || $c[$cols['label_0']] === '') {
 							echo 'WARNING: Empty column(s) in file '.$r['file'].'. Skipping row '.$k.'.<br>';
 						}
 						// check id is unique
@@ -176,11 +180,19 @@ class jlu_standort_import_tree
 							// escape content (xss)
 							$id     = htmlEntities($c[$cols['id']], ENT_QUOTES);
 							$parent = htmlEntities($c[$cols['parent']], ENT_QUOTES);
-							$label  = htmlEntities($c[$cols['label']], ENT_QUOTES);
 
+							$label  = '';
+							for($i=0; $i < $num_labels; $i++) {
+								if($i > 0) {
+									if($i === 1) {
+										$label .= ',';
+									}
+									$label .= ' ';
+								}
+								$label .= htmlEntities($c[$cols['label_'.$i]], ENT_QUOTES);
+							}
 							// handle csv
 							#$csv .= '"'.$c[$cols['id']].'";"'.$r['view'].'";"'.$c[$cols['parent']].'";"";"NAME";"'.$c[$cols['label']].'"'."\n";
-
 
 							// handle tree
 							#$tree[$id]['i'] = $id;
