@@ -120,7 +120,13 @@ var treebuilder = {
 				if (typeof this.__crumps[view] != 'undefined') {
 					label = this.__crumps[view].label;
 					// handle raum
-					view === 'raum' ? label = identifiers[view]+' '+label : null;
+					if( view === 'raum' ) {
+						label = identifiers[view]+' '+label;
+					}
+					else if( view === 'liegenschaft' ) {
+						tmp = label.split(',');
+						label = tmp[0];
+					}
 					select += 'value="'+label+'"';
 				} else {
 					select += '';
@@ -164,6 +170,12 @@ var treebuilder = {
 					tid   = tmp[1];
 					label = tmp[0];
 					pid   = tmp[2];
+
+					// remove zip from liegenschaft
+					if(view === 'liegenschaft') {
+						tmp = label.split(',');
+						label = tmp[0];
+					}
 
 					if(typeof this.__crumps[view] != 'undefined' && this.__crumps[view]['id'] == tid ) {
 						if(i != 1) {
