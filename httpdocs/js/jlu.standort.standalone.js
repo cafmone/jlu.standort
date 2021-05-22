@@ -500,21 +500,37 @@ var searchbuilder = {
 
 	seek : function() {
 		filter = this.__input.value;
+		hits   = 0;
+
 		if(filter.length > 2) {
 
 			this.__result.style.display = 'block';
 			links = this.__searchlinks;
-			regex = new RegExp(filter, "gi");
+			regex = new RegExp(filter, "i");
 			for(var i=0; i < links.length; i++) {
+
 				tt = links[i].innerHTML;
-				// remove marked block from search
-				text = tt.replace(/(<span>[^<>]*<\/span>)/i, "");
-				result = regex.test(text);
-				if(result != false) {
-					links[i].style.display = 'inline-block';
-				} else {
-					links[i].style.display = 'none';
-				}
+				// remove highlite
+				tt = tt.replace(/<strong>(.*)<\/strong>/i, '$1');
+
+				//if(hits < 201) {
+
+					// remove marked block from searching
+					text   = tt.replace(/(<span>[^<>]*<\/span>)/i, "");
+					result = regex.test(text);
+
+					if(result !== false) {
+						ex = new RegExp('('+filter+')', "i");
+						// add highlite
+						links[i].innerHTML = tt.replace(ex, '<strong>$1</strong>');
+	 					links[i].style.display = 'inline-block';
+
+						hits++;
+
+					} else {
+						links[i].style.display = 'none';
+					}
+				//}
 			}
 		} else {
 			this.__result.style.display = 'none';
@@ -522,19 +538,35 @@ var searchbuilder = {
 	},
 
 	__init : function() {
-		str = '';
+
+		// sort voodo part 1
+		container = [];
 		for(idx in tree) {
 			crump = this.__set(idx);
+			container.push(crump+'[[*]]'+idx);
+		}
+
+		// sort voodoo part 2
+		container.sort( sortAlphaNum );
+
+		str = '';
+		for(i in container) {
+
+			tmp   = container[i].split('[[*]]');
+			idx   = tmp[1];
+			label = tmp[0];
+
 			str += '<div style="display:block;">';
 			str += '<a';
 			str += ' href="?id='+idx+'&lang='+lang+'"';
-			str += ' onclick="treebuilder.cookie('+idx+');treebuilder.wait();"';
+			str += ' treebuilder.wait();"';
 			str += ' style="display:none;"';
 			str += '>';
-			str += idx+' : '+crump;
+			str += idx+' : '+label;
 			str += '</a>';
 			str += '</div>';
 		}
+
 		this.__result.innerHTML = str;
 		// reset crumps
 		this.__crumps = {};
