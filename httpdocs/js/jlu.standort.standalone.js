@@ -123,6 +123,7 @@ var treebuilder = {
 					if( view === 'raum' ) {
 						label = identifiers[view]+' '+label;
 					}
+					// handle liegenschaft
 					else if( view === 'liegenschaft' ) {
 						tmp = label.split(',');
 						label = tmp[0];
@@ -153,43 +154,54 @@ var treebuilder = {
 				for (tid in tree) {
 					if(view == tree[tid]['v']) {
 						if(pid != '' && pid != tree[tid]['p']) { continue; }
-
 						label = tree[tid]['l'];
 						// handle raum
 						view === 'raum' ? label = identifiers[view]+' '+label : null;
-
 						container.push(label+'[[*]]'+tid+'[[*]]'+pid);
 					}
 				}
 
-				// sort voodoo part 2
-				container.sort( sortAlphaNum );
+				// handle container not empty
+				if(container.length > 0) {
 
-				for(x in container) {
-					tmp   = container[x].split('[[*]]');
-					tid   = tmp[1];
-					label = tmp[0];
-					pid   = tmp[2];
+					// sort voodoo part 2
+					container.sort( sortAlphaNum );
 
-					// remove zip from liegenschaft
-					if(view === 'liegenschaft') {
-						tmp = label.split(',');
+					for(x in container) {
+						tmp   = container[x].split('[[*]]');
+						tid   = tmp[1];
 						label = tmp[0];
-					}
+						pid   = tmp[2];
 
-					if(typeof this.__crumps[view] != 'undefined' && this.__crumps[view]['id'] == tid ) {
-						if(i != 1) {
-							str  = '<a';
-							str += ' class="list-group-item list-group-item-action active"';
-							str += ' href="?id='+pid+'&lang='+lang+'"';
-							//str += ' onclick="treebuilder.cookie('+pid+'); treebuilder.wait();"';
-							str += ' onclick="treebuilder.wait();"';
-							str += '>';
-							str += label+'<span class="close">&times;</span>';
-							str += '</a>';
+						// remove zip from liegenschaft
+						if(view === 'liegenschaft') {
+							tmp = label.split(',');
+							label = tmp[0];
+						}
+
+						if(typeof this.__crumps[view] != 'undefined' && this.__crumps[view]['id'] == tid ) {
+							if(i != 1) {
+								str  = '<a';
+								str += ' class="list-group-item list-group-item-action active"';
+								str += ' href="?id='+pid+'&lang='+lang+'"';
+								//str += ' onclick="treebuilder.cookie('+pid+'); treebuilder.wait();"';
+								str += ' onclick="treebuilder.wait();"';
+								str += '>';
+								str += label+'<span class="close">&times;</span>';
+								str += '</a>';
+							} else {
+								str  = '<a';
+								str += ' class="list-group-item list-group-item-action active"';
+								str += ' href="?id='+tid+'&lang='+lang+'"';
+								//str += ' onclick="treebuilder.cookie('+tid+'); treebuilder.wait();"';
+								str += ' onclick="treebuilder.wait();"';
+								str += '>';
+								str += label;
+								str += '</a>';
+							}
 						} else {
 							str  = '<a';
-							str += ' class="list-group-item list-group-item-action active"';
+							str += ' class="list-group-item list-group-item-action"';
 							str += ' href="?id='+tid+'&lang='+lang+'"';
 							//str += ' onclick="treebuilder.cookie('+tid+'); treebuilder.wait();"';
 							str += ' onclick="treebuilder.wait();"';
@@ -197,22 +209,23 @@ var treebuilder = {
 							str += label;
 							str += '</a>';
 						}
-					} else {
-						str  = '<a';
-						str += ' class="list-group-item list-group-item-action"';
-						str += ' href="?id='+tid+'&lang='+lang+'"';
-						//str += ' onclick="treebuilder.cookie('+tid+'); treebuilder.wait();"';
-						str += ' onclick="treebuilder.wait();"';
-						str += '>';
-						str += label;
-						str += '</a>';
+						group.append(str);
 					}
-					group.append(str);
-				}
+					// build menu
+					menubox.append(select);
+					menubox.append(group);
 
-				// build menu
-				menubox.append(select);
-				menubox.append(group);
+				} else {
+					select  = '<div>';
+					select += ' <div class="input-group">';
+					select += '  <input class="form-control" value="" disabled="disabeled" placeholder="'+identifiers[view]+' ...">';
+					select += '  <div class="input-group-append">';
+					select += '   <button type="button" tabindex="-1" class="btn btn-default dropdown-toggle disabled"></button>';
+					select += '  </div>';
+					select += ' </div>';
+					select += '</div>';
+					menubox.append(select);
+				}
 			}
 			i = i+1;
 		}
