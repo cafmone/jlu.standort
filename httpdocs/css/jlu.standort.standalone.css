@@ -257,7 +257,7 @@ a {
 	padding: 0 0 0 25px;
 	background-position: 0 2px;
 }
-#Rightbar .link1 a{
+#Rightbar .zlisurl a{
 	display: inline-block;
 	background-image: url("../img/Stud.IP-Icon.png");
 	background-repeat: no-repeat;
@@ -265,7 +265,7 @@ a {
 	background-position: 0 2px;
 	background-size: 16px;
 }
-#Rightbar .link2 a{
+#Rightbar .jlucourl a{
 	display: inline-block;
 	background-image: url("../bootstrap-icons/geo.svg");
 	background-repeat: no-repeat;
