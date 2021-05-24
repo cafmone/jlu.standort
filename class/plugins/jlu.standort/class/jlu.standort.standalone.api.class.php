@@ -382,7 +382,7 @@ var $lang = array(
 						$rightbar .= '<span class="'.$k.'"><a title="'.$this->translation[$k.'_title'].'" href="'.$link.'" target="_blank">'.$this->translation[$k].'</a></span>';
 					}
 				} else {
-					$rightbar .= '<span class="link1"><a class="disabled" title="'.$this->translation['link1_title'].'">'.$this->translation['link1'].'</a></span>';
+					$rightbar .= '<span class="zlisurl"><a class="disabled" title="'.$this->translation['zlisurl_title'].'">'.$this->translation['zlisurl'].'</a></span>';
 				}
 			}
 
