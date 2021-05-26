@@ -107,9 +107,10 @@ var $tpldir;
 	function help( $visible = false ) {
 		$data = '';
 		if($visible === true) {
+			echo '<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"></head><body>';
 			echo '<h3>Import</h3>';
 			echo '<hr>';
-			echo '<a href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=links">Links</a>';
+			echo '<b>Links</b> <a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=links">Parse</a>';
 			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.links.ini');
 			if(is_array($ini)) {
 				echo '<br><br>Config: ';
@@ -119,7 +120,8 @@ var $tpldir;
 				echo '</pre>';
 			}
 			echo '<hr>';
-			echo '<a href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=tree">Tree</a>';
+			echo '<b>Tree</b> <a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=tree">Parse</a>';
+			echo '<a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=tree&debug=true">Debug</a>';
 			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.tree.ini');
 			if(is_array($ini)) {
 				echo '<br><br>Config: ';
@@ -128,6 +130,7 @@ var $tpldir;
 				print_r($ini);
 				echo '</pre>';
 			}
+			echo '</body></html>';
 		}
 	}
 

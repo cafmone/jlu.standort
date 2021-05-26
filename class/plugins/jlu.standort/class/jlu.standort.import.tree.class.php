@@ -34,6 +34,11 @@ class jlu_standort_import_tree
 		$this->db          = $controller->db;
 		$this->file        = $controller->file;
 
+		$debug = $this->response->html->request()->get('debug', true);
+		if(isset($debug)) {
+			$this->debug = true;
+		}
+
 	}
 
 	//--------------------------------------------
@@ -176,6 +181,10 @@ class jlu_standort_import_tree
 						// check id is unique
 						elseif(array_key_exists($c[$cols['id']], $tree)) {
 							echo 'WARNING: ID '.$c[$cols['id']].' in file '.$r['file'].' is not unique. Skipping row '.$k.'.<br>';
+						}
+						// check parent exists
+						elseif($ection > 0 && !array_key_exists($c[$cols['parent']], $tree)) {
+							echo 'WARNING: Parent '.$c[$cols['parent']].' for ID '.$c[$cols['id']].'  in file '.$r['file'].' not found. Skipping row '.$k.'.<br>';
 						} else {
 							// escape content (xss)
 							$id     = htmlEntities($c[$cols['id']], ENT_QUOTES);
@@ -191,8 +200,6 @@ class jlu_standort_import_tree
 								}
 								$label .= htmlEntities($c[$cols['label_'.$i]], ENT_QUOTES);
 							}
-							// handle csv
-							#$csv .= '"'.$c[$cols['id']].'";"'.$r['view'].'";"'.$c[$cols['parent']].'";"";"NAME";"'.$c[$cols['label']].'"'."\n";
 
 							// handle tree
 							#$tree[$id]['i'] = $id;
@@ -208,25 +215,32 @@ class jlu_standort_import_tree
 				}
 			}
 
-			// handle cache
-			$path = $this->response->html->thisdir.'cache/';
-			if($this->file->is_writeable($path)) {
-				$error = $this->file->mkfile($path.'timestamp.txt',time(),'w+',true);
-				if($error === '') {
-					$error = $this->file->mkfile($path.'views.txt', implode(',',$views), 'w+', true);
+			if(isset($this->debug)) {
+
+				echo 'Debug finished. Found '.count($tree).' valid entries.';
+				if(count($tree) !== $summ) {
+					// handle count warning
+					echo '<br>WARNING: Tree length ('.count($tree).') does not match expected result from xlsx ('.$summ.'). Missing '.($summ - count($tree));
+				}
+
+			} else {
+				// handle cache
+				$path = $this->response->html->thisdir.'cache/';
+				if($this->file->is_writeable($path)) {
+					$error = $this->file->mkfile($path.'timestamp.txt',time(),'w+',true);
 					if($error === '') {
-						$error = $this->file->mkfile($path.'tree.js', 'var tree = '.json_encode($tree),'w+',true);
+						$error = $this->file->mkfile($path.'views.txt', implode(',',$views), 'w+', true);
 						if($error === '') {
-							#$error = $this->file->mkfile($path.'tree.csv', $csv,'w+',true);
-							#if($error === '') {
+							$error = $this->file->mkfile($path.'tree.js', 'var tree = '.json_encode($tree),'w+',true);
+							if($error === '') {
+								echo 'Import successful. Imported '.count($tree).'.';
 								// handle count warning
 								if(count($tree) !== $summ) {
-									echo 'WARNING: Tree length ('.count($tree).') does not match result from xlsx ('.$summ.').<br>';
+									echo '<br>WARNING: Tree length ('.count($tree).') does not match expected result from xlsx ('.$summ.'). Missing '.($summ - count($tree)).'';
 								}
-								echo 'Import successful.';
-							#} else {
-							#	echo $error;
-							#}
+							} else {
+								echo $error;
+							}
 						} else {
 							echo $error;
 						}
@@ -234,10 +248,8 @@ class jlu_standort_import_tree
 						echo $error;
 					}
 				} else {
-					echo $error;
+					echo 'ERROR: Folder '.$path.' is readonly.';
 				}
-			} else {
-				echo 'ERROR: Folder '.$path.' is readonly.';
 			}
 
 		}
