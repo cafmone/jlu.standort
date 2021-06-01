@@ -313,11 +313,13 @@ var $lang = array(
 				}
 			}
 			// handle image
-			$filetypes = $this->imagetypes;
-			foreach($filetypes as $type) {
-				$imgpath = $this->PROFILESDIR.'/jlu.standort/bilder/'.$imageid.'.'.$type;
-				if($this->file->exists($imgpath)) {
-					$type = strtolower($type);
+			$path = $this->PROFILESDIR.'/jlu.standort/bilder';
+			$files = $this->file->get_files($path);
+
+			foreach($files as $file) {
+				if(preg_match('~^'.$imageid.'~', $file['name'])) {
+					$imgpath = $file['path'];
+					$type = strtolower($file['extension']);
 					if($type === 'jpg') {
 						$width = '';
 						$size  = getimagesize($imgpath);
@@ -327,7 +329,11 @@ var $lang = array(
 						$data  = base64_encode($this->file->get_contents($imgpath));
 						$image = '<img title="'.$label.'" src="data:image/jpeg;base64, '.$data.'" style="width:100%;'.$width.' height:auto; cursor:pointer;" onclick="imagebox.init(this);">';
 					}
-					if($type === 'png') {
+					elseif($type === 'pdf') {
+						$data  = base64_encode($this->file->get_contents($imgpath));
+						$image = '<iframe src="data:application/pdf;base64,'.$data.'" style="height:100%;width:100%;border:0 none;"></iframe>';
+					}
+					elseif($type === 'png') {
 						$width = '';
 						$size  = getimagesize($imgpath);
 						if(isset($size[0])) {
@@ -339,6 +345,7 @@ var $lang = array(
 					elseif($type === 'svg') {
 						$image = $this->file->get_contents($imgpath);
 					}
+					// one try only
 					break;
 				}
 			}
@@ -363,7 +370,7 @@ var $lang = array(
 
 			$rightbar = '';
 
-			// handle pdf
+			// handle right bar pdf
 			$pdfpath = $this->PROFILESDIR.'/jlu.standort/pdf/'.$this->id.'.pdf';
 			if($this->file->exists($pdfpath)) {
 				$a = $this->response->html->a();
