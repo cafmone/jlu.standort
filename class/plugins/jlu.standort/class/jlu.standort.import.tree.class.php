@@ -176,15 +176,21 @@ class jlu_standort_import_tree
 					foreach($content as $k => $c) {
 						// check values not empty
 						if( $c[$cols['id']] === '' || $c[$cols['parent']] === '' || $c[$cols['label_0']] === '') {
-							echo 'WARNING: Empty column(s) in file '.$r['file'].'. Skipping row '.$k.'.<br>';
+							if(isset($this->debug)) {
+								echo 'WARNING: Empty column(s) in file '.$r['file'].'. Skipping row '.$k.'.<br>';
+							}
 						}
 						// check id is unique
 						elseif(array_key_exists($c[$cols['id']], $tree)) {
-							echo 'WARNING: ID '.$c[$cols['id']].' in file '.$r['file'].' is not unique. Skipping row '.$k.'.<br>';
+							if(isset($this->debug)) {
+								echo 'WARNING: ID '.$c[$cols['id']].' in file '.$r['file'].' is not unique. Skipping row '.$k.'.<br>';
+							}
 						}
 						// check parent exists
 						elseif($ection > 0 && !array_key_exists($c[$cols['parent']], $tree)) {
-							echo 'WARNING: Parent '.$c[$cols['parent']].' for ID '.$c[$cols['id']].'  in file '.$r['file'].' not found. Skipping row '.$k.'.<br>';
+							if(isset($this->debug)) {
+								echo 'WARNING: Parent '.$c[$cols['parent']].' for ID '.$c[$cols['id']].'  in file '.$r['file'].' not found. Skipping row '.$k.'.<br>';
+							}
 						} else {
 							// escape content (xss)
 							$id     = htmlEntities($c[$cols['id']], ENT_QUOTES);
@@ -220,7 +226,7 @@ class jlu_standort_import_tree
 				echo 'Debug finished. Found '.count($tree).' valid entries.';
 				if(count($tree) !== $summ) {
 					// handle count warning
-					echo '<br>WARNING: Tree length ('.count($tree).') does not match expected result from xlsx ('.$summ.'). Missing '.($summ - count($tree));
+					echo '<br>WARNING: Tree length ('.count($tree).') does not match expected result from xlsx ('.$summ.'). Missing '.($summ - count($tree)).'.';
 				}
 
 			} else {
@@ -236,7 +242,7 @@ class jlu_standort_import_tree
 								echo 'Import successful. Imported '.count($tree).'.';
 								// handle count warning
 								if(count($tree) !== $summ) {
-									echo '<br>WARNING: Tree length ('.count($tree).') does not match expected result from xlsx ('.$summ.'). Missing '.($summ - count($tree)).'';
+									echo '<br>WARNING: Tree length ('.count($tree).') does not match expected result from xlsx ('.$summ.'). Missing '.($summ - count($tree)).'.';
 								}
 							} else {
 								echo $error;
