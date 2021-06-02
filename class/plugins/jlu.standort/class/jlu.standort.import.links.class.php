@@ -34,6 +34,11 @@ class jlu_standort_import_links
 		$this->db          = $controller->db;
 		$this->file        = $controller->file;
 
+		$debug = $this->response->html->request()->get('debug', true);
+		if(isset($debug)) {
+			$this->debug = true;
+		}
+
 	}
 
 	//--------------------------------------------
@@ -87,9 +92,6 @@ class jlu_standort_import_links
 					}
 				} else {
 					$cols['zlisurl'] = '';
-					#echo 'ERROR: Missing or empty key zlisurl in '.$file.' section ['.$ection.']';
-					#$this->response->html->help($r);
-					#exit();
 				}
 				// check key jlucourl
 				if(isset($r['jlucourl']) && $r['jlucourl'] !== '') {
@@ -104,10 +106,20 @@ class jlu_standort_import_links
 					}
 				} else {
 					$cols['jlucourl'] = '';
-					// TODO not needed ?
-					// echo 'ERROR: Missing or empty key zlisurl in '.$file.' section ['.$ection.']';
-					// $this->response->html->help($r);
-					// exit();
+				}
+				// check key googlemaps
+				if(isset($r['googlemapsurl']) && $r['googlemapsurl'] !== '') {
+					$key = $r['googlemapsurl'];
+					$matches = @preg_match('~^[A-Z]+$~', $key);
+					if(!$matches) {
+						echo 'ERROR: misspelled key googlemapsurl "'.$key.'" in '.$file.' section ['.$ection.']';
+						$this->response->html->help($r);
+						exit();
+					} else {
+						$cols['googlemapsurl'] = $key;
+					}
+				} else {
+					$cols['googlemapsurl'] = '';
 				}
 				// check key file
 				if(!isset($r['file']) || $r['file'] === '') {
@@ -138,13 +150,19 @@ class jlu_standort_import_links
 					foreach($content as $k => $c) {
 
 						// check values not empty
-						if( $c[$cols['zlisurl']] === '' && $c[$cols['jlucourl']] === '') {
-							echo 'NOTICE: Empty column(s) in file '.$r['file'].'. Skipping row '.$k.'.<br>';
+						if( $c[$cols['zlisurl']] === '' && 
+							$c[$cols['jlucourl']] === '' && 
+							$c[$cols['googlemapsurl']] === '' 
+						) {
+							if(isset($this->debug)) {
+								echo 'NOTICE: Empty column(s) in file '.$r['file'].'. Skipping row '.$k.'.<br>';
+							}
 						} else {
 							// escape content (xss)
 							$id = htmlEntities($c[$cols['id']], ENT_QUOTES);
 							$c[$cols['zlisurl']] !== ''  ? $output[$id]['zlisurl'] = $c[$cols['zlisurl']] : null;
 							$c[$cols['jlucourl']] !== '' ? $output[$id]['jlucourl'] = $c[$cols['jlucourl']] : null;
+							$c[$cols['googlemapsurl']] !== '' ? $output[$id]['googlemapsurl'] = $c[$cols['googlemapsurl']] : null;
 						}
 					}
 				} else {
@@ -153,19 +171,26 @@ class jlu_standort_import_links
 				}
 			}
 
-			// handle cache
-			$path = $this->response->html->thisdir.'cache/';
-			if($this->file->is_writeable($path)) {
-				$error = $this->file->mkfile($path.'links.json', json_encode($output),'w+',true);
-				if($error === '') {
-						echo 'Import successful.';
-				} else {
-					echo $error;
-				}
-			} else {
-				echo 'ERROR: Folder '.$path.' is readonly.';
-			}
+			if(isset($this->debug)) {
 
+				echo 'Debug finished. Found '.count($output).' valid.';
+
+			} else {
+
+				// handle cache
+				$path = $this->response->html->thisdir.'cache/';
+				if($this->file->is_writeable($path)) {
+					$error = $this->file->mkfile($path.'links.json', json_encode($output),'w+',true);
+					if($error === '') {
+							echo 'Successfully imported '.count($output).'.';
+					} else {
+						echo $error;
+					}
+				} else {
+					echo 'ERROR: Folder '.$path.' is readonly.';
+				}
+
+			}
 		}
 	}
 

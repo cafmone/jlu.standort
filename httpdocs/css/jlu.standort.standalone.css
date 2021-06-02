@@ -296,6 +296,13 @@ iframe {
 	padding: 0 0 0 25px;
 	background-position: 0 2px;
 }
+#Rightbar .googlemapsurl a{
+	display: inline-block;
+	background-image: url("../bootstrap-icons/google.svg");
+	background-repeat: no-repeat;
+	padding: 0 0 0 25px;
+	background-position: 0 2px;
+}
 #Rightbar .access a{
 	display: inline-block;
 	background-image: url("../bootstrap-icons/people-fill.svg");

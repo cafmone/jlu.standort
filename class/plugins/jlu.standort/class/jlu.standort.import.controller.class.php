@@ -111,6 +111,7 @@ var $tpldir;
 			echo '<h3>Import</h3>';
 			echo '<hr>';
 			echo '<b>Links</b> <a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=links">Parse</a>';
+			echo '<a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=links&debug=true">Debug</a>';
 			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.links.ini');
 			if(is_array($ini)) {
 				echo '<br><br>Config: ';
