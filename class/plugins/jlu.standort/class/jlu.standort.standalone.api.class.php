@@ -572,24 +572,45 @@ var $lang = array(
 	function pdf($visible = false) {
 		if($visible === true) {
 			if(isset($this->id)) {
-				$file = $this->response->html->request()->get('file');
-				$path = $this->PROFILESDIR.'/jlu.standort/pdf/'.$file;
-				if($path !== '' && $this->file->exists($path)) {
-					require_once(realpath(CLASSDIR).'/lib/file/file.mime.class.php');
-					$mime = detect_mime($path);
-					$file = $this->file->get_fileinfo($path);
-					header("Pragma: public");
-					header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-					header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-					header("Cache-Control: must-revalidate");
-					header("Content-type: $mime");
-					header("Content-Length: ".$file['filesize']);
-					header("Content-disposition: attachment; filename=".$file['name']);
-					header("Accept-Ranges: ".$file['filesize']);
-					#ob_end_flush();
-					flush();
-					readfile($path);
-					exit(0);
+
+				// handle tree data
+				$treeurl = $this->response->html->thisdir.$this->treeurl;
+				if($this->file->exists($treeurl)) {
+					$tree = json_decode(str_replace('var tree = ', '', $this->file->get_contents($treeurl)), true);
+				}
+				if(!isset($tree)) {
+					$tree = array();
+				}
+
+				if(isset($tree[$this->id])) {
+					if(isset($tree[$this->id]['l']) && $tree[$this->id]['l'] !== '') {
+						$name = '';
+						if(isset($tree[$this->id]['p']) && isset($tree[$tree[$this->id]['p']]['l'])) {
+							$name .= $tree[$tree[$this->id]['p']]['l'].'.';
+						}
+						$name .= $tree[$this->id]['l'].'.pdf';
+						$name = html_entity_decode($name);
+
+						$file = $this->response->html->request()->get('file');
+						$path = $this->PROFILESDIR.'/jlu.standort/pdf/'.$file;
+						if($path !== '' && $this->file->exists($path)) {
+							require_once(realpath(CLASSDIR).'/lib/file/file.mime.class.php');
+							$mime = detect_mime($path);
+							$file = $this->file->get_fileinfo($path);
+							header("Pragma: public");
+							header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+							header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+							header("Cache-Control: must-revalidate");
+							header("Content-type: $mime");
+							header("Content-Length: ".$file['filesize']);
+							header("Content-disposition: attachment; filename=".$name);
+							header("Accept-Ranges: ".$file['filesize']);
+							#ob_end_flush();
+							flush();
+							readfile($path);
+							exit(0);
+						}
+					}
 				}
 			}
 		}
