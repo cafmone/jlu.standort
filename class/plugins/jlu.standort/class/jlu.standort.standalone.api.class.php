@@ -331,7 +331,9 @@ var $lang = array(
 					}
 					elseif($type === 'pdf') {
 						$data  = base64_encode($this->file->get_contents($imgpath));
-						$image = '<iframe src="data:application/pdf;base64,'.$data.'" style="height:100%;width:100%;border:0 none;"></iframe>';
+						$image  = '<div class="iframe">';
+						$image .= '<iframe src="data:application/pdf;base64,'.$data.'"></iframe>';
+						$image .= '</div>';
 					}
 					elseif($type === 'png') {
 						$width = '';

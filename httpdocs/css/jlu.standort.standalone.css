@@ -1,11 +1,10 @@
-html,body {
+html,body,iframe {
 	height: 100%;
 }
 body {
 	overflow-y: scroll;
 	padding-left: 0;
 	font: 0.9em "Verdana",Helvetica,Arial,sans-serif;
-  height:100%
 }
 a {
 	color: black;
@@ -233,6 +232,31 @@ a {
 
 #UsageBox {
 	margin: 40px 0 0 0;
+}
+
+/* ---------------------------------------------------
+    IFRAME
+----------------------------------------------------- */
+iframe {
+	border: 0 none;
+	padding: 0;
+	margin: 0;
+}
+.iframe {
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	padding-top: 80%;
+}
+.iframe iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	width: 100%;
+	
+	overflow: hidden;
 }
 
 /* ---------------------------------------------------
