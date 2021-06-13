@@ -392,7 +392,7 @@ var $lang = array(
 					$links = $tmp[key($tmp)];
 					foreach($links as $k => $link) {
 						if(isset($tmp[$this->id]) && $tmp[$this->id][$k] !== '') {
-							$rightbar .= '<span class="'.$k.'"><a title="'.$this->translation[$k.'_title'].'" href="'.$link.'" target="_blank">'.$this->translation[$k].'</a></span>';
+							$rightbar .= '<span class="'.$k.'"><a title="'.$this->translation[$k.'_title'].'" href="'.$tmp[$this->id][$k].'" target="_blank">'.$this->translation[$k].'</a></span>';
 						} else {
 							$rightbar .= '<span class="'.$k.'"><a class="disabled" title="'.$this->translation[$k.'_title'].'">'.$this->translation[$k].'</a></span>';
 						}
