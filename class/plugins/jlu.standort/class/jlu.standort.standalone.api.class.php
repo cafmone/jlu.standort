@@ -388,12 +388,15 @@ var $lang = array(
 			$linkspath = $this->response->html->thisdir.'cache/links.json';
 			if($this->file->exists($linkspath)) {
 				$tmp = json_decode($this->file->get_contents($linkspath), true);
-				if(isset($tmp[$this->id]) && is_array($tmp[$this->id])) {
-					foreach($tmp[$this->id] as $k => $link) {
-						$rightbar .= '<span class="'.$k.'"><a title="'.$this->translation[$k.'_title'].'" href="'.$link.'" target="_blank">'.$this->translation[$k].'</a></span>';
+				if(is_array($tmp) && count($tmp) > 0 ) {
+					$links = $tmp[key($tmp)];
+					foreach($links as $k => $link) {
+						if(isset($tmp[$this->id]) && $tmp[$this->id][$k] !== '') {
+							$rightbar .= '<span class="'.$k.'"><a title="'.$this->translation[$k.'_title'].'" href="'.$link.'" target="_blank">'.$this->translation[$k].'</a></span>';
+						} else {
+							$rightbar .= '<span class="'.$k.'"><a class="disabled" title="'.$this->translation[$k.'_title'].'">'.$this->translation[$k].'</a></span>';
+						}
 					}
-				} else {
-					$rightbar .= '<span class="zlisurl"><a class="disabled" title="'.$this->translation['zlisurl_title'].'">'.$this->translation['zlisurl'].'</a></span>';
 				}
 			}
 
