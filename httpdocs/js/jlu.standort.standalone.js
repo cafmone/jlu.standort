@@ -644,6 +644,7 @@ var usagebuilder = {
 	print : function() {
 		this.select = document.getElementById('UsageSelect');
 		id = this.select.options[this.select.selectedIndex].value;
+		label = this.select.options[this.select.selectedIndex].innerHTML;
 		if(id !== '') {
 			clone = document.getElementById(id).cloneNode(true);
 			clone.style.display = 'block';
@@ -653,11 +654,12 @@ var usagebuilder = {
 				focus: true,
 			})
 			$('#UsageCanvas').html(clone);
+			$('#UsageModal .modal-title').html(label);
 		}
 	},
 	close : function() {
+		document.getElementById('UsageSelect').selectedIndex = "0";
 		$('#UsageModal').modal('hide');
-		treebuilder.wait();
 	}
 }
 

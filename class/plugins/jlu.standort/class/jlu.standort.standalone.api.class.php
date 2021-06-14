@@ -374,16 +374,6 @@ var $lang = array(
 
 			$rightbar = '';
 
-			// handle right bar pdf
-			$pdfpath = $this->PROFILESDIR.'/jlu.standort/pdf/'.$this->id.'.pdf';
-			if($this->file->exists($pdfpath)) {
-				$a = $this->response->html->a();
-				$a->label = $this->translation['print'];
-				$a->title = $this->translation['print_title'];
-				$a->href = $this->response->get_url($this->actions_name, 'pdf').'&file='.urlencode($this->id.'.pdf');
-				$rightbar .= '<span class="print">'.$a->get_string().'</span>';
-			}
-
 			// handle links
 			$linkspath = $this->response->html->thisdir.'cache/links.json';
 			if($this->file->exists($linkspath)) {
@@ -400,16 +390,25 @@ var $lang = array(
 				}
 			}
 
+			// handle right bar pdf
+			$pdfpath = $this->PROFILESDIR.'/jlu.standort/pdf/'.$this->id.'.pdf';
+			if($this->file->exists($pdfpath)) {
+				$a = $this->response->html->a();
+				$a->label = $this->translation['print'];
+				$a->title = $this->translation['print_title'];
+				$a->href = $this->response->get_url($this->actions_name, 'pdf').'&file='.urlencode($this->id.'.pdf');
+				$rightbar .= '<span class="print">'.$a->get_string().'</span>';
+			}
+
 			// handle accessibility
 			if($level >= 3) {
 				$rightbar .= '<span class="access"><a href="#" onclick="accessbuilder.init('.$this->id.');" title="'.$this->translation['accessibility_title'].'">'.$this->translation['accessibility'].'</a></span>';
 			}
 
-/* Usage (Nutzungsart)
 
 			// handle usage (only level 3 and 4)
 			if($level === 3 || $level === 4) {
-				$usagepath = $this->response->html->thisdir.'cache/usage.json';
+				$usagepath = $this->response->html->thisdir.'cache/nutzung.json';
 				if($this->file->exists($usagepath)) {
 
 					$children = array();
@@ -425,17 +424,23 @@ var $lang = array(
 						$children = $this->__children($tree, $this->id);
 					}
 
-					$tmp    = json_decode($this->file->get_contents($usagepath), true);
-					$usages = array_unique($tmp);
+					$tmp = json_decode($this->file->get_contents($usagepath), true);
+					$lang = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.nutzung.ini');
+
+					$usages = $this->user->translate($lang, $this->langdir, 'jlu.standort.standalone.nutzung.ini');
+					asort($usages);
+
 					$used   = array();
 					$rooms  = array();
 
 					// handle available usage
 					foreach($children as $k => $c) {
 						if(isset($tmp[$k]) && $tmp[$k] !== '') {
-							$used[] = $tmp[$k];
-							if($level === 3) {
-								$rooms[md5($tmp[$k])][] = '<li><a href="?id='.$k.'" onclick="usagebuilder.close();">'.$tree[$tree[$k]['p']]['l'].', '.sprintf($this->translation['room'], $tree[$k]['l']).'</a></li>';
+							if($level === 3 || $level === 4) {
+								foreach($tmp[$k] as $n) {
+									$used[] = $n;
+									$rooms[md5($n)][] = '<li><a href="?id='.$k.'" onclick="usagebuilder.close();">'.$tree[$tree[$k]['p']]['l'].', '.sprintf($this->translation['room'], $tree[$k]['l']).'</a></li>';
+								}
 							}
 						}
 					}
@@ -444,17 +449,17 @@ var $lang = array(
 					$leftbar .= '<label>'.$this->translation['usage'].'</label>';
 					$leftbar .= '<select id="UsageSelect" class="form-control" onchange="usagebuilder.print()">';
 					$leftbar .= '<option></option>';
-					foreach($usages as $u) {
+					foreach($usages as $k => $u) {
 						if($u !== '') {
 							$disabled = '';
-							if(!in_array($u, $used)) {
+							if(!in_array($k, $used)) {
 								$disabled = ' disabled="disabeled"';
 							}
-							$leftbar .= '<option value="'.md5($u).'" '.$disabled.'>'.$u.'</option>';
+							$leftbar .= '<option value="'.md5($k).'" '.$disabled.'>'.$u.'</option>';
 						}
 					}
 					$leftbar .= '</select>';
-					if($level === 3) {
+					if($level === 3 || $level === 4) {
 						$leftbar .= '<div>';
 						foreach($rooms as $k => $v) {
 							$leftbar .= '<div id="'.$k.'" style="display:none;">';
@@ -475,7 +480,6 @@ var $lang = array(
 					}
 				}
 			}
-*/
 
 			// template
 			$t = $this->response->html->template($this->tpldir.'jlu.standort.standalone.api.html');
