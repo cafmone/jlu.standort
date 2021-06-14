@@ -58,6 +58,11 @@ var $tpldir;
 		$this->user = $user;
 		$this->profilesdir = PROFILESDIR;
 		$this->classdir = CLASSDIR.'plugins/jlu.standort/class/';
+		// handle derived language
+		$this->langdir = CLASSDIR.'plugins/jlu.standort/lang/';
+		if($this->file->exists(PROFILESDIR.'jlu.standort/lang/en.standort.standalone.api.ini')) {
+			$this->langdir = PROFILESDIR.'jlu.standort/lang/';
+		}
 	}
 
 	//--------------------------------------------
@@ -92,6 +97,9 @@ var $tpldir;
 			case 'links':
 				$content[] = $this->links(true);
 			break;
+			case 'nutzung':
+				$content[] = $this->nutzung(true);
+			break;
 		}
 
 	}
@@ -110,6 +118,7 @@ var $tpldir;
 			echo '<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"></head><body>';
 			echo '<h3>Import</h3>';
 			echo '<hr>';
+
 			echo '<b>Links</b> <a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=links">Parse</a>';
 			echo '<a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=links&debug=true">Debug</a>';
 			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.links.ini');
@@ -121,6 +130,27 @@ var $tpldir;
 				echo '</pre>';
 			}
 			echo '<hr>';
+
+			echo '<b>Nutzung</b> <a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=nutzung">Parse</a>';
+			echo '<a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=nutzung&debug=true">Debug</a>';
+			$ini = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.nutzung.ini');
+			if(is_array($ini)) {
+				echo '<br><br>Translation: ';
+				echo realpath($this->langdir.'de.jlu.standort.standalone.nutzung.ini');
+				echo '<pre>';
+				print_r($ini);
+				echo '</pre>';
+			}
+			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.nutzung.ini');
+			if(is_array($ini)) {
+				echo 'Config: ';
+				echo realpath($this->profilesdir.'jlu.standort.import.nutzung.ini');
+				echo '<pre>';
+				print_r($ini);
+				echo '</pre>';
+			}
+			echo '<hr>';
+
 			echo '<b>Tree</b> <a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=tree">Parse</a>';
 			echo '<a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=tree&debug=true">Debug</a>';
 			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.tree.ini');
@@ -148,6 +178,27 @@ var $tpldir;
 		if($visible === true) {
 			require_once($this->classdir.'jlu.standort.import.tree.class.php');
 			$controller = new jlu_standort_import_tree($this);
+			$controller->tpldir = $this->tpldir;
+			$controller->actions_name = $this->actions_name;
+			$controller->identifier_name = $this->identifier_name;
+			$data = $controller->action();
+		}
+		return $data;
+	}
+
+	//--------------------------------------------
+	/**
+	 * Nutzung
+	 *
+	 * @access public
+	 * @return null
+	 */
+	//--------------------------------------------
+	function nutzung( $visible = false ) {
+		$data = '';
+		if($visible === true) {
+			require_once($this->classdir.'jlu.standort.import.nutzung.class.php');
+			$controller = new jlu_standort_import_nutzung($this);
 			$controller->tpldir = $this->tpldir;
 			$controller->actions_name = $this->actions_name;
 			$controller->identifier_name = $this->identifier_name;
