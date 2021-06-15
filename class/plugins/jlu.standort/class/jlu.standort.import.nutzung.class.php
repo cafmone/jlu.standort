@@ -89,13 +89,18 @@ class jlu_standort_import_nutzung
 				// check key nutzung
 				if(isset($r['nutzung']) && $r['nutzung'] !== '') {
 					$key = $r['nutzung'];
-					$matches = @preg_match('~^[A-Z]+$~', $key);
+					$matches = @preg_match('~^[A-Z,]+$~', $key);
 					if(!$matches) {
 						echo 'ERROR: misspelled key nutzung "'.$key.'" in '.$file.' section ['.$ection.']';
 						$this->response->html->help($r);
 						exit();
 					} else {
-						$cols['nutzung'] = $key;
+						$tmp = explode(',',$key);
+						$num_nutzung = count($tmp);
+						foreach($tmp as $k => $v) {
+							$cols['nutzung_'.$k] = $v;
+						}
+						//$cols['nutzung'] = $key;
 					}
 				} else {
 					echo 'ERROR: Missing or empty key nutzung in '.$file.' section ['.$ection.']';
@@ -142,25 +147,34 @@ class jlu_standort_import_nutzung
 					foreach($content as $k => $c) {
 
 						$id = $c[$cols['id']];
-						if(isset($c[$cols['nutzung']]) && $c[$cols['nutzung']] !== '') {
-							$tmp = array();
-							if($delimiter !== '') {
-								$tmp = explode($delimiter, $c[$cols['nutzung']]);
-							} else {
-								$tmp[] = $c[$cols['nutzung']];
-							}
-							foreach($tmp as $v) {
-								if($replace !== '') {
-									$value = preg_replace($replace, '', $v);
-									$value = trim($value);
-									if(isset($search[$value])) {
-										$output[$id][] = $value;
+						if(isset($c[$cols['nutzung_0']]) && $c[$cols['nutzung_0']] !== '') {
+							
+							for($i=0; $i < $num_nutzung; $i++) {
+								$tmp = array();
+								if($delimiter !== '') {
+									$tmp = explode($delimiter, $c[$cols['nutzung_'.$i]]);
+								} else {
+									$tmp[] = $c[$cols['nutzung_'.$i]];
+								}
+								foreach($tmp as $v) {
+									if($replace !== '') {
+										$value = preg_replace($replace, '', $v);
+										$value = trim($value);
+										if(isset($search[$value])) {
+											$output[$id][] = $value;
+										}
+									} else {
+										$v = trim($v);
+										if(isset($search[$v])) {
+											$output[$id][] = trim($v);
+										}
 									}
 								}
 							}
+
 						} else {
 							if(isset($this->debug)) {
-								echo 'NOTICE: Empty column nutzung ('.$cols['nutzung'].') in file '.$r['file'].'. Skipping row '.$k.'.<br>';
+								echo 'NOTICE: Empty column nutzung ('.$cols['nutzung_0'].') in file '.$r['file'].'. Skipping row '.$k.'.<br>';
 							}
 							$empty++;
 							continue;
