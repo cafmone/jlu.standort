@@ -374,6 +374,12 @@ var $lang = array(
 
 			$rightbar = '';
 
+			// handle link maximum = level 3
+			$id = $this->id;
+			if($level >= 3) {
+				$id = $this->__building($tree, $this->id);
+			}
+
 			// handle links
 			$linkspath = $this->response->html->thisdir.'cache/links.json';
 			if($this->file->exists($linkspath)) {
@@ -381,8 +387,8 @@ var $lang = array(
 				if(is_array($tmp) && count($tmp) > 0 ) {
 					$links = $tmp[key($tmp)];
 					foreach($links as $k => $link) {
-						if(isset($tmp[$this->id]) && $tmp[$this->id][$k] !== '') {
-							$rightbar .= '<span class="'.$k.'"><a title="'.$this->translation[$k.'_title'].'" href="'.$tmp[$this->id][$k].'" target="_blank">'.$this->translation[$k].'</a></span>';
+						if(isset($tmp[$id]) && $tmp[$id][$k] !== '') {
+							$rightbar .= '<span class="'.$k.'"><a title="'.$this->translation[$k.'_title'].'" href="'.$tmp[$id][$k].'" target="_blank">'.$this->translation[$k].'</a></span>';
 						} else {
 							$rightbar .= '<span class="'.$k.'"><a class="disabled" title="'.$this->translation[$k.'_title'].'">'.$this->translation[$k].'</a></span>';
 						}
@@ -474,9 +480,8 @@ var $lang = array(
 					$leftbar .= '</div>';
 
 					if(isset($this->debug) && isset($children)) {
-						foreach ($children as $k => $c) {
-							echo '<div>"'.$k.'":"'.$c['l'].'",</div>';
-						}
+						echo '<div>Children</div>';
+						$this->response->html->help($children);
 					}
 				}
 			}
@@ -498,7 +503,11 @@ var $lang = array(
 			$return['rightbar'] = (isset($rightbar)) ? $rightbar : '';
 			$return['leftbar']  = (isset($leftbar)) ? $leftbar : '';
 
-			echo json_encode($return, true);
+			if(isset($this->debug)) {
+				$this->response->html->help($return);
+			} else {
+				echo json_encode($return, true);
+			}
 		}
 	}
 
@@ -641,6 +650,31 @@ var $lang = array(
 			}
 		}
 		return $result;
+	}
+
+	//--------------------------------------------
+	/**
+	 * Get Building 
+	 *
+	 * @access public
+	 * @return array
+	 */
+	//--------------------------------------------
+	function __building($tree, $id) {
+		if(isset($tree[$id]) && $tree[$id]['p'] !== '') {
+			if($tree[$id]['v'] !== 'gebauede') {
+				$id = $tree[$id]['p'];
+				if(isset($tree[$id]) && $tree[$id]['p'] !== '') {
+					if($tree[$id]['v'] !== 'gebauede') {
+						return $tree[$id]['p'];
+					} else {
+						return $id;
+					}
+				}
+			} else {
+				return $id;
+			}
+		}
 	}
 
 }
