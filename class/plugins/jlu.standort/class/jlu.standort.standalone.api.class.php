@@ -314,6 +314,12 @@ var $lang = array(
 					$imageid = $tree[$this->id]['p'];
 				}
 			}
+			// change imageid to parent if level = 5 (room)
+			if($level === 5) {
+				if(isset($tree[$this->id]['p'])) {
+					$imageid = $tree[$this->id]['p'];
+				}
+			}
 			// handle image
 			$path = $this->PROFILESDIR.'/jlu.standort/bilder';
 			$files = $this->file->get_files($path);
