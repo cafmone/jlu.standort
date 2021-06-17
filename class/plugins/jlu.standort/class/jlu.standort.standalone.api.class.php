@@ -225,6 +225,11 @@ var $lang = array(
 				$tree = array();
 			}
 
+			$content = json_decode($this->file->get_contents($this->response->html->thisdir.'cache/accessibility.json'), true);
+			$lang = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.accessibility.ini');
+			$lang = $this->user->translate($lang, $this->langdir, 'jlu.standort.standalone.nutzung.ini');
+			asort($lang);
+
 			// Level
 			$level = 0;
 			if(isset($tree[$this->id])) {
@@ -257,9 +262,18 @@ var $lang = array(
 				$tmp  = $tree[$tmp]['p'];
 				$path = $tree[$tmp]['l'].' | '.$path;
 			}
-			echo '<div style="padding:10px;text-align:center;">'.$path.'</div>';
+			echo '<div style="padding:0 0 15px 0;text-align:left;">'.$path.'</div>';
 
-			$this->response->html->help($tree[$id]);
+			if(isset($content[$id])) {
+				$content = $content[$id];
+				foreach($lang as $k => $v) {
+					if(isset($content[$k]) && $content[$k] !== '') {
+						echo '<strong>'.$v.'</strong>';
+						echo '<div style="padding: 0 0 15px 0">'.$content[$k].'</div>';
+					}
+				}
+			}
+
 		}
 	}
 

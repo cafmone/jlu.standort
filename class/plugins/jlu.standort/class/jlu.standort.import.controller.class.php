@@ -100,6 +100,10 @@ var $tpldir;
 			case 'nutzung':
 				$content[] = $this->nutzung(true);
 			break;
+			case 'accessibility':
+				$content[] = $this->accessibility(true);
+			break;
+
 		}
 
 	}
@@ -115,7 +119,7 @@ var $tpldir;
 	function help( $visible = false ) {
 		$data = '';
 		if($visible === true) {
-			echo '<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"></head><body>';
+			echo '<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><title>Import</title></head><body>';
 			echo '<h3>Import</h3>';
 			echo '<hr>';
 
@@ -145,6 +149,26 @@ var $tpldir;
 			if(is_array($ini)) {
 				echo 'Config: ';
 				echo realpath($this->profilesdir.'jlu.standort.import.nutzung.ini');
+				echo '<pre>';
+				print_r($ini);
+				echo '</pre>';
+			}
+			echo '<hr>';
+
+			echo '<b>Barrierefreiheit</b> <a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=accessibility">Parse</a>';
+			echo '<a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=accessibility&debug=true">Debug</a>';
+			$ini = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.accessibility.ini');
+			if(is_array($ini)) {
+				echo '<br><br>Translation: ';
+				echo realpath($this->profilesdir.'de.jlu.standort.standalone.accessibility.ini');
+				echo '<pre>';
+				print_r($ini);
+				echo '</pre>';
+			}
+			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.accessibility.ini');
+			if(is_array($ini)) {
+				echo 'Config: ';
+				echo realpath($this->profilesdir.'jlu.standort.import.accessibility.ini');
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
@@ -220,6 +244,27 @@ var $tpldir;
 		if($visible === true) {
 			require_once($this->classdir.'jlu.standort.import.links.class.php');
 			$controller = new jlu_standort_import_links($this);
+			$controller->tpldir = $this->tpldir;
+			$controller->actions_name = $this->actions_name;
+			$controller->identifier_name = $this->identifier_name;
+			$data = $controller->action();
+		}
+		return $data;
+	}
+
+	//--------------------------------------------
+	/**
+	 * accessibility
+	 *
+	 * @access public
+	 * @return null
+	 */
+	//--------------------------------------------
+	function accessibility( $visible = false ) {
+		$data = '';
+		if($visible === true) {
+			require_once($this->classdir.'jlu.standort.import.accessibility.class.php');
+			$controller = new jlu_standort_import_accessibility($this);
 			$controller->tpldir = $this->tpldir;
 			$controller->actions_name = $this->actions_name;
 			$controller->identifier_name = $this->identifier_name;
