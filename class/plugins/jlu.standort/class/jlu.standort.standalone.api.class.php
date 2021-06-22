@@ -163,6 +163,7 @@ var $lang = array(
 
 		// grrr - Windows
 		$this->PROFILESDIR = realpath(PROFILESDIR);
+		$this->CLASSDIR = realpath(CLASSDIR);
 
 	}
 
@@ -227,8 +228,7 @@ var $lang = array(
 
 			$content = json_decode($this->file->get_contents($this->response->html->thisdir.'cache/accessibility.json'), true);
 			$lang = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.accessibility.ini');
-			$lang = $this->user->translate($lang, $this->langdir, 'jlu.standort.standalone.nutzung.ini');
-			asort($lang);
+			$lang = $this->user->translate($lang, $this->langdir, 'jlu.standort.standalone.accessibility.ini');
 
 			// Level
 			$level = 0;
@@ -262,17 +262,57 @@ var $lang = array(
 				$tmp  = $tree[$tmp]['p'];
 				$path = $tree[$tmp]['l'].' | '.$path;
 			}
-			echo '<div style="padding:0 0 15px 0;text-align:left;">'.$path.'</div>';
+
+			$t = $this->response->html->template($this->CLASSDIR.'/plugins/jlu.standort/templates/jlu.standort.standalone.api.accessibility.html');
+			$t->add($path, 'path');
+			foreach($lang['headlines'] as $k => $v) {
+				$t->add('<h4>'.$v.'</h4>', 'headline_'.$k);
+			}
+
+			foreach($lang['gebaeude'] as $k => $v) {
+				$t->add('', 'gebaeude_'.$k);
+			}
 
 			if(isset($content[$id])) {
-				$content = $content[$id];
-				foreach($lang as $k => $v) {
-					if(isset($content[$k]) && $content[$k] !== '') {
-						echo '<strong>'.$v.'</strong>';
-						echo '<div style="padding: 0 0 15px 0">'.$content[$k].'</div>';
+				$current = $content[$id];
+				foreach($lang['gebaeude'] as $k => $v) {
+					if(isset($current[$k]) && $current[$k] !== '') {
+						$str  = '<div style="margin: 0 0 8px 0">';
+						$str .= '<span>'.$v.':</span> ';
+						$str .= '<span>'.$current[$k].'</span>';
+						$str .= '</div>';
+						$t->add($str, 'gebaeude_'.$k);
 					}
 				}
 			}
+
+			$str = '';
+			$floors = $this->__children($tree, $id);
+			if(is_array($floors)) {
+				foreach($floors as $key => $floor) {
+					$rooms = $this->__children($tree, $key);
+					if(is_array($rooms)) {
+						foreach($rooms as $k => $room) {
+							if(isset($content[$k])) {
+								$str .= '<div style="margin: 0 0 8px 0">';
+								$str .= $floor['l'].', '.sprintf($this->translation['room'], $room['l']) .' - ';
+								foreach($lang['raum'] as $l => $v) {
+									if(isset($content[$k][$l])) {
+										$str .= $v.': '.$content[$k][$l];
+									}
+								}
+								$str .= '</div>';
+							}
+						}
+					}
+				}
+			}
+			if($str === '') {
+ 				$t->add('','headline_raum');
+			}
+			$t->add($str, 'rooms');
+
+			echo $t->get_string();
 
 		}
 	}

@@ -99,15 +99,18 @@ class jlu_standort_import_accessibility
 					echo 'ERROR: Missing or empty key offset in '.$file.' section ['.$ection.']';
 					exit();
 				}
-
 				// check keys
 				if(is_array($search)) {
-					foreach($search as $k => $v) {
-						if(!isset($r[$k]) || $r[$k] === '') {
-							echo 'ERROR: Missing or empty key '.$k.' in '.$file.' section ['.$ection.']';
-							exit();
-						} else {
-							$cols[$k] = $r[$k];
+
+					if(isset($search[$ection])) {
+						$ar = $search[$ection];
+						foreach($ar as $k => $v) {
+							if(!isset($r[$k]) || $r[$k] === '') {
+								echo 'ERROR: Missing or empty key '.$k.' in '.$file.' section ['.$ection.']';
+								exit();
+							} else {
+								$cols[$k] = $r[$k];
+							}
 						}
 					}
 				} else {
@@ -127,15 +130,16 @@ class jlu_standort_import_accessibility
 				if(is_array($content)) {
 					foreach($content as $k => $c) {
 						$id = htmlEntities($c[$cols['id']], ENT_QUOTES);
-						foreach($search as $k => $v) {
-							$output[$id][$k] = $c[$cols[$k]];
+						foreach($search[$ection] as $k => $v) {
+							if(isset($c[$cols[$k]]) && $c[$cols[$k]] !== '') {
+								$output[$id][$k] = $c[$cols[$k]];
+							}
 						}
 					}
 				} else {
 					echo 'ERROR: '.$content.'.<br>';
 					return;
 				}
-
 			}
 
 			if(isset($this->debug)) {

@@ -160,7 +160,7 @@ var $tpldir;
 			$ini = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.accessibility.ini');
 			if(is_array($ini)) {
 				echo '<br><br>Translation: ';
-				echo realpath($this->profilesdir.'de.jlu.standort.standalone.accessibility.ini');
+				echo realpath($this->langdir.'de.jlu.standort.standalone.accessibility.ini');
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
