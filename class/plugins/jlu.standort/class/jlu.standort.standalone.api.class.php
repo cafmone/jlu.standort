@@ -298,7 +298,7 @@ var $lang = array(
 								$str .= $floor['l'].', '.sprintf($this->translation['room'], $room['l']) .' - ';
 								foreach($lang['raum'] as $l => $v) {
 									if(isset($content[$k][$l])) {
-										$str .= $v.': '.$content[$k][$l];
+										$str .= '<strong>'.$v.':</strong> '.$content[$k][$l].'<br>';
 									}
 								}
 								$str .= '</div>';
