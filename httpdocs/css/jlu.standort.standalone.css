@@ -12,6 +12,9 @@ a {
 h4 {
 	font-size: 1.3em;
 }
+label {
+	font-size: 1rem;
+}
 
 #Logobar {
 	position: relative;
@@ -369,6 +372,28 @@ a.btn.disabled, fieldset:disabled a.btn {
 	background: #eee;
 	color: #adadad;
 	border-color: #adadad;
+}
+.btn-light {
+	color: #333;
+	background-color: white;
+	border-color: #ced4da;
+}
+.btn-light.dropdown-toggle {
+	background-color: white !important;
+}
+.selectpicker .dropdown-item.active {
+	background-color: white !important;
+	color: white;
+}
+#Leftbar .btn-light:hover,
+#Leftbar .btn-light:active,
+#Leftbar .btn-light:focus {
+	background-color: white !important;
+	outline: none !important;
+}
+.bootstrap-select .dropdown-item.active,
+.bootstrap-select .dropdown-item:active {
+	background-color: white !important;
 }
 
 .form-control {

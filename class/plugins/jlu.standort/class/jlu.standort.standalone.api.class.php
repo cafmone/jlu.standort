@@ -513,8 +513,7 @@ var $lang = array(
 
 					$leftbar  = '<div id="UsageBox" class="noprint">';
 					$leftbar .= '<label>'.$this->translation['usage'].'</label>';
-					$leftbar .= '<select id="UsageSelect" class="form-control" onchange="usagebuilder.print()">';
-					$leftbar .= '<option></option>';
+					$leftbar .= '<select id="UsageSelect" class="form-control selectpicker" title="&#160;" onchange="usagebuilder.print()">';
 					foreach($usages as $k => $u) {
 						if($u !== '') {
 							$disabled = '';

@@ -277,6 +277,9 @@ var treebuilder = {
 				right = document.getElementById('RightbarContent');
 				right.innerHTML = response['rightbar'];
 				$('#Breadcrumps').css('display','block');
+
+$('.selectpicker').selectpicker();
+
 			}
 		});
 	},
@@ -646,6 +649,7 @@ var usagebuilder = {
 		id = this.select.options[this.select.selectedIndex].value;
 		label = this.select.options[this.select.selectedIndex].innerHTML;
 		if(id !== '') {
+			$('.selectpicker').selectpicker('val', '');
 			clone = document.getElementById(id).cloneNode(true);
 			clone.style.display = 'block';
 			$('#UsageModal').modal({
@@ -655,10 +659,11 @@ var usagebuilder = {
 			})
 			$('#UsageCanvas').html(clone);
 			$('#UsageModal .modal-title').html(label);
+			$('.close').trigger('focus');
 		}
 	},
 	close : function() {
-		document.getElementById('UsageSelect').selectedIndex = "0";
+		$('.selectpicker').selectpicker('val', '');
 		$('#UsageModal').modal('hide');
 	}
 }
