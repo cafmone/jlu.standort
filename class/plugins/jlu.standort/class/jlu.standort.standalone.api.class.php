@@ -278,7 +278,7 @@ var $lang = array(
 				foreach($lang['gebaeude'] as $k => $v) {
 					if(isset($current[$k]) && $current[$k] !== '') {
 						$str  = '<div style="margin: 0 0 8px 0">';
-						$str .= '<span>'.$v.':</span> ';
+						$str .= '<strong>'.$v.':</strong> ';
 						$str .= '<span>'.$current[$k].'</span>';
 						$str .= '</div>';
 						$t->add($str, 'gebaeude_'.$k);
@@ -295,7 +295,7 @@ var $lang = array(
 						foreach($rooms as $k => $room) {
 							if(isset($content[$k])) {
 								$str .= '<div style="margin: 0 0 8px 0">';
-								$str .= $floor['l'].', '.sprintf($this->translation['room'], $room['l']) .' - ';
+								$str .= '<div>'.$floor['l'].', '.sprintf($this->translation['room'], $room['l']) .'</div>';
 								foreach($lang['raum'] as $l => $v) {
 									if(isset($content[$k][$l])) {
 										$str .= '<strong>'.$v.':</strong> '.$content[$k][$l].'<br>';
