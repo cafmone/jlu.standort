@@ -196,6 +196,9 @@ label {
 	cursor : not-allowed;
 	pointer-events: auto;
 }
+#Leftbar .menu-wrapper {
+	margin: 0 1px 0 1px;
+}
 
 #Rightbar {
 	min-width: 270px;
@@ -366,6 +369,17 @@ iframe {
 /* ---------------------------------------------------
     HACKS
 ----------------------------------------------------- */
+.dropdown-item.disabled {
+	background-color: #e9ecef;
+	opacity: 1;
+}
+#Leftbar .dropdown-menu {
+	padding: 0;
+}
+#Leftbar .dropdown-item {
+	padding: 0.375rem 0.75rem;
+}
+
 a.btn.disabled, fieldset:disabled a.btn {
 	cursor : not-allowed;
 	pointer-events: auto;
@@ -391,6 +405,7 @@ a.btn.disabled, fieldset:disabled a.btn {
 	background-color: white !important;
 	outline: none !important;
 }
+
 .bootstrap-select .dropdown-item.active,
 .bootstrap-select .dropdown-item:active {
 	background-color: white !important;

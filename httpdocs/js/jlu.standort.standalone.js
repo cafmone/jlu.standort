@@ -94,7 +94,7 @@ var treebuilder = {
 		for (view in identifiers) {
 
 			if (i > maximum) {
-				select  = '<div>';
+				select  = '<div class="menu-wrapper">';
 				select += ' <div class="input-group">';
 				select += '  <input class="form-control" value="" disabled="disabeled" placeholder="'+identifiers[view]+' ...">';
 				select += '  <div class="input-group-append">';
@@ -114,7 +114,7 @@ var treebuilder = {
 					pid = id;
 				}
 
-				select  = '<div>';
+				select  = '<div class="menu-wrapper">';
 				select += ' <div class="input-group active" title="'+identifiers[view]+'">';
 				select += '  <input class="form-control" disabled="disabled" placeholder="'+identifiers[view]+' ..." ';
 				if (typeof this.__crumps[view] != 'undefined') {
