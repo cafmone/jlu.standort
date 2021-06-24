@@ -161,11 +161,8 @@ class jlu_standort_import_links
 							// escape content (xss)
 							$id = htmlEntities($c[$cols['id']], ENT_QUOTES);
 
-							//$c[$cols['zlisurl']] !== ''  ? $output[$id]['zlisurl'] = $c[$cols['zlisurl']] : null;
-							//$c[$cols['jlucourl']] !== '' ? $output[$id]['jlucourl'] = $c[$cols['jlucourl']] : null;
-							//$c[$cols['googlemapsurl']] !== '' ? $output[$id]['googlemapsurl'] = $c[$cols['googlemapsurl']] : null;
-
-							$output[$id]['zlisurl'] = $c[$cols['zlisurl']];
+							// TODO deactivate studip
+							//$output[$id]['zlisurl'] = $c[$cols['zlisurl']];
 							$output[$id]['jlucourl'] = $c[$cols['jlucourl']];
 							$output[$id]['googlemapsurl'] = $c[$cols['googlemapsurl']];
 
