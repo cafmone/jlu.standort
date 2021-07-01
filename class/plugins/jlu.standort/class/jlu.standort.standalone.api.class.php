@@ -395,6 +395,8 @@ var $lang = array(
 						$data  = base64_encode($this->file->get_contents($imgpath));
 						$image  = '<div class="iframe">';
 						$image .= '<iframe src="data:application/pdf;base64,'.$data.'"></iframe>';
+						#$image .= '<object data="data:application/pdf;base64,'.$data.'" type="application/pdf" style="heigth:300px;width:100%;" ></object>';
+						#$image .= '<embed src="data:application/pdf;base64,'.$data.'" type="application/pdf" style="heigth:300px;width:100%;" ></embed>';
 						$image .= '</div>';
 					}
 					elseif($type === 'png') {
@@ -463,6 +465,12 @@ var $lang = array(
 				$a->label = $this->translation['print'];
 				$a->title = $this->translation['print_title'];
 				$a->href = $this->response->get_url($this->actions_name, 'pdf').'&file='.urlencode($this->id.'.pdf');
+				$rightbar .= '<span class="print">'.$a->get_string().'</span>';
+			} else {
+				$a = $this->response->html->a();
+				$a->label = $this->translation['print'];
+				$a->title = $this->translation['print_title'];
+				$a->css = 'disabled';
 				$rightbar .= '<span class="print">'.$a->get_string().'</span>';
 			}
 
