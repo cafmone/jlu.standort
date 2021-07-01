@@ -234,9 +234,10 @@ label {
 	position: absolute;
 	right: 10px;
 	top: 7px;
-	color: #ccc;
+	color: #fff;
 	text-shadow: none;
 	border: 0 none;
+	opacity: 1;
 }
 
 #UsageBox {
