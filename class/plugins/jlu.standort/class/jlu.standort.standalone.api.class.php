@@ -477,6 +477,8 @@ var $lang = array(
 			// handle accessibility
 			if($level >= 3) {
 				$rightbar .= '<span class="access"><a href="#" onclick="accessbuilder.init('.$this->id.');" title="'.$this->translation['accessibility_title'].'">'.$this->translation['accessibility'].'</a></span>';
+			} else {
+				$rightbar .= '<span class="access"><a class="disabled" title="'.$this->translation['accessibility_title'].'">'.$this->translation['accessibility'].'</a></span>';
 			}
 
 
