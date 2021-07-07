@@ -468,8 +468,8 @@ var $lang = array(
 			}
 
 
-			// handle usage (only level 3 and 4)
-			if($level === 3 || $level === 4) {
+			// handle usage (only level 3, 4 and 5)
+			if($level === 3 || $level === 4 || $level === 5) {
 				$usagepath = $this->response->html->thisdir.'cache/nutzung.json';
 				if($this->file->exists($usagepath)) {
 
@@ -485,6 +485,9 @@ var $lang = array(
 					elseif($level === 4) {
 						$children = $this->__children($tree, $this->id);
 					}
+					elseif($level === 5) {
+						$children = $this->__children($tree, $tree[$this->id]['p']);
+					}
 
 					$tmp = json_decode($this->file->get_contents($usagepath), true);
 					$lang = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.nutzung.ini');
@@ -498,7 +501,7 @@ var $lang = array(
 					// handle available usage
 					foreach($children as $k => $c) {
 						if(isset($tmp[$k]) && $tmp[$k] !== '') {
-							if($level === 3 || $level === 4) {
+							if($level === 3 || $level === 4 || $level === 5) {
 								foreach($tmp[$k] as $n) {
 									$used[] = $n;
 									$rooms[md5($n)][] = '<li><a href="?id='.$k.'" onclick="usagebuilder.close();">'.$tree[$tree[$k]['p']]['l'].', '.sprintf($this->translation['room'], $tree[$k]['l']).'</a></li>';
@@ -520,11 +523,17 @@ var $lang = array(
 						}
 					}
 					$leftbar .= '</select>';
-					if($level === 3 || $level === 4) {
+					if($level === 3 || $level === 4 || $level === 5) {
 						$leftbar .= '<div>';
 						foreach($rooms as $k => $v) {
 							$leftbar .= '<div id="'.$k.'" style="display:none;">';
-							$leftbar .= '<div style="margin: 0 0 15px 0;">'.$label.' | '.$tree[$tree[$this->id]['p']]['l'].'</div>';
+							if($level !== 5) {
+								$leftbar .= '<div style="margin: 0 0 15px 0;">'.$label.' | '.$tree[$tree[$this->id]['p']]['l'].'</div>';
+							} else {
+								$label  = $tree[$tree[$this->id]['p']]['l'];
+								$label .= ' | '.$tree[$tree[$tree[$this->id]['p']]['p']]['l'];
+								$leftbar .= '<div style="margin: 0 0 15px 0;">'.$label.'</div>';
+							}
 							$leftbar .= '<ul>';
 							$leftbar .= implode('',$v);
 							$leftbar .= '</ul>';
