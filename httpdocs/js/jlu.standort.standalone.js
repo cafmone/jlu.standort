@@ -76,6 +76,9 @@ var treebuilder = {
 			// call api
 			this.ajax(id, lang);
 			this.__id = id;
+		} else {
+			this.__canvas.innerHTML = '<div style="text-align:center;"><img src="jlu.standort.api.php?action=image&file=index.jpg"></div>';
+			$('.copylink').hide();
 		}
 
 		// build environment

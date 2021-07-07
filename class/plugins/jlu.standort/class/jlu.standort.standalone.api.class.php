@@ -402,7 +402,13 @@ var $lang = array(
 				}
 			}
 			if(!isset($image)) {
-				$image = $this->translation['no_image'];
+				$image  = '<div style="text-align:center;">';
+				$image .= '<img title="'.$this->translation['no_image'].'" ';
+				$image .= 'src="jlu.standort.api.php?action=image&file=noimage.jpg" ';
+				$image .= 'style="" ';
+				$image .= '><br>';
+				$image .= $this->translation['no_image'];
+				$image .= '</div>';
 			}
 
 			// handle datadir
