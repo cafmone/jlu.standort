@@ -149,9 +149,6 @@ var $lang = array(
 			$this->debug = true;
 		}
 
-		// Image types
-		$this->imagetypes= array('jpg','JPG','png','PNG','svg','SVG');
-
 		// Identifiers
 		$this->identifiers = array();
 		$this->levels = array();
@@ -175,35 +172,31 @@ var $lang = array(
 	 */
 	//--------------------------------------------
 	function action() {
-		if(!isset($this->id)) {
-			echo 'ERROR: no ID given';
-		} else {
-			$action = $this->response->html->request()->get($this->actions_name);
-			if($action !== '') {
-				$this->response->add($this->actions_name, $action);
-			}
-			switch( $action ) {
-				default:
-				case '':
-				case 'select':
-					$this->select(true);
-				break;
-				case 'access':
-					$this->access(true);
-				break;
-				case 'usage':
-					#$this->usage(true);
-				break;
-				case 'image':
-					$this->image(true);
-				break;
-				case 'download':
-					$this->download(true);
-				break;
-				case 'pdf':
-					$this->pdf(true);
-				break;
-			}
+		$action = $this->response->html->request()->get($this->actions_name);
+		if($action !== '') {
+			$this->response->add($this->actions_name, $action);
+		}
+		switch( $action ) {
+			default:
+			case '':
+			case 'select':
+				$this->select(true);
+			break;
+			case 'access':
+				$this->access(true);
+			break;
+			case 'usage':
+				#$this->usage(true);
+			break;
+			case 'image':
+				$this->image(true);
+			break;
+			case 'download':
+				$this->download(true);
+			break;
+			case 'pdf':
+				$this->pdf(true);
+			break;
 		}
 	}
 
@@ -382,14 +375,16 @@ var $lang = array(
 				if(preg_match('~^'.$imageid.'~', $file['name'])) {
 					$imgpath = $file['path'];
 					$type = strtolower($file['extension']);
-					if($type === 'jpg') {
+					if($type === 'jpg' || $type === 'png') {
 						$width = '';
 						$size  = getimagesize($imgpath);
 						if(isset($size[0])) {
 							$width = ' max-width:'.$size[0].'px;';
 						}
-						$data  = base64_encode($this->file->get_contents($imgpath));
-						$image = '<img title="'.$label.'" src="data:image/jpeg;base64, '.$data.'" style="width:100%;'.$width.' height:auto; cursor:pointer;" onclick="imagebox.init(this);">';
+						$image  = '<img title="'.$label.'" ';
+						$image .= 'src="jlu.standort.api.php?action=image&file='.$file['name'].'" ';
+						$image .= 'style="width:100%;'.$width.' height:auto; cursor:pointer;" ';
+						$image .= 'onclick="imagebox.init(this);">';
 					}
 					elseif($type === 'pdf') {
 						$data  = base64_encode($this->file->get_contents($imgpath));
@@ -398,15 +393,6 @@ var $lang = array(
 						#$image .= '<object data="data:application/pdf;base64,'.$data.'" type="application/pdf" style="heigth:300px;width:100%;" ></object>';
 						#$image .= '<embed src="data:application/pdf;base64,'.$data.'" type="application/pdf" style="heigth:300px;width:100%;" ></embed>';
 						$image .= '</div>';
-					}
-					elseif($type === 'png') {
-						$width = '';
-						$size  = getimagesize($imgpath);
-						if(isset($size[0])) {
-							$width = ' max-width:'.$size[0].'px;';
-						}
-						$data  = base64_encode($this->file->get_contents($imgpath));
-						$image = '<img title="'.$label.'" src="data:image/png;base64, '.$data.'" style="width:100%;'.$width.' height:auto; cursor:pointer;" onclick="imagebox.init(this);">';
 					}
 					elseif($type === 'svg') {
 						$image = $this->file->get_contents($imgpath);
@@ -590,26 +576,23 @@ var $lang = array(
 	//--------------------------------------------
 	function image($visible = false) {
 		if($visible === true) {
-			if(isset($this->id)) {
-				foreach($this->imagetypes as $type) {
-					$path = $this->PROFILESDIR.'/jlu.standort/bilder/'.$this->id.'.'.$type;
-					if($path !== '' && $this->file->exists($path)) {
-						require_once(realpath(CLASSDIR).'/lib/file/file.mime.class.php');
-						$mime = detect_mime($path);
-						$file = $this->file->get_fileinfo($path);
-						header("Pragma: public");
-						header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-						header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-						header("Cache-Control: must-revalidate");
-						header("Content-type: $mime");
-						header("Content-Length: ".$file['filesize']);
-						header("Content-disposition: inline; filename=".$file['name']);
-						header("Accept-Ranges: ".$file['filesize']);
-						flush();
-						readfile($path);
-						exit(0);
-					}
-				}
+			$file = $this->response->html->request()->get('file');
+			$path = $this->PROFILESDIR.'/jlu.standort/bilder/'.$file;
+			if($this->file->exists($path)) {
+				$file = $this->file->get_fileinfo($path);
+				require_once(realpath(CLASSDIR).'/lib/file/file.mime.class.php');
+				$mime = detect_mime($file['path']);
+				header("Pragma: public");
+				header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+				header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+				header("Cache-Control: must-revalidate");
+				header("Content-type: $mime");
+				header("Content-Length: ".$file['filesize']);
+				header("Content-disposition: inline; filename=".$file['name']);
+				header("Accept-Ranges: ".$file['filesize']);
+				flush();
+				readfile($file['path']);
+				exit(0);
 			}
 		}
 	}
