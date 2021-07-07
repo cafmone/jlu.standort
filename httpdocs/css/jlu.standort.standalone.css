@@ -98,17 +98,29 @@ label {
 	vertical-align: top;
 	text-align: left;
 }
-
-
-
-#History {
-	display: inline-block;
-	margin: 0 0 10px 0;
+#Content .cell2 #Canvas {
+	min-height: 300px;
+	margin-bottom: 60px;
 }
-#History .previous{
+
+#Content #CanvasTopbar {
+	display: table;
+	width: 100%;
+	position: relative;
+}
+#Content #CanvasTopbar .row {
+	display: table-row;
+}
+#Content #CanvasTopbar #History {
+	display: table-cell;
+	width: 60px;
+	height: 50px;
+	vertical-align: top;
+}
+#Content #CanvasTopbar #History .previous{
 	display: inline-block;
 }
-#History .previous a{
+#Content #CanvasTopbar #History .previous a{
 	display: inline-block;
 	background-image: url("../bootstrap-icons/chevron-left.svg");
 	background-repeat: no-repeat;
@@ -116,17 +128,25 @@ label {
 	background-position: center;
 	opacity: 0.8;
 }
-#History .next{
+#Content #CanvasTopbar #History .next{
 	display: inline-block;
 	margin: 0 0 0 6px;
 }
-#History .next a{
+#Content #CanvasTopbar #History .next a{
 	display: inline-block;
 	background-image: url("../bootstrap-icons/chevron-right.svg");
 	background-repeat: no-repeat;
 	padding: 12px 12px;
 	background-position: center;
 	opacity: 0.8;
+}
+#Content #CanvasTopbar #Breadcrumps {
+	vertical-align: top;
+	display: table-cell;
+	width: auto;
+	text-align: center;
+	padding: 0 50px 0 15px;
+	height: 50px;
 }
 
 /*
@@ -146,18 +166,7 @@ label {
 	width: 30px;
 }
 */
-#Content .cell2 #Canvas {
-	min-height: 300px;
-	margin-bottom: 60px;
-}
-#Content .cell2 #Breadcrumps {
-	position: absolute;
-	bottom: 15px;
-	left: 0;
-	width: 100%;
-	text-align: center;
-	padding: 0 15px 0 15px;
-}
+
 #Content .cell2 #ContentWait,
 #Search #ContentWait {
 	margin-top: 60px;
