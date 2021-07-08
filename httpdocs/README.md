@@ -1,6 +1,7 @@
 # .htaccess
-
 ```
+DirectoryIndex jlu.standort.php  
+
 <IfModule mod_expires.c>
 ExpiresActive On
 ExpiresDefault "access plus 1 year"
