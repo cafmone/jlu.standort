@@ -1,2 +1,6 @@
-Dateinamen müssen auf .svg (.SVG), .jpg (.JPG) oder.png (.PNG) enden.
-Andere Formate werden nicht unterstützt.
+Filname Syntax
+[id]_sometext.[jpg,pdf,png,svg]
+
+Special Files:
+index.jpg - Default when no id set (Landing Page)
+noimage.jpg - Shows up when id has no image
