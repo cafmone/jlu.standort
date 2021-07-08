@@ -144,7 +144,7 @@ label {
 	vertical-align: top;
 	display: table-cell;
 	width: auto;
-	text-align: center;
+	text-align: left;
 	padding: 0 50px 0 15px;
 	height: 50px;
 }
