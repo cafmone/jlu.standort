@@ -5,19 +5,13 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
 
+<!-- <link rel="stylesheet" type="text/css" href="{cssurl}pdf.viewer.css"> //-->
 <link rel="stylesheet" type="text/css" href="{cssurl}bootstrap4.css" media="screen">
-<link rel="stylesheet" type="text/css" href="{cssurl}bootstrap-select.css">
 <link rel="stylesheet" type="text/css" href="{cssurl}jlu.standort.standalone.css?_={timestamp}">
 
-<script src="{jsurl}jquery.min.js"></script>
-<script src="{jsurl}popper.min.js"></script>
-<script src="{jsurl}bootstrap4.min.js"></script>
-<script src="{jsurl}bootstrap-select.min.js"></script>
-<script src="{jsurl}jlu.standort.standalone.js?_={timestamp}"></script>
-{script}
 </head>
 
-<body>
+<body tabindex="1">
 <div id="Page">
 
 	<div id="Header">
@@ -171,6 +165,21 @@
 		</div>
 	</div>
 </div>
+
+
+<!-- <iframe style="width:100%;" src="pdf.viewer.html?file=EG.pdf"></iframe> //-->
+<!-- {pdfviewer} //-->
+
+<link rel="stylesheet" type="text/css" href="{cssurl}bootstrap-select.css">
+<!-- <link rel="resource" type="application/l10n" href="locale/locale.properties"> //-->
+
+<script src="{jsurl}jquery.min.js"></script>
+<script src="{jsurl}popper.min.js"></script>
+<script src="{jsurl}bootstrap4.min.js"></script>
+<script src="{jsurl}bootstrap-select.min.js"></script>
+<script src="{jsurl}jlu.standort.standalone.js?_={timestamp}"></script>
+<!-- <script src="{jsurl}pdf.viewer.js"></script> //-->
+{script}
 
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function () {

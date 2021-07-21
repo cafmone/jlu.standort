@@ -389,7 +389,11 @@ var $lang = array(
 					elseif($type === 'pdf') {
 						$data  = base64_encode($this->file->get_contents($imgpath));
 						$image  = '<div class="iframe">';
-						$image .= '<iframe src="data:application/pdf;base64,'.$data.'"></iframe>';
+						#$image .= '<iframe src="data:application/pdf;base64,'.$data.'"></iframe>';
+
+$image .= '<iframe src="pdf.viewer.html?file='.urlencode('jlu.standort.api.php?action=image&file=').''.$file['name'].'"></iframe>';
+
+
 						#$image .= '<object data="data:application/pdf;base64,'.$data.'" type="application/pdf" style="heigth:300px;width:100%;" ></object>';
 						#$image .= '<embed src="data:application/pdf;base64,'.$data.'" type="application/pdf" style="heigth:300px;width:100%;" ></embed>';
 						$image .= '</div>';

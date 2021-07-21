@@ -280,6 +280,9 @@ var $lang = array(
 			'timestamp' => $timestamp,
 		);
 		$t->add($vars);
+
+		//$t->add($this->file->get_contents($this->tpldir.'pdf.viewer.html'), 'pdfviewer');
+
 		return $t;
 	}
 

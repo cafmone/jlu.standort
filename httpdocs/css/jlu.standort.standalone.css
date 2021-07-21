@@ -100,7 +100,7 @@ label {
 }
 #Content .cell2 #Canvas {
 	min-height: 300px;
-	margin-bottom: 60px;
+	margin-bottom: 10px;
 }
 
 #Content #CanvasTopbar {
@@ -265,7 +265,7 @@ iframe {
 	position: relative;
 	overflow: hidden;
 	width: 100%;
-	padding-top: 80%;
+	padding-top: 75%;
 }
 .iframe iframe {
 	position: absolute;
