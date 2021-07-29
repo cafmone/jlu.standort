@@ -100,18 +100,21 @@ var $lang = array(
 		$this->user        = $user;
 		$this->db          = $db;
 		$this->file        = $file;
-		$this->profilesdir = PROFILESDIR;
+
+		// grrr - Windows
+		$this->PROFILESDIR = realpath(PROFILESDIR).'/';
+		$this->CLASSDIR = realpath(CLASSDIR).'/';
 
 		// handle derived language
-		$this->langdir = CLASSDIR.'plugins/jlu.standort/lang/';
-		if($this->file->exists(PROFILESDIR.'jlu.standort/lang/en.standort.standalone.api.ini')) {
-			$this->langdir = PROFILESDIR.'jlu.standort/lang/';
+		$this->langdir = $this->CLASSDIR.'plugins/jlu.standort/lang/';
+		if($this->file->exists($this->PROFILESDIR.'jlu.standort/lang/de.jlu.standort.standalone.api.ini')) {
+			$this->langdir = $this->PROFILESDIR.'jlu.standort/lang/';
 		}
 
 		// handle derived templates
-		$this->tpldir = CLASSDIR.'plugins/jlu.standort/templates/';
-		if($this->file->exists(PROFILESDIR.'jlu.standort/templates/jlu.standort.standalone.api.html')) {
-			$this->tpldir = PROFILESDIR.'jlu.standort/templates/';
+		$this->tpldir = $this->CLASSDIR.'plugins/jlu.standort/templates/';
+		if($this->file->exists($this->PROFILESDIR.'jlu.standort/templates/jlu.standort.standalone.api.html')) {
+			$this->tpldir = $this->PROFILESDIR.'jlu.standort/templates/';
 		}
 
 		// get languages (xss)
@@ -158,9 +161,6 @@ var $lang = array(
 			$this->identifiers = $tmp['identifiers'];
 		}
 
-		// grrr - Windows
-		$this->PROFILESDIR = realpath(PROFILESDIR);
-		$this->CLASSDIR = realpath(CLASSDIR);
 
 	}
 
@@ -256,7 +256,7 @@ var $lang = array(
 				$path = $tree[$tmp]['l'].' | '.$path;
 			}
 
-			$t = $this->response->html->template($this->CLASSDIR.'/plugins/jlu.standort/templates/jlu.standort.standalone.api.accessibility.html');
+			$t = $this->response->html->template($this->tpldir.'jlu.standort.standalone.api.accessibility.html');
 			$t->add($path, 'path');
 			foreach($lang['headlines'] as $k => $v) {
 				$t->add('<h4>'.$v.'</h4>', 'headline_'.$k);

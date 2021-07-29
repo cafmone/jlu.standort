@@ -145,11 +145,10 @@ var $lang = array(
 		$this->user        = $user;
 		$this->db          = $db;
 		$this->file        = $file;
-		$this->profilesdir = PROFILESDIR;
 
 		// handle derived language
 		$this->langdir = CLASSDIR.'plugins/jlu.standort/lang/';
-		if($this->file->exists(PROFILESDIR.'jlu.standort/lang/en.jlu.standort.standalone.ini')) {
+		if($this->file->exists(PROFILESDIR.'jlu.standort/lang/de.jlu.standort.standalone.ini')) {
 			$this->langdir = PROFILESDIR.'jlu.standort/lang/';
 		}
 
