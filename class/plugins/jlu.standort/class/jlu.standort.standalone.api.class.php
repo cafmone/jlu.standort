@@ -387,13 +387,11 @@ var $lang = array(
 						$image .= 'onclick="imagebox.init(this);">';
 					}
 					elseif($type === 'pdf') {
-						$data  = base64_encode($this->file->get_contents($imgpath));
+
 						$image  = '<div class="iframe">';
+						$image .= '<iframe src="pdf.viewer.html?file='.urlencode('jlu.standort.api.php?action=image&file=').''.$file['name'].'"></iframe>';
+						#$data  = base64_encode($this->file->get_contents($imgpath));
 						#$image .= '<iframe src="data:application/pdf;base64,'.$data.'"></iframe>';
-
-$image .= '<iframe src="pdf.viewer.html?file='.urlencode('jlu.standort.api.php?action=image&file=').''.$file['name'].'"></iframe>';
-
-
 						#$image .= '<object data="data:application/pdf;base64,'.$data.'" type="application/pdf" style="heigth:300px;width:100%;" ></object>';
 						#$image .= '<embed src="data:application/pdf;base64,'.$data.'" type="application/pdf" style="heigth:300px;width:100%;" ></embed>';
 						$image .= '</div>';
@@ -674,11 +672,26 @@ $image .= '<iframe src="pdf.viewer.html?file='.urlencode('jlu.standort.api.php?a
 				if(isset($tree[$this->id])) {
 					if(isset($tree[$this->id]['l']) && $tree[$this->id]['l'] !== '') {
 						$name = '';
-						if(isset($tree[$this->id]['p']) && isset($tree[$tree[$this->id]['p']]['l'])) {
-							$name .= $tree[$tree[$this->id]['p']]['l'].'.';
+						if(isset($tree[$this->id]['p'])) {
+							$geb = $tree[$this->id]['p'];
+							// handle liegenschaft
+							if(isset($tree[$geb]['p'])) {
+								$lie = $tree[$geb]['p'];
+								if(isset($tree[$lie]['l'])) {
+									$name .= $tree[$lie]['l'].' - ';
+								}
+							}
+							// handle gebaeude
+							if(isset($tree[$geb]['l'])) {
+								$name .= $tree[$geb]['l'].' - ';
+							}
 						}
 						$name .= $tree[$this->id]['l'].'.pdf';
+
 						$name = html_entity_decode($name);
+
+						// remove ,
+						$name = str_replace(',','',$name);
 
 						$file = $this->response->html->request()->get('file');
 						$path = $this->PROFILESDIR.'/jlu.standort/pdf/'.$file;
