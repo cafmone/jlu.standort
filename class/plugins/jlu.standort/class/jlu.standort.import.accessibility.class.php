@@ -25,8 +25,8 @@ class jlu_standort_import_accessibility
 	//--------------------------------------------
 	function __construct($controller) {
 
-		$this->PROFILESDIR = PROFILESDIR;
-		$this->CLASSDIR    = CLASSDIR;
+		$this->PROFILESDIR = realpath(PROFILESDIR).'/';
+		$this->CLASSDIR    = realpath(CLASSDIR).'/';
 
 		require_once($this->CLASSDIR.'lib/file/file.xlsx.class.php');
 
