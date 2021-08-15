@@ -5,7 +5,7 @@ apt -y install mc
 mkdir /var/www/html/logs
   
 nano /etc/apache2/sites-enabled/000-default.conf..
-...
+```
 <VirtualHost *:80>
 
 	ServerAdmin webmaster@localhost
@@ -19,4 +19,4 @@ nano /etc/apache2/sites-enabled/000-default.conf..
 	CustomLog /var/www/html/logs/apache_access.log combined
 
 </VirtualHost>
-...
+```
