@@ -20,3 +20,4 @@ nano /etc/apache2/sites-enabled/000-default.conf
 
 </VirtualHost>
 ```
+/etc/init.d/apache2 restart
