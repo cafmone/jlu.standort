@@ -7,7 +7,9 @@ body {
 	font: 0.9em "Verdana",Helvetica,Arial,sans-serif;
 }
 a {
-	color: black;
+  color: #0069b3;
+  text-decoration: none;
+  background-color: transparent;
 }
 h4 {
 	font-size: 1.3em;
@@ -348,6 +350,12 @@ iframe {
 	padding: 0 0 0 22px;
 	background-position: 0;
 }
+#Footer .helppage a{
+	background-image: url("../bootstrap-icons/question-circle.svg");
+	background-repeat: no-repeat;
+	padding: 0 0 0 22px;
+	background-position: 0;
+}
 #LeftbarToggler .navbar-toggler-icon {
 	background-image: url("../bootstrap-icons/arrow-bar-left.svg");
 	background-repeat: no-repeat;
@@ -427,6 +435,7 @@ a.btn.disabled, fieldset:disabled a.btn {
 	-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
 		-o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 		transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	border-radius: 0rem;
 }
 .btn-default {
   color: #333;
@@ -607,4 +616,108 @@ fieldset[disabled] .btn-default.focus {
 		overflow: hidden;
 	}
 
+}
+.btn {
+  border-radius: 0rem;
+}
+.btn-primary {
+  background-color: #0069b3;
+  border-color: #0069b3;
+}
+.btn-primary.disabled, .btn-primary:disabled {
+  background-color: #0069b3;
+  border-color: #0069b3;
+}
+.btn-outline-primary {
+  color: #0069b3;
+  border-color: #0069b3;
+}
+.btn-outline-primary:hover {
+  background-color: #0069b3;
+  border-color: #0069b3;
+}
+.btn-outline-primary.disabled, .btn-outline-primary:disabled {
+  color: #0069b3;
+}
+.btn-outline-primary:not(:disabled):not(.disabled):active, .btn-outline-primary:not(:disabled):not(.disabled).active,
+.show > .btn-outline-primary.dropdown-toggle {
+  background-color: #0069b3;
+  border-color: #0069b3;
+}
+.btn-link {
+  color: #0069b3;
+}
+.btn-lg, .btn-group-lg > .btn {
+  border-radius: 0rem;
+}
+.btn-sm, .btn-group-sm > .btn {
+  border-radius: 0rem;
+}
+.dropdown-menu {
+  border-radius: 0rem;						 
+}
+.dropdown-item.active, .dropdown-item:active {
+  background-color: #0069b3;
+}
+.custom-control-input:checked ~ .custom-control-label::before {
+  border-color: #0069b3;
+  background-color: #0069b3;
+}
+.custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
+  border-color: #0069b3;
+  background-color: #0069b3;
+}
+.custom-range::-moz-range-thumb {
+  background-color: #0069b3;
+}
+.custom-range::-ms-thumb {
+  background-color: #0069b3;
+}
+.custom-range::-ms-thumb {
+  background-color: #0069b3;
+}
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background-color: #0069b3;
+}
+.page-link {
+  color: #0069b3;
+}
+.page-item.active .page-link {
+  background-color: #0069b3;
+  border-color: #0069b3;
+}
+.badge-primary {
+  background-color: #0069b3;
+}
+.progress-bar {
+  background-color: #0069b3;
+}
+.list-group {
+  border-radius: 0rem;						 
+}
+.list-group-item.active {
+  background-color: #0069b3;
+  border-color: #0069b3;
+}
+.close {
+  float: left;
+  padding-left: 20px;
+}
+button.close {
+  float: left !important;
+  padding-top: 5px;
+}
+searchbuilder.close {
+  float: left;
+  padding-top: 25px;
+}
+.bg-primary {
+  background-color: #0069b3 !important;
+}
+.border-primary {
+  border-color: #0069b3 !important;
+}
+.text-primary {
+  color: #0069b3 !important;
 }

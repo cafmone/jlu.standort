@@ -84,6 +84,12 @@ var $privacynoticeurl = null;
 * @access public
 * @var array
 */
+var $helppage = null;
+/**
+* copyright notice
+* @access public
+* @var array
+*/
 var $copyright = null;
 /**
 * language
@@ -114,6 +120,8 @@ var $lang = array(
 	'loading' => 'Loading ...',
 	'privacynotice' => 'Privacy',
 	'privacynotice_title' => 'Privacy',
+	'helppage' => 'Help',
+	'helppage_title' => 'Help',
 	'print' => 'Print',
 	'print_title' => 'Print Page',
 	'link' => 'Copy Link',
@@ -243,6 +251,10 @@ var $lang = array(
 		if(isset($this->privacynoticeurl) && $this->privacynoticeurl !== '') {
 			$privacynotice = '<a onclick="treebuilder.wait();" href="'.$this->privacynoticeurl.'" title="'.$this->translation['privacynotice_title'].'">'.$this->translation['privacynotice'].'</a>';
 		}
+		$helppage = '';
+		if(isset($this->helppageurl) && $this->helppageurl !== '') {
+			$helppage = '<a onclick="treebuilder.wait();" href="'.$this->helppageurl.'" title="'.$this->translation['helppage_title'].'">'.$this->translation['helppage'].'</a>';
+		}
 		$imprint = '';
 		if(isset($this->imprinturl) && $this->imprinturl !== '') {
 			$imprint = '<a onclick="treebuilder.wait();" href="'.$this->imprinturl.'" title="'.$this->translation['imprint_title'].'">'.$this->translation['imprint'].'</a>';
@@ -275,6 +287,7 @@ var $lang = array(
 			'imprint' => $imprint,
 			'link' => $link,
 			'privacynotice' => $privacynotice,
+			'helppage' => $helppage,
 			'lang' => $this->user->lang,
 			'timestamp' => $timestamp,
 		);

@@ -9,7 +9,6 @@
  * Justus-Liebig-Universitaet Giessen
  * Dezernat E - Liegenschaften, Bau und Technik
  * Abteilung E1 - Flaechenmanagement
- * E1.3 - Projektleitung CAFM-System.
  */
 
 require_once('bootstrap.php');
@@ -46,6 +45,7 @@ $controller->imgurl = 'img/';
 $controller->imprinturl = 'https://www.uni-giessen.de/ueber-uns/impressum';
 $controller->privacynoticeurl = 'https://www.uni-giessen.de/ueber-uns/datenschutz';
 $controller->contacturl = 'mailto:flaechenmanagement@admin.uni-giessen.de';
+$controller->helppageurl = 'https://www.uni-giessen.de/org/admin/dez/e/1/JLUgeschossplaene';
 $controller->copyright = '&copy;JLU Gie&szlig;en '.date('Y', time());
 
 echo $controller->action()->get_string();
