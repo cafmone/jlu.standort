@@ -453,12 +453,21 @@ var $lang = array(
 			}
 
 			// handle right bar pdf
-			$pdfpath = $this->PROFILESDIR.'/jlu.standort/pdf/'.$this->id.'.pdf';
+			$pdfid = $this->id;
+
+			// change rbid to parent if level = 5 (room)
+			if($level === 5) {
+				if(isset($tree[$this->id]['p'])) {
+					$pdfid = $tree[$this->id]['p'];
+				}
+			}
+
+			$pdfpath = $this->PROFILESDIR.'/jlu.standort/pdf/'.$pdfid.'.pdf';
 			if($this->file->exists($pdfpath)) {
 				$a = $this->response->html->a();
 				$a->label = $this->translation['print'];
 				$a->title = $this->translation['print_title'];
-				$a->href = $this->response->get_url($this->actions_name, 'pdf').'&file='.urlencode($this->id.'.pdf');
+				$a->href = $this->response->get_url('id',$pdfid).'&'.$this->actions_name.'=pdf&file='.urlencode($pdfid.'.pdf');
 				$rightbar .= '<span class="print">'.$a->get_string().'</span>';
 			} else {
 				$a = $this->response->html->a();
