@@ -18,15 +18,14 @@
 		<div id="Logobar">
 			<div>
 				<div>
-					<div class="mainlogo" style="width:158px;">
-						<a onclick="treebuilder.wait();" href="{thisfile}?lang={lang}">
+					<div class="mainlogo">
+						<a onclick="treebuilder.wait();" href="https://www.uni-giessen.de/JLUgeschossplaene" title="Zur Startseite von JLUgeschosspläne">
 							<img alt="{logo_alt}" src="{imgurl}logo.png">
 						</a>
-					</div>
-					<div id="Label"><a onclick="treebuilder.wait();" tabindex="-1" href="{thisfile}?lang={lang}">{label}</a></div>
-					<div class="sublogo" style="width: 158px;">
-						<a onclick="treebuilder.wait();" tabindex="-1" href="{thisfile}?lang={lang}">
-							<img alt="{logo_alt}" src="{imgurl}sublogo.jpg">
+					</div>		
+					<div class="sublogo" style="float: right; padding-top: 13px">
+						<a onclick="treebuilder.wait();" tabindex="-1" href="https://www.uni-giessen.de/index.html" title="Zur Startseite der Website der JLU">
+							<img alt="{logo_alt}" src="{imgurl}sublogo.png">
 						</a>
 					</div>
 				</div>
@@ -87,8 +86,8 @@
 		<div id="SearchLoader"></div>
 		<div id="SearchHeader" style="display:none;">
 			<div class="clearfix" style="text-align:center;margin: 0 0 20px 0;">
-				<input style="width: 400px;margin-right:100px;display: block;" id="SearchInput" type="text" class="float-left form-control" placeholder="{search}" onkeyup="searchbuilder.seek()">
-				<button type="button" title="{close}" onfocus="this.blur();" onclick="searchbuilder.close();" class="float-right close">&times;</button>
+				<input style="width: 400px;margin-right:20px;display: block;" id="SearchInput" type="text" class="float-left form-control" placeholder="{search}" onkeyup="searchbuilder.seek()">
+				<button type="button" style="font-size: 14px;padding-top: 12px; float: left !important" title="{close}" onfocus="this.blur();" onclick="searchbuilder.close();" class="float-right close">Suche schließen</button>
 			</div>
 		</div>
 		<div id="SearchResult"></div>
@@ -99,9 +98,9 @@
 			<span class="copyright">{copyright}</span>
 		</div>
 		<div class="footer-right float-right">
+			<span class="helppage">{helppage}</span>
 			<span class="privacynotice">{privacynotice}</span>
 			<span class="imprint">{imprint}</span>
-			<span class="helppage">{helppage}</span>
 			<span class="contact">{contact}</span>
 		</div>
 	</div>

@@ -42,7 +42,6 @@ label {
 #Logobar #Label a:hover {
 	text-decoration: none;
 }
-
 #Topbar {
 	border-top: 1px solid #DADADA;
 	border-bottom: 1px solid #DADADA;
@@ -187,8 +186,8 @@ label {
 }
 
 #Leftbar {
-	min-width: 450px;
-	max-width: 450px;
+	min-width: 380px;
+	max-width: 380px;
 	background: transparent;
 	transition: all 0.3s;
 	padding: 15px;
@@ -698,15 +697,17 @@ fieldset[disabled] .btn-default.focus {
 }
 .list-group-item.active {
   background-color: #0069b3;
-  border-color: #0069b3;
+  border-color: #C0C0C0;
 }
 .close {
-  float: left;
   padding-left: 20px;
 }
 button.close {
-  float: left !important;
   padding-top: 5px;
+}
+buttonsearch.close {
+  padding-top: 5px;
+  padding-right: 200px;
 }
 searchbuilder.close {
   float: left;
@@ -720,4 +721,7 @@ searchbuilder.close {
 }
 .text-primary {
   color: #0069b3 !important;
+}
+.list-group-item-action:hover, .list-group-item-action:focus {
+  background-color: #dce6eb;
 }

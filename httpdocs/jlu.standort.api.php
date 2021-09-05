@@ -9,7 +9,6 @@
  * Justus-Liebig-Universitaet Giessen
  * Dezernat E - Liegenschaften, Bau und Technik
  * Abteilung E1 - Flaechenmanagement
- * E1.3 - Projektleitung CAFM-System.
  */
 
 require_once('bootstrap.php');
