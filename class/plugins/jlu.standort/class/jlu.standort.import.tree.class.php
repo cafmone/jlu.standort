@@ -101,6 +101,22 @@ class jlu_standort_import_tree
 					$this->response->html->help($r);
 					exit();
 				}
+
+				// check key order
+				if(isset($r['order'])) {
+					if($r['order'] !== '') {
+						$key = $r['order'];
+						$matches = @preg_match('~^[A-Z]+$~', $key);
+						if(!$matches) {
+							echo 'ERROR: misspelled key order "'.$key.'" in '.$file.' section ['.$ection.']';
+							$this->response->html->help($r);
+							exit();
+						} else {
+							$cols['order'] = $key;
+						}
+					}
+				}
+
 				// check key parent
 				### TODO set parent empty if first in result?
 				if(isset($r['parent']) && $r['parent'] !== '') {
@@ -168,11 +184,6 @@ class jlu_standort_import_tree
 
 				if(is_array($content)) {
 
-					// handle tree sort
-					#if(count($content) > 0) {
-					#	$content = $this->__sort($content, $cols['label'], 'ASC');
-					#}
-
 					foreach($content as $k => $c) {
 						// check values not empty
 						if( $c[$cols['id']] === '' || $c[$cols['parent']] === '' || $c[$cols['label_0']] === '') {
@@ -208,10 +219,20 @@ class jlu_standort_import_tree
 							}
 
 							// handle tree
-							#$tree[$id]['i'] = $id;
 							$tree[$id]['p'] = $parent;
 							$tree[$id]['v'] = $r['view'];
 							$tree[$id]['l'] = $label;
+
+							// handle order
+							if(isset($r['order'])) {
+								if($r['order'] === '') {
+									$tree[$id]['o'] = $k;
+								} else {
+									if(isset($c[$cols['order']]) && $c[$cols['order']] !== '') {
+										$tree[$id]['o'] = $c[$cols['order']];
+									}
+								}
+							}
 						}
 					}
 					$summ = $summ + count($content);

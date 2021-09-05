@@ -153,6 +153,7 @@ var treebuilder = {
 				})
 
 				// sort voodoo part 1
+				order = false;
 				container = [];
 				for (tid in tree) {
 					if(view == tree[tid]['v']) {
@@ -160,7 +161,13 @@ var treebuilder = {
 						label = tree[tid]['l'];
 						// handle raum
 						view === 'raum' ? label = identifiers[view]+' '+label : null;
-						container.push(label+'[[*]]'+tid+'[[*]]'+pid);
+						out = label+'[[*]]'+tid+'[[*]]'+pid;
+						if (typeof tree[tid]['o'] !== 'undefined') {
+							out = label+'[[*]]'+tid+'[[*]]'+pid+'[[*]]'+tree[tid]['o'];
+							order = true;
+						}
+						console.log(out);
+						container.push(out);
 					}
 				}
 
@@ -168,7 +175,12 @@ var treebuilder = {
 				if(container.length > 0) {
 
 					// sort voodoo part 2
-					container.sort( sortAlphaNum );
+					if(order === false) {
+						container.sort( sortAlphaNum );
+					}
+					else if(order === true) {
+						container.sort( sortPos );
+					}
 
 					for(x in container) {
 						tmp   = container[x].split('[[*]]');
@@ -280,9 +292,7 @@ var treebuilder = {
 				right = document.getElementById('RightbarContent');
 				right.innerHTML = response['rightbar'];
 				$('#Breadcrumps').css('display','block');
-
-$('.selectpicker').selectpicker();
-
+				$('.selectpicker').selectpicker();
 			}
 		});
 	},
@@ -715,8 +725,9 @@ var accessbuilder = {
 	},
 }
 
-
-
+//---------------------------------------------
+// Sort Alpha Numeric
+//---------------------------------------------
 function sortAlphaNum(a, b) {
 
 	a = 'XX'+a.split('[[*]]')[0];
@@ -746,13 +757,19 @@ function sortAlphaNum(a, b) {
 			aO = aN;
 			bO = bN;
 		}
-
 		return aO === bO ? 0 : aO > bO ? 1 : -1;
 
 	} else {
-
 		return aA > bA ? 1 : -1;
-
 	}
+}
+
+//---------------------------------------------
+// Sort by Position
+//---------------------------------------------
+function sortPos(a,b) {
+	a = parseInt(a.split('[[*]]')[3]);
+	b = parseInt(b.split('[[*]]')[3]);
+	return a > b ? 1 : -1;
 }
 
