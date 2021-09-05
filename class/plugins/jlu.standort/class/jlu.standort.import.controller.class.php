@@ -56,12 +56,13 @@ var $tpldir;
 		$this->response = $response;
 		$this->db = $db;
 		$this->user = $user;
-		$this->profilesdir = PROFILESDIR;
-		$this->classdir = CLASSDIR.'plugins/jlu.standort/class/';
+		$this->profilesdir = realpath(PROFILESDIR).'/';
+		$this->classdir = realpath(CLASSDIR).'/';
+
 		// handle derived language
-		$this->langdir = CLASSDIR.'plugins/jlu.standort/lang/';
-		if($this->file->exists(PROFILESDIR.'jlu.standort/lang/en.standort.standalone.api.ini')) {
-			$this->langdir = PROFILESDIR.'jlu.standort/lang/';
+		$this->langdir = $this->classdir.'plugins/jlu.standort/lang/';
+		if($this->file->exists($this->profilesdir.'jlu.standort/lang/de.jlu.standort.standalone.ini')) {
+			$this->langdir = $this->profilesdir.'jlu.standort/lang/';
 		}
 	}
 
@@ -128,7 +129,7 @@ var $tpldir;
 			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.links.ini');
 			if(is_array($ini)) {
 				echo '<br><br>Config: ';
-				echo realpath($this->profilesdir.'jlu.standort.import.links.ini');
+				echo $this->profilesdir.'jlu.standort.import.links.ini';
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
@@ -140,15 +141,17 @@ var $tpldir;
 			$ini = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.nutzung.ini');
 			if(is_array($ini)) {
 				echo '<br><br>Translation: ';
-				echo realpath($this->langdir.'de.jlu.standort.standalone.nutzung.ini');
+				echo $this->langdir.'de.jlu.standort.standalone.nutzung.ini';
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
+			} else {
+				echo '<br><br><b>Error</b>: Did not find translation in '.$this->langdir.'de.jlu.standort.standalone.nutzung.ini<br><br>';
 			}
 			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.nutzung.ini');
 			if(is_array($ini)) {
 				echo 'Config: ';
-				echo realpath($this->profilesdir.'jlu.standort.import.nutzung.ini');
+				echo $this->profilesdir.'jlu.standort.import.nutzung.ini';
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
@@ -160,15 +163,17 @@ var $tpldir;
 			$ini = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.accessibility.ini');
 			if(is_array($ini)) {
 				echo '<br><br>Translation: ';
-				echo realpath($this->langdir.'de.jlu.standort.standalone.accessibility.ini');
+				echo $this->langdir.'de.jlu.standort.standalone.accessibility.ini';
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
+			} else {
+				echo '<br><br><b>Error</b>: Did not find translation in '.$this->langdir.'de.jlu.standort.standalone.accessibility.ini<br><br>';
 			}
 			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.accessibility.ini');
 			if(is_array($ini)) {
 				echo 'Config: ';
-				echo realpath($this->profilesdir.'jlu.standort.import.accessibility.ini');
+				echo $this->profilesdir.'jlu.standort.import.accessibility.ini';
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
@@ -180,7 +185,7 @@ var $tpldir;
 			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.tree.ini');
 			if(is_array($ini)) {
 				echo '<br><br>Config: ';
-				echo realpath($this->profilesdir.'jlu.standort.import.tree.ini');
+				echo $this->profilesdir.'jlu.standort.import.tree.ini';
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
@@ -200,7 +205,7 @@ var $tpldir;
 	function tree( $visible = false ) {
 		$data = '';
 		if($visible === true) {
-			require_once($this->classdir.'jlu.standort.import.tree.class.php');
+			require_once($this->classdir.'plugins/jlu.standort/class/jlu.standort.import.tree.class.php');
 			$controller = new jlu_standort_import_tree($this);
 			$controller->tpldir = $this->tpldir;
 			$controller->actions_name = $this->actions_name;
@@ -221,7 +226,7 @@ var $tpldir;
 	function nutzung( $visible = false ) {
 		$data = '';
 		if($visible === true) {
-			require_once($this->classdir.'jlu.standort.import.nutzung.class.php');
+			require_once($this->classdir.'plugins/jlu.standort/class/jlu.standort.import.nutzung.class.php');
 			$controller = new jlu_standort_import_nutzung($this);
 			$controller->tpldir = $this->tpldir;
 			$controller->actions_name = $this->actions_name;
@@ -242,7 +247,7 @@ var $tpldir;
 	function links( $visible = false ) {
 		$data = '';
 		if($visible === true) {
-			require_once($this->classdir.'jlu.standort.import.links.class.php');
+			require_once($this->classdir.'plugins/jlu.standort/class/jlu.standort.import.links.class.php');
 			$controller = new jlu_standort_import_links($this);
 			$controller->tpldir = $this->tpldir;
 			$controller->actions_name = $this->actions_name;
@@ -263,7 +268,7 @@ var $tpldir;
 	function accessibility( $visible = false ) {
 		$data = '';
 		if($visible === true) {
-			require_once($this->classdir.'jlu.standort.import.accessibility.class.php');
+			require_once($this->classdir.'plugins/jlu.standort/class/jlu.standort.import.accessibility.class.php');
 			$controller = new jlu_standort_import_accessibility($this);
 			$controller->tpldir = $this->tpldir;
 			$controller->actions_name = $this->actions_name;
