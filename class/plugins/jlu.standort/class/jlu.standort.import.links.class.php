@@ -162,7 +162,7 @@ class jlu_standort_import_links
 							$id = htmlEntities($c[$cols['id']], ENT_QUOTES);
 
 							// TODO deactivate studip and jlucourl
-							//$output[$id]['zlisurl'] = $c[$cols['zlisurl']];
+							$output[$id]['zlisurl'] = $c[$cols['zlisurl']];
 							//$output[$id]['jlucourl'] = $c[$cols['jlucourl']];
 							$output[$id]['googlemapsurl'] = $c[$cols['googlemapsurl']];
 
