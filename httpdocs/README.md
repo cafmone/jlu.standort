@@ -1,8 +1,6 @@
-sudo bash  
-nano /var/www/html/httpdocs/.htaccess
+# .htaccess
 ```
 DirectoryIndex jlu.standort.php  
-RedirectMatch 404 "import.php"  
 
 <IfModule mod_expires.c>
 ExpiresActive On
