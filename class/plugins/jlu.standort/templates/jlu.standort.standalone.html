@@ -138,6 +138,21 @@
 	</div>
 </div>
 
+<!-- Qrcode Modal -->
+<div class="modal noprint" data-backdrop="true" data-keyboard="true" id="QrcodeModal">
+	<div class="modal-dialog modal-dialog-scrollable modal-sm">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header clearfix" style="display:block;">
+				<h4 class="modal-title" style="float:left;"></h4>
+				<button title="{close}" onfocus="this.blur();" type="button" class="close" onclick="qrcodebuilder.close();">&times;</button>
+			</div>
+			<!-- Modal body -->
+			<div class="modal-body" style="text-align:center;margin: 20px;" id="QrcodeCanvas"></div>
+		</div>
+	</div>
+</div>
+
 <!-- Access Modal -->
 <div class="modal noprint" data-backdrop="true" data-keyboard="true" id="AccessModal">
 	<div class="modal-dialog modal-dialog-scrollable modal-lg h-100">

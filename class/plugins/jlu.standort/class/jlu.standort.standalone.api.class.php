@@ -70,6 +70,8 @@ var $language = 'en';
 var $lang = array(
 	'print' => 'Print',
 	'print_title' => 'Print Page',
+	'qrcode' => 'Qrcode',
+	'qrcode_title' => 'Qrcode title',
 	'zlisurl' => 'Link 1',
 	'zlisurl_title' => '',
 	'jlucourl' => 'Link 2',
@@ -196,6 +198,9 @@ var $lang = array(
 			break;
 			case 'pdf':
 				$this->pdf(true);
+			break;
+			case 'qrcode':
+				$this->qrcode(true);
 			break;
 		}
 	}
@@ -428,26 +433,48 @@ var $lang = array(
 				}
 			}
 
+			// init rightbar container
 			$rightbar = '';
 
-			// handle link maximum = level 3
-			$id = $this->id;
-			if($level >= 3) {
-				$id = $this->__building($tree, $this->id);
-			}
+			// handle qrcode
+			$a = $this->response->html->a();
+			$a->label = $this->translation['qrcode'];
+			$a->title = $this->translation['qrcode_title'];
+			$a->href = 'javascript:qrcodebuilder.print();';
+			$rightbar .= '<span class="qrcode">'.$a->get_string().'</span>';
+			$rightbar .= '<div id="QRCODE" style="display:none;">'.$this->qrcode(true, false).'</div>';
+
 
 			// handle links
 			$linkspath = $this->response->html->thisdir.'cache/links.json';
 			if($this->file->exists($linkspath)) {
 				$tmp = json_decode($this->file->get_contents($linkspath), true);
+				// get available links
 				if(is_array($tmp) && count($tmp) > 0 ) {
 					$links = $tmp[key($tmp)];
-					foreach($links as $k => $link) {
-						if(isset($tmp[$id]) && $tmp[$id][$k] !== '') {
-							$rightbar .= '<span class="'.$k.'"><a title="'.$this->translation[$k.'_title'].'" href="'.$tmp[$id][$k].'" target="_blank">'.$this->translation[$k].'</a></span>';
-						} else {
-							$rightbar .= '<span class="'.$k.'"><a class="disabled" title="'.$this->translation[$k.'_title'].'">'.$this->translation[$k].'</a></span>';
+				}
+			}
+
+			if(isset($links)) {
+				foreach($links as $k => $link) {
+					$linkid = $this->id;
+					// handle stud.ip not restricted to level 3
+					if($k !== 'zlisurl') {
+						// handle link maximum = level 3
+						if($level >= 3) {
+							$linkid = $this->__building($tree, $this->id);
 						}
+					} else {
+						// choose gebauede if view is geschoss
+						if($level == 4) {
+							$linkid = $this->__building($tree, $this->id);
+						}
+					}
+					// build link
+					if(isset($tmp[$linkid]) && $tmp[$linkid][$k] !== '') {
+						$rightbar .= '<span class="'.$k.'"><a title="'.$this->translation[$k.'_title'].'" href="'.$tmp[$linkid][$k].'" target="_blank">'.$this->translation[$k].'</a></span>';
+					} else {
+						$rightbar .= '<span class="'.$k.'"><a class="disabled" title="'.$this->translation[$k.'_title'].'">'.$this->translation[$k].'</a></span>';
 					}
 				}
 			}
@@ -455,7 +482,7 @@ var $lang = array(
 			// handle right bar pdf
 			$pdfid = $this->id;
 
-			// change rbid to parent if level = 5 (room)
+			// change pdfid to parent if level = 5 (room)
 			if($level === 5) {
 				if(isset($tree[$this->id]['p'])) {
 					$pdfid = $tree[$this->id]['p'];
@@ -652,6 +679,43 @@ var $lang = array(
 					flush();
 					readfile($path);
 					exit(0);
+				}
+			}
+		}
+	}
+
+	//--------------------------------------------
+	/**
+	 * qrcode
+	 *
+	 * @access public
+	 * @return null
+	 */
+	//--------------------------------------------
+	function qrcode($visible = false, $print = true) {
+		if($visible === true) {
+			if(isset($this->id)) {
+
+				$url  = $_SERVER['REQUEST_SCHEME'].'://';
+				$url .= $_SERVER['SERVER_NAME'];
+				$url .= $this->response->html->thisurl.'/';
+				$url .= '?id='.$this->id;
+				if(isset($this->user->lang)) {
+					$url .= '&lang='.$this->user->lang;
+				}
+
+				require_once($this->CLASSDIR.'lib/pdf/tcpdf/tcpdf_barcodes_2d.php');
+
+				// set the barcode content and type
+				$obj = new TCPDF2DBarcode($url, 'QRCODE,L');
+				$code = $obj->getBarcodeSVGcode(5,5,'black');
+
+				if($print === true) {
+					echo '<div style="width:400px">';
+					echo $code;
+					echo '</div>';
+				} else {
+					return $code;
 				}
 			}
 		}

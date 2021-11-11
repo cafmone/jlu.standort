@@ -681,6 +681,29 @@ var usagebuilder = {
 	}
 }
 
+/* QRCODEBUILDER */
+var qrcodebuilder = {
+
+	//---------------------------------------------
+	// print
+	//---------------------------------------------
+	print : function() {
+		clone = document.getElementById('QRCODE').cloneNode(true);
+		clone.style.display = 'block';
+		$('#QrcodeModal').modal({
+			backdrop: true,
+			keyboard: true,
+			focus: true,
+		})
+		$('#QrcodeCanvas').html(clone);
+		//$('#QrcodeModal .modal-title').html(label);
+		$('.close').trigger('focus');
+	},
+	close : function() {
+		$('#QrcodeModal').modal('hide');
+	}
+}
+
 /* ACCESSIBILITY */
 var accessbuilder = {
 

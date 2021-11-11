@@ -294,6 +294,13 @@ iframe {
 	padding: 0 0 0 25px;
 	background-position: 0 2px;
 }
+#Rightbar .qrcode a{
+	display: inline-block;
+	background-image: url("../bootstrap-icons/qr-code.svg");
+	background-repeat: no-repeat;
+	padding: 0 0 0 25px;
+	background-position: 0 2px;
+}
 #Rightbar .print a{
 	display: inline-block;
 	background-image: url("../bootstrap-icons/file-earmark-arrow-down.svg");
