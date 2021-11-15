@@ -696,8 +696,7 @@ var qrcodebuilder = {
 			focus: true,
 		})
 		$('#QrcodeCanvas').html(clone);
-		//$('#QrcodeModal .modal-title').html(label);
-		$('.close').trigger('focus');
+		$('#QrcodeCanvas a').trigger('focus');
 	},
 	close : function() {
 		$('#QrcodeModal').modal('hide');

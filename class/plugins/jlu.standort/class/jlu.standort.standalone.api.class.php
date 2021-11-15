@@ -70,6 +70,7 @@ var $language = 'en';
 var $lang = array(
 	'print' => 'Print',
 	'print_title' => 'Print Page',
+	'save' => 'save',
 	'qrcode' => 'Qrcode',
 	'qrcode_title' => 'Qrcode title',
 	'zlisurl' => 'Link 1',
@@ -440,9 +441,19 @@ var $lang = array(
 			$a = $this->response->html->a();
 			$a->label = $this->translation['qrcode'];
 			$a->title = $this->translation['qrcode_title'];
-			$a->href = 'javascript:qrcodebuilder.print();';
+			$a->href = '#';
+			$a->handler = 'onclick="qrcodebuilder.print();"';
+
+			$url  = $this->response->html->thisfile;
+			$url .= '?'.$this->actions_name.'=qrcode';
+			$url .= '&id='.$this->id;
+			$url .= '&lang='.$this->user->lang;
+
 			$rightbar .= '<span class="qrcode">'.$a->get_string().'</span>';
-			$rightbar .= '<div id="QRCODE" style="display:none;">'.$this->qrcode(true, false).'</div>';
+			$rightbar .= '<div id="QRCODE" style="display:none;">';
+			$rightbar .= $this->qrcode(true, false);
+			$rightbar .= '<div style="margin-top:15px;"><a href="'.$url.'">'.$this->translation['save'].'</a></div>';
+			$rightbar .= '</div>';
 
 
 			// handle links
@@ -708,13 +719,21 @@ var $lang = array(
 
 				// set the barcode content and type
 				$obj = new TCPDF2DBarcode($url, 'QRCODE,L');
-				$code = $obj->getBarcodeSVGcode(5,5,'black');
 
 				if($print === true) {
-					echo '<div style="width:400px">';
+					$code = $obj->getBarcodePngData(5,5,array(0,0,0));
+
+					// send headers
+					header('Content-Type: image/png');
+					header('Cache-Control: public, must-revalidate, max-age=0'); // HTTP/1.1
+					header('Pragma: public');
+					header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+					header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
+					header("Content-disposition: attachment; filename=JLU.Qrcode.".$this->id.".png");
 					echo $code;
-					echo '</div>';
+
 				} else {
+					$code = $obj->getBarcodeSVGcode(5,5,'black');
 					return $code;
 				}
 			}
