@@ -709,7 +709,9 @@ var $lang = array(
 
 				$url  = $_SERVER['REQUEST_SCHEME'].'://';
 				$url .= $_SERVER['SERVER_NAME'];
-				$url .= $this->response->html->thisurl.'/';
+				if($this->response->html->thisurl !== '') {
+					$url .= $this->response->html->thisurl.'/';
+				}
 				$url .= '?id='.$this->id;
 				if(isset($this->user->lang)) {
 					$url .= '&lang='.$this->user->lang;
