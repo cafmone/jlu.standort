@@ -55,6 +55,14 @@ var $imgurl = 'img/';
 */
 var $jsurl = 'js/';
 /**
+* qrcodeurl
+* baseurl for qrcodes
+* @access public
+* @var string
+*/
+var $qrcodeurl;
+
+/**
 * language
 * default language
 * @access public
@@ -707,11 +715,16 @@ var $lang = array(
 		if($visible === true) {
 			if(isset($this->id)) {
 
-				$url  = $_SERVER['REQUEST_SCHEME'].'://';
-				$url .= $_SERVER['SERVER_NAME'];
-				if($this->response->html->thisurl !== '') {
-					$url .= $this->response->html->thisurl.'/';
+				if(!isset($this->qrcodeurl)) {
+					$url  = $_SERVER['REQUEST_SCHEME'].'://';
+					$url .= $_SERVER['SERVER_NAME'];
+					if($this->response->html->thisurl !== '') {
+						$url .= $this->response->html->thisurl.'/';
+					}
+				} else {
+					$url = $this->qrcodeurl;
 				}
+
 				$url .= '?id='.$this->id;
 				if(isset($this->user->lang)) {
 					$url .= '&lang='.$this->user->lang;

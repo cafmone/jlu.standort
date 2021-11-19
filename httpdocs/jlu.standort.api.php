@@ -42,6 +42,7 @@ $controller->treeurl = 'cache/tree.js';
 $controller->cssurl = 'css/';
 $controller->jssurl = 'js/';
 $controller->imgurl = 'img/';
+$controller->qrcodeurl = 'https://www.uni-giessen.de/JLUgeschossplaene/';
 
 $controller->action();
 ?>
