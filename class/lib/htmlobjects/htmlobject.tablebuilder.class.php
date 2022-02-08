@@ -19,7 +19,13 @@ class htmlobject_tablebuilder extends htmlobject_table
 * $actions = array();
 * $actions[] = 'delete';
 * $actions[] = 'sort';
-*
+* $actions[] = 'edit';
+* OR
+* $actions = array(
+*   array('delete' => '[translation]', 'button' => true),
+*   array('delete' => '[translation]'),'
+*   array('edit' => '[translation]', 'title' => 'Title text'),
+* );
 * $table = new htmlobject_tablebuilder();
 * $table->actions = $actions;
 * </code>
@@ -221,6 +227,13 @@ var $pageturn_bottom = 9;
 * @var string
 */
 var $sort = '';
+/**
+* css class for sort select
+*
+* @access public
+* @var string
+*/
+var $sort_css = 'form-control form-control-sm input-sm';
 /**
 * show sort form buttons
 *
@@ -799,17 +812,28 @@ var $sort_link = true;
 				}
 				if(is_array($v)) {
 					$k = key($v);
-					$html        = $this->html->input();
-					$html->css   = 'btn btn-xs btn-default';
-					$html->name  = $this->actions_name.'['.$k.']';
-					$html->value = $v[$k];
-					$html->type  = 'submit';
+					if(!isset($v['button'])) {
+						$html        = $this->html->input();
+						$html->css   = 'btn btn-xs btn-default';
+						$html->name  = $this->actions_name.'['.$k.']';
+						$html->value = $v[$k];
+						$html->type  = 'submit';
+					} else {
+						$html        = $this->html->button();
+						$html->css   = 'btn btn-xs btn-default';
+						$html->name  = $this->actions_name.'['.$k.']';
+						$html->label = $v[$k];
+						$html->type  = 'submit';
+					}
+					if(isset($v['title'])) {
+						$html->title = $v['title'];
+					}
 					$div->add($html);
 				}
 			}
 			$div->add('<div style="line-height:0px;clear:both;" class="floatbreaker">&#160;</div>');
 			$td->add($div);
-			$tr->add($td);	
+			$tr->add($td);
 		}
 		return $tr;	
 	}
@@ -844,7 +868,7 @@ var $sort_link = true;
 			$sort            = $this->html->select();
 			$sort->name      = $this->__id.'[sort]';
 			$sort->selected  = array($this->sort);
-			$sort->css       = 'form-control input-sm sort';
+			$sort->css       = 'form-control form-control-sm input-sm sort';
 			$sort->handler   = 'onchange="this.form.submit(); return false;"';
 			$sort->title     = $this->html->lang['table']['label_sort'];
 			if(!in_array('sort', $this->sort_buttons)) {
@@ -854,7 +878,7 @@ var $sort_link = true;
 
 			$order           = $this->html->select();
 			$order->name     = $this->__id.'[order]';
-			$order->css      = 'form-control input-sm order';
+			$order->css      = $this->sort_css.' order';
 			$order->handler  = 'onchange="this.form.submit(); return false;"';
 			$order->title    = $this->html->lang['table']['label_order'];
 			if(!in_array('order', $this->sort_buttons)) {
@@ -876,7 +900,7 @@ var $sort_link = true;
 			}
 			$limit           = $this->html->select();
 			$limit->name     = $this->__id.'[limit]';
-			$limit->css      = 'form-control input-sm limit';
+			$limit->css      = $this->sort_css.' limit';
 			$limit->title    = $this->html->lang['table']['label_limit'];
 			if(!in_array('limit', $this->sort_buttons)) {
 				$limit->style = 'display: none;';
@@ -887,7 +911,7 @@ var $sort_link = true;
 
 			$offset        = $this->html->input();
 			$offset->name  = $this->__id.'[offset]';
-			$offset->css   = 'form-control input-sm offset';
+			$offset->css   = $this->sort_css.' offset';
 			$offset->value = "$this->offset";
 			$offset->type  = 'text';
 			$offset->size  = 3;
@@ -974,21 +998,25 @@ var $sort_link = true;
 			$first->css = 'btn btn-sm btn-default';
 			$first->href = $params.'&'.$this->__id.'%5Baction%5D=%3C%3C'; 
 			$first->label = '&lt;&lt;';
+			$first->title = $this->html->lang['table']['pageturn_first'];
 			
 			$prev = $this->html->a();
 			$prev->css = 'btn btn-sm btn-default';
 			$prev->href = $params.'&'.$this->__id.'%5Baction%5D=%3C';
 			$prev->label = '&lt;';
-						
+			$prev->title = $this->html->lang['table']['pageturn_prev'];
+
 			$next = $this->html->a();
 			$next->css = 'btn btn-sm btn-default';
 			$next->href = $params.'&'.$this->__id.'%5Baction%5D=%3E';
 			$next->label = '&gt;';
+			$next->title = $this->html->lang['table']['pageturn_next'];
 
 			$last = $this->html->a();
 			$last->css = 'btn btn-sm btn-default';
 			$last->href = $params.'&'.$this->__id.'%5Baction%5D=%3E%3E';
 			$last->label = '&gt;&gt;';
+			$last->title = $this->html->lang['table']['pageturn_last'];
 
 			if($this->limit === '0' || $this->limit === 0) { 
 				$limit = $this->max;
@@ -1168,6 +1196,8 @@ var $sort_link = true;
 		foreach($this->body as $val) {
 			if(isset($val[$this->sort])) {
 				$column[] = $val[$this->sort];
+			} else {
+				$column[] = '';
 			}
 		}
 		if(count($this->body) === count($column)) {

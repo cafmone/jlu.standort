@@ -19,7 +19,7 @@ class htmlobject
 var $lang = array(
 	'table' => array(
 		'button_refresh' => 'refresh',
-		'label_sort'     => 'sort by',
+		'label_sort'     => 'sort by ..',
 		'label_order'    => 'sort order',
 		'label_offset'   => 'offset',
 		'label_limit'    => 'limit',
@@ -30,6 +30,10 @@ var $lang = array(
 		'select_all'     => 'all',
 		'select_none'    => 'none',
 		'select_invert'  => 'inverted',
+		'pageturn_first' => 'First page',
+		'pageturn_prev'  => 'Previous page',
+		'pageturn_next'  => 'Next page',
+		'pageturn_last'  => 'Last page',
 		'no_data'        => 'no data'
 	),
 	'form' => array(
@@ -37,6 +41,7 @@ var $lang = array(
 		'error_required'  => '%s must not be empty',
 		'error_maxlength' => '%s exeeds maxlength of %d',
 		'error_minlength' => '%s undercuts minlength of %d',
+		'error_NaN'       => '%s must be a number',
 		'required'        => '*'
 	),
 	'response' => array(

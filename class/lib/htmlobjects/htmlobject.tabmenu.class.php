@@ -24,7 +24,7 @@ var $form_action = '';
 * @access public
 * @var string
 */
-var $tabcss = 'active';
+var $activecss = 'active';
 /**
 * Css class for ul
 *
@@ -32,6 +32,21 @@ var $tabcss = 'active';
 * @var string
 */
 var $ulcss = 'nav nav-tabs';
+### TODO
+/**
+* Css class for li
+*
+* @access public
+* @var string
+*/
+var $licss = 'nav-item';
+/**
+* Css class for a
+*
+* @access public
+* @var string
+*/
+var $acss = 'nav-link';
 /**
 * Css class for wrapper box
 *
@@ -332,16 +347,19 @@ var $message_css = array(
 		$attribs  = $this->__attribs();
 		$_str = '';	
 		foreach($this->__data as $key => $tab) {
-			$css = '';
+			$licss = ' class="'.$this->licss.'"';
+			$acss  = ' class="'.$this->acss.'"';
 			if(!isset($tab['hidden']) || !$tab['hidden'] === true) {
 				if(isset($tab['css']) && $tab['css'] !== '') {
-					$css = ' class="'.$tab['css'].'"';
+					$licss = ' class="'.$this->licss.' '.$tab['css'].'"';
 					if($tab['id'] == $this->id.$currenttab) {
-						$css = ' class="'.$tab['css'].' '.$this->tabcss.'"';
+						$licss = ' class="'.$this->licss.' '.$tab['css'].' '.$this->activecss.'"';
+						$acss  = ' class="'.$this->acss.' '.$this->activecss.'"';
 					}
 				}
 				else if($tab['id'] == $this->id.$currenttab) {
-					$css = ' class="'.$this->tabcss.'"';
+					$licss = ' class="'.$this->licss.' '.$this->activecss.'"';
+					$acss  = ' class="'.$this->acss.' '.$this->activecss.'"';
 				}
 				$auto = '';
 				if($this->auto_tab === true) {
@@ -381,7 +399,7 @@ var $message_css = array(
 						$tab['target'] = $tab['target'].'?'.$tab['request'];
 					}
 				}
-				$_str .= '<li id="tab_'.$tab['id'].'"'.$css.'>';
+				$_str .= '<li id="tab_'.$tab['id'].'"'.$licss.'>';
 				$title = '';
 				if(isset($tab['title']) && $tab['title'] !== '') {
 					$title = 'title="'.$tab['title'].'"';
@@ -390,10 +408,10 @@ var $message_css = array(
 				if($tab['onclick'] !== false) {
 				#if(strstr($tab['target'], $thisfile) && $tab['onclick'] !== false) {
 					#$_str .= '<a data-toggle="tab"'.$title.' href="'.$tab['target'].'" onclick="'.$this->id.'Toggle(\''.$tab['id'].'\'); this.blur(); return false;">';
-					$_str .= '<a data-toggle="tab" '.$title.' href="'.$tab['target'].'" onclick="this.blur(); return false;">';
+					$_str .= '<a '.$acss.' data-toggle="tab" '.$title.' href="'.$tab['target'].'" onclick="this.blur(); return false;">';
 
 				} else {
-					$_str .= '<a '.$title.' href="'.$tab['target'].'" onclick="this.blur();">';
+					$_str .= '<a '.$acss.' '.$title.' href="'.$tab['target'].'" onclick="this.blur();">';
 				}
 				$_str .= $tab['label'];
 				$_str .= "</a>";
@@ -441,7 +459,7 @@ var $message_css = array(
 			$_str .= "document.getElementById('tab_".$tab['id']."').className = '".$css."';\n";
 		}
 		$_str .= "tab = document.getElementById('tab_' + id);\n";
-		$_str .= "tab.className = tab.className+' ".$this->tabcss."';\n";
+		$_str .= "tab.className = tab.className+' ".$this->activecss."';\n";
 		$_str .= "document.getElementById(id).style.display = 'block';\n";
 		$_str .= "}\n";	
 		$_str .= "</script>\n";

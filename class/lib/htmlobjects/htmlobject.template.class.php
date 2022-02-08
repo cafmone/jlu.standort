@@ -4,7 +4,7 @@
  *
  * @package htmlobjects
  * @author Alexander Kuballa [akuballa@users.sourceforge.net]
- * @copyright Copyright (c) 2008 - 2012, Alexander Kuballa
+ * @copyright Copyright (c) 2008 - 2020, Alexander Kuballa
  * @license BSD License (see LICENSE.TXT)
  * @version 1.1
  */
@@ -122,6 +122,19 @@ class htmlobject_template
 		if(isset($matches[1][0])) {
 			return $matches[1];
 		}
+	}
+
+	//------------------------------------------------  
+	/**
+	* Set Template
+	*
+	* @access public
+	* @param string $path
+	* @return null
+	*/
+	//------------------------------------------------
+	function set_template( $path ) {
+		$this->__template = $path;
 	}
 
 	//---------------------------------------

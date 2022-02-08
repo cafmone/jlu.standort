@@ -64,7 +64,7 @@ var $value = '';
 	function get_string() {
 	$_strReturn = '';
 		$attribs = $this->__attribs();
-		$_strReturn = "\n<button$attribs>$this->label</button>";
+		$_strReturn = "<button$attribs>$this->label</button>";
 	return $_strReturn;
 	}
 
