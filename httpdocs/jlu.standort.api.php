@@ -18,7 +18,7 @@ $CLASSDIR = realpath(CLASSDIR).'/';
 require_once($CLASSDIR.'lib/htmlobjects/htmlobject.class.php');
 require_once($CLASSDIR.'lib/db/query.class.php');
 require_once($CLASSDIR.'lib/file/file.handler.class.php');
-require_once($CLASSDIR.'plugins/jlu.standort/class/jlu.standort.user.class.php');
+require_once($CLASSDIR.'lib/user/user.class.php');
 
 // init html object
 $html = new htmlobject($CLASSDIR.'lib/htmlobjects/');
@@ -33,7 +33,7 @@ $query->type = 'file';
 $db = $query;
 
 // init user object
-$user = new jlu_standort_user($file);
+$user = new user($file);
 
 require_once($CLASSDIR.'plugins/jlu.standort/class/jlu.standort.standalone.api.class.php');
 $controller = new jlu_standort_standalone_api($file, $html->response(), $query, $user);

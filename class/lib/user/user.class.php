@@ -2,7 +2,7 @@
 /**
  * User
  *
- * Dummy user object for standort.standalone.class.php
+ * Dummy user object
  *
  * @package jlu_standort
  * @license ../LICENSE.TXT
@@ -14,7 +14,7 @@
  * E1.3 - Projektleitung CAFM-System
  */
 
-class jlu_standort_user
+class user
 {
 /**
  * lang
