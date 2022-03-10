@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{title}</title>
+<link rel="stylesheet" type="text/css" href="{cssurl}jlu.map.css">
+</head>
+<body>
+<div id="map" class="map" style="width:calc(100% - 0px);height:calc(100% - 0px)"></div>
+	<div id="popover" class="popover bs-popover-top" style="background:white;padding:15px;">
+		<div class="arrow" style=""></div>
+		<!-- <div id="popover-header"><a href="#" id="popup-closer" class="close">&times;</a></div> //-->
+		<div id="popover-body"></div>
+	</div>
+	<div id="marker"></div>
+</iv>
+
+<script src="{jsurl}ol.v6.13.0.js"></script>
+<script>
+var markers = [
+	[8.67722, 50.58038, '<a href="https://www.uni-giessen.de/JLUgeschossplaene/?id=">Link</a>','Title 1'],
+	[8.67722, 50.58138, '<a href="https://www.uni-giessen.de/JLUgeschossplaene/?id=">Link</a>','Title 2'],
+	[8.67622, 50.58038, '<a href="https://www.uni-giessen.de/JLUgeschossplaene/?id=">Link</a>','Title 3 etwas l&auml;nger'],
+];
+var View = new ol.View({
+	//projection: 'EPSG:4326',
+	center: ol.proj.fromLonLat([8.67722, 50.58038]),
+	zoom: 15,
+	maxZoom: 18,
+});
+var Controls = [ 
+	new ol.control.ScaleLine({ bar: true, minWidth: 90 }),
+	new ol.control.Zoom(),
+	new ol.control.Attribution(),
+	//new ol.control.Rotate(),
+	new ol.control.MousePosition({projection: 'EPSG:4326'}),
+];
+var Layers = [
+	new ol.layer.Tile({
+		source: new ol.source.OSM(({
+			url: '{tileserverurl}',
+			crossOrigin: '*',
+			maxZoom: 18
+		}))
+	})
+];
+for (var i = 0; i < markers.length; i++) {
+	var iconFeature = new ol.Feature({
+		geometry: new ol.geom.Point(ol.proj.fromLonLat([markers[i][0], markers[i][1]])),
+		title: markers[i][3],
+		link: markers[i][2],
+	});
+	var iconImage = new ol.style.Icon({
+		anchor: [0.4, 0.0],
+		anchorXUnits: 'fraction',
+		anchorYUnits: 'fraction',
+		anchorOrigin: 'bottom-left',
+		src: '{imgurl}marker.png',
+	});
+	var iconStyle = new ol.style.Style({
+		image: iconImage
+	});
+	iconFeature.setStyle(iconStyle);
+	var vectorSource = new ol.source.Vector({
+		features: [iconFeature],
+	});
+	var vectorLayer = new ol.layer.Vector({
+		source: vectorSource,
+		//minZoom: 10,
+	});
+	Layers.push(vectorLayer);
+}
+
+var map = new ol.Map({
+	target: 'map',
+	layers: Layers,
+	view: View,
+	controls: Controls,
+});
+// Popup
+var container = document.getElementById('popover');
+var content = document.getElementById('popover-body');
+var closer = document.getElementById('popup-closer');
+var overlay = new ol.Overlay({
+	element: container,
+	autoPan: true,
+	autoPanAnimation: {
+		duration: 250
+	}
+});
+map.addOverlay(overlay);
+// Click handler
+map.on('singleclick', function (event) {
+	if (map.hasFeatureAtPixel(event.pixel) === true) {
+
+		feature = map.getFeaturesAtPixel(event.pixel);
+		title   = feature[0].getProperties().title;
+		link    = feature[0].getProperties().link;
+
+		content.innerHTML = title+'<br>'+link;
+
+		overlay.setPosition(event.coordinate);
+		overlay.setPositioning('bottom-center');
+
+	} else {
+		overlay.setPosition(undefined);
+	}
+ });
+// change mouse cursor when over marker
+map.on('pointermove', function (e) {
+	const pixel = map.getEventPixel(e.originalEvent);
+	const hit = map.hasFeatureAtPixel(pixel);
+	map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+});
+</script>
+</body>
+</html>
