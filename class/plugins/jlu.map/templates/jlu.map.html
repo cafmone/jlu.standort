@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css" href="{cssurl}jlu.map.css">
 </head>
 <body>
+{message}
 <div id="map" class="map" style="width:calc(100% - 0px);height:calc(100% - 0px)"></div>
 	<div id="popover" class="popover bs-popover-top" style="background:white;padding:15px;">
 		<div class="arrow" style=""></div>
@@ -17,11 +18,7 @@
 
 <script src="{jsurl}ol.v6.13.0.js"></script>
 <script>
-var markers = [
-	[8.67722, 50.58038, '<a href="https://www.uni-giessen.de/JLUgeschossplaene/?id=">Link</a>','Title 1'],
-	[8.67722, 50.58138, '<a href="https://www.uni-giessen.de/JLUgeschossplaene/?id=">Link</a>','Title 2'],
-	[8.67622, 50.58038, '<a href="https://www.uni-giessen.de/JLUgeschossplaene/?id=">Link</a>','Title 3 etwas l&auml;nger'],
-];
+{script}
 var View = new ol.View({
 	//projection: 'EPSG:4326',
 	center: ol.proj.fromLonLat([8.67722, 50.58038]),
@@ -46,7 +43,7 @@ var Layers = [
 ];
 for (var i = 0; i < markers.length; i++) {
 	var iconFeature = new ol.Feature({
-		geometry: new ol.geom.Point(ol.proj.fromLonLat([markers[i][0], markers[i][1]])),
+		geometry: new ol.geom.Point(ol.proj.fromLonLat([markers[i][0],markers[i][1] ])),
 		title: markers[i][3],
 		link: markers[i][2],
 	});
@@ -92,16 +89,24 @@ map.addOverlay(overlay);
 // Click handler
 map.on('singleclick', function (event) {
 	if (map.hasFeatureAtPixel(event.pixel) === true) {
-
 		feature = map.getFeaturesAtPixel(event.pixel);
-		title   = feature[0].getProperties().title;
-		link    = feature[0].getProperties().link;
-
-		content.innerHTML = title+'<br>'+link;
-
-		overlay.setPosition(event.coordinate);
-		overlay.setPositioning('bottom-center');
-
+		title = '';
+		if(typeof(feature[0].getProperties().title) != 'undefined' 
+				&& feature[0].getProperties().title != ''
+			) {
+			title = '<div>'+feature[0].getProperties().title+'</div>';
+		}
+		link = '';
+		if(typeof(feature[0].getProperties().link) != 'undefined' 
+				&& feature[0].getProperties().link != ''
+			) {
+			link = '<div><a href="'+feature[0].getProperties().link+'">Link</a></div>';
+		}
+		if(title !== '' || link !== '') {
+			content.innerHTML = title+link;
+			overlay.setPosition(event.coordinate);
+			overlay.setPositioning('bottom-center');
+		}
 	} else {
 		overlay.setPosition(undefined);
 	}

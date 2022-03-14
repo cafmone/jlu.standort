@@ -23,6 +23,9 @@ require_once($CLASSDIR.'lib/user/user.class.php');
 // init html object
 $html = new htmlobject($CLASSDIR.'lib/htmlobjects/');
 
+include_once($CLASSDIR.'inc/requestfilter.inc.php');
+$html->request()->filter = $requestfilter;
+
 // init file object
 $file = new file_handler();
 

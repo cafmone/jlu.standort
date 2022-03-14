@@ -176,6 +176,21 @@ html, body {
 .ol-overviewmap-box{border:2px dotted rgba(0,60,136,.7)}
 .ol-overviewmap .ol-overviewmap-box:hover{cursor:move}
 
+/* Alert */
+.alert {
+	position: relative;
+	padding: 0.75rem 1.25rem;
+	margin-bottom: 0;
+	border: 1px solid transparent;
+	border-radius: 0.25rem;
+}
+.alert-info {
+	color: #0c5460;
+	background-color: #d1ecf1;
+	border-color: #bee5eb;
+}
+
+/* Popover */
 .popover {
 	position: relative;
 	top: 0;

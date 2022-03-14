@@ -106,25 +106,39 @@ var $lang = array();
 	//--------------------------------------------
 	function action() {
 	
-		$markers = $this->response->html->request()->get('markers', true);
+		$markers = $this->response->html->request()->get('m', true);
 		#$this->response->html->help($markers);
-		
-	
 
-/*
-		$script  = '<script src="'.$this->treeurl.'?_='.$timestamp.'"></script>'."\n";
-		$script .= '<script language="JavaScript" type="text/javascript">'."\n";
-		$script .= 'var timestamp = '.$timestamp.';'."\n";
-		$script .= 'var identifiers = '.json_encode($this->translation['identifiers']).';'."\n";
-		$script .= 'var lang = "'.$this->user->lang.'";'."\n";
-		$script .= 'var languages = '.json_encode($this->translation['lang']).';'."\n";
-		$script .= 'var id = "'.$id.'";'."\n";
-		$script .= '</script>';
-*/
+		$msg = '';
+		$script = 'markers=[';
+		if(is_array($markers)) {
+			foreach($markers as $marker) {
+				if(isset($marker['long']) && isset($marker['lat'])) {
+					$script .= '["'.floatval($marker['long']).'","'.floatval($marker['lat']).'"';
+				} else {
+					continue;
+				}
+				if(isset($marker['link'])) {
+					$script .= ',"'.$marker['link'].'"';
+				} else {
+					$script .= ',""';
+				}
+				if(isset($marker['title'])) {
+					$script .= ',"'.htmlentities($marker['title']).'"';
+				} else {
+					$script .= ',""';
+				}
+				$script .= '],';
+			}
+		} else {
+			$msg = '<div class="alert alert-info"><b>Usage</b>: ?m[0][long]=8.67722&m[0][lat]=50.58038&m[0][title]=Hauptgeb&auml;ude&m[0][link]=http://google.com</div>';
+		}
+		$script .= '];';
 
 		$t = $this->response->html->template($this->CLASSDIR.'plugins/jlu.map/templates/jlu.map.html');
 		$vars = array(
-			'script' => '',
+			'message' => $msg,
+			'script' => $script,
 			'tileserverurl' => $this->tileserverurl,
 			'title' => $this->title,
 			'cssurl' => $this->cssurl,
