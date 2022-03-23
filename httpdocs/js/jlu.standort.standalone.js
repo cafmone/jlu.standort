@@ -166,7 +166,7 @@ var treebuilder = {
 							out = label+'[[*]]'+tid+'[[*]]'+pid+'[[*]]'+tree[tid]['o'];
 							order = true;
 						}
-						console.log(out);
+						//console.log(out);
 						container.push(out);
 					}
 				}
