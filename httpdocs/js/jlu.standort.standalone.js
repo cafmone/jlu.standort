@@ -293,6 +293,13 @@ var treebuilder = {
 				right.innerHTML = response['rightbar'];
 				$('#Breadcrumps').css('display','block');
 				$('.selectpicker').selectpicker();
+
+				// handle map
+				map = document.getElementById('MapForm');
+				if(map) {
+					mapbuilder.print();
+				}
+				
 			}
 		});
 	},
@@ -679,6 +686,17 @@ var usagebuilder = {
 		$('.selectpicker').selectpicker('val', '');
 		$('#UsageModal').modal('hide');
 	}
+}
+
+/* MAPUILDER */
+var mapbuilder = {
+	//---------------------------------------------
+	// print
+	//---------------------------------------------
+	print : function () {
+		var form_data = $('#MapForm').serializeArray();
+		$('#MapFrame').load('jlu.map.php', form_data);
+	},
 }
 
 /* QRCODEBUILDER */

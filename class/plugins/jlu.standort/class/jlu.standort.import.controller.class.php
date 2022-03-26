@@ -104,6 +104,9 @@ var $tpldir;
 			case 'accessibility':
 				$content[] = $this->accessibility(true);
 			break;
+			case 'geo':
+				$content[] = $this->geo(true);
+			break;
 
 		}
 
@@ -124,46 +127,62 @@ var $tpldir;
 			echo '<h3>Import</h3>';
 			echo '<hr>';
 
+			// Links
 			echo '<b>Links</b> <a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=links">Parse</a>';
 			echo '<a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=links&debug=true">Debug</a>';
+			echo '<br><br>Config: ';
+			echo $this->profilesdir.'jlu.standort.import.links.ini';
 			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.links.ini');
 			if(is_array($ini)) {
-				echo '<br><br>Config: ';
-				echo $this->profilesdir.'jlu.standort.import.links.ini';
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
 			}
 			echo '<hr>';
 
+			// Geo
+			echo '<b>Geodaten</b> <a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=geo">Parse</a>';
+			echo '<a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=geo&debug=true">Debug</a>';
+			echo '<br><br>Config: ';
+			echo $this->profilesdir.'jlu.standort.import.geo.ini';
+			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.geo.ini');
+			if(is_array($ini)) {
+				echo '<pre>';
+				print_r($ini);
+				echo '</pre>';
+			}
+			echo '<hr>';
+
+			// Nutzung
 			echo '<b>Nutzung</b> <a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=nutzung">Parse</a>';
 			echo '<a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=nutzung&debug=true">Debug</a>';
+			echo '<br><br>Translation: ';
+			echo $this->langdir.'de.jlu.standort.standalone.nutzung.ini';
 			$ini = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.nutzung.ini');
 			if(is_array($ini)) {
-				echo '<br><br>Translation: ';
-				echo $this->langdir.'de.jlu.standort.standalone.nutzung.ini';
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
 			} else {
 				echo '<br><br><b>Error</b>: Did not find translation in '.$this->langdir.'de.jlu.standort.standalone.nutzung.ini<br><br>';
 			}
+			echo 'Config: ';
+			echo $this->profilesdir.'jlu.standort.import.nutzung.ini';
 			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.nutzung.ini');
 			if(is_array($ini)) {
-				echo 'Config: ';
-				echo $this->profilesdir.'jlu.standort.import.nutzung.ini';
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
 			}
 			echo '<hr>';
 
+			// Access
 			echo '<b>Barrierefreiheit</b> <a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=accessibility">Parse</a>';
 			echo '<a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=accessibility&debug=true">Debug</a>';
+			echo '<br><br>Translation: ';
+			echo $this->langdir.'de.jlu.standort.standalone.accessibility.ini';
 			$ini = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.accessibility.ini');
 			if(is_array($ini)) {
-				echo '<br><br>Translation: ';
-				echo $this->langdir.'de.jlu.standort.standalone.accessibility.ini';
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
@@ -180,12 +199,13 @@ var $tpldir;
 			}
 			echo '<hr>';
 
+			// Tree
 			echo '<b>Tree</b> <a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=tree">Parse</a>';
 			echo '<a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=tree&debug=true">Debug</a>';
+			echo '<br><br>Config: ';
+			echo $this->profilesdir.'jlu.standort.import.tree.ini';
 			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.tree.ini');
 			if(is_array($ini)) {
-				echo '<br><br>Config: ';
-				echo $this->profilesdir.'jlu.standort.import.tree.ini';
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
@@ -277,43 +297,28 @@ var $tpldir;
 		}
 		return $data;
 	}
-
-
+	
 	//--------------------------------------------
 	/**
-	 * Download
+	 * geo
 	 *
-	 * @access protected
+	 * @access public
 	 * @return null
 	 */
 	//--------------------------------------------
-
-/*
-	function __download( $visible = false ) {
+	function geo( $visible = false ) {
+		$data = '';
 		if($visible === true) {
-			$path = $this->response->html->request()->get('file');
-			$path = $this->basedir.''.$path;
-
-			if($this->file->exists($path)) {
-				require_once(CLASSDIR.'/lib/file/file.mime.class.php');
-				$file = $this->file->get_fileinfo($path);
-				$mime = detect_mime($file['path']);
-
-				header("Pragma: public");
-				header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-				header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-				header("Cache-Control: must-revalidate");
-				header("Content-type: $mime");
-				header("Content-Length: ".$file['filesize']);
-				header("Content-disposition: attachment; filename=".$file['name']);
-				header("Accept-Ranges: ".$file['filesize']);
-				flush();
-				readfile($path);
-				exit(0);
-			}
+			require_once($this->classdir.'plugins/jlu.standort/class/jlu.standort.import.geo.class.php');
+			$controller = new jlu_standort_import_geo($this);
+			$controller->tpldir = $this->tpldir;
+			$controller->actions_name = $this->actions_name;
+			$controller->identifier_name = $this->identifier_name;
+			$data = $controller->action();
 		}
+		return $data;
 	}
-*/
+
 
 }
 ?>

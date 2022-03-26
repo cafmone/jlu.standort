@@ -368,6 +368,8 @@ var $lang = array(
 				}
 			}
 
+## TODO
+
 			// change imageid to parent if level = 2 (liegenschaft)
 			$imageid = $this->id;
 			if($level === 2) {
@@ -389,7 +391,28 @@ var $lang = array(
 				if(preg_match('~^'.$imageid.'~', $file['name'])) {
 					$imgpath = $file['path'];
 					$type = strtolower($file['extension']);
-					if($type === 'jpg' || $type === 'png') {
+					if($type === 'geo') {
+
+						$geo = $this->file->get_ini($imgpath);
+						if(is_array($geo)) {
+							$url = '';
+							$c = 0;
+							$form = '<form id="MapForm" action="jlu.map.php" target="MapFrame" methode="POST">';
+							foreach($geo as $k => $v) {
+								if(array_key_exists($k, $tree)) {
+									$form .= '<input type="hidden" name="m['.$c.'][lon]" value="'.$v['long'].'">';
+									$form .= '<input type="hidden" name="m['.$c.'][lat]" value="'.$v['lat'].'">';
+									$form .= '<input type="hidden" name="m['.$c.'][title]" value="'.$tree[$k]['l'].'">';
+									$form .= '<input type="hidden" name="m['.$c.'][link]" value="'.$this->qrcodeurl.'?id='.$k.'">';
+									$c++;
+								}
+							}
+							$form .= '</form>';
+							$image = $form.'<div id="MapFrame" style="width:calc(100% -1px);height:calc(70vh);"></div>';
+						}
+
+					}
+					elseif($type === 'jpg' || $type === 'png') {
 						$width = '';
 						$size  = getimagesize($imgpath);
 						if(isset($size[0])) {
