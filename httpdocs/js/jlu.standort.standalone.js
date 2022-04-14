@@ -696,6 +696,11 @@ var mapbuilder = {
 	print : function () {
 		var form_data = $('#MapForm').serializeArray();
 		$('#MapFrame').load('jlu.map.php', form_data);
+		
+
+		var map = document.getElementById('MapFrame');
+		console.log(map);
+		
 	},
 }
 

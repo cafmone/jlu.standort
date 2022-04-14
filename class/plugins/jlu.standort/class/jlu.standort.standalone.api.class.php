@@ -187,6 +187,7 @@ var $lang = array(
 		if($action !== '') {
 			$this->response->add($this->actions_name, $action);
 		}
+
 		switch( $action ) {
 			default:
 			case '':
@@ -201,6 +202,9 @@ var $lang = array(
 			break;
 			case 'image':
 				$this->image(true);
+			break;
+			case 'thumb':
+				$this->image(true, 'thumbs');
 			break;
 			case 'download':
 				$this->download(true);
@@ -404,6 +408,12 @@ var $lang = array(
 									$form .= '<input type="hidden" name="m['.$c.'][lat]" value="'.$v['lat'].'">';
 									$form .= '<input type="hidden" name="m['.$c.'][title]" value="'.$tree[$k]['l'].'">';
 									$form .= '<input type="hidden" name="m['.$c.'][link]" value="'.$this->qrcodeurl.'?id='.$k.'">';
+									if(isset($tree[$tree[$k]['p']]['l'])) {
+										$form .= '<input type="hidden" name="m['.$c.'][addr]" value="'.$tree[$tree[$k]['p']]['l'].'">';
+									}
+									if($this->file->exists($this->PROFILESDIR.'/jlu.standort/thumbs/'.$k.'.jpg')) {
+										$form .= '<input type="hidden" name="m['.$c.'][thumb]" value="jlu.standort.api.php?'.$this->actions_name.'=thumb&file='.$k.'.jpg">';
+									}
 									$c++;
 								}
 							}
@@ -669,10 +679,10 @@ var $lang = array(
 	 * @return null
 	 */
 	//--------------------------------------------
-	function image($visible = false) {
+	function image($visible = false, $folder = 'bilder') {
 		if($visible === true) {
 			$file = $this->response->html->request()->get('file');
-			$path = $this->PROFILESDIR.'/jlu.standort/bilder/'.$file;
+			$path = $this->PROFILESDIR.'/jlu.standort/'.$folder.'/'.$file;
 			if($this->file->exists($path)) {
 				$file = $this->file->get_fileinfo($path);
 				require_once(realpath(CLASSDIR).'/lib/file/file.mime.class.php');

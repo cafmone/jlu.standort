@@ -62,6 +62,14 @@ var $jsurl = 'js/';
 */
 var $tileserverurl = 'https://{a-c}.tile.openstreetmap.de/{z}/{x}/{y}.png';
 /**
+* googleurl
+* path too googleroute server
+* @access public
+* @var string
+*/
+var $googleurl = 'https://www.google.com/maps/dir//';
+
+/**
 * title
 * page Title
 * @access public
@@ -73,7 +81,21 @@ var $title = '';
 * @access public
 * @var array
 */
-var $lang = array();
+var $language = 'de';
+
+/**
+* translation
+* @access public
+* @var array
+*/
+var $lang = array(
+	'label_usage' => 'Usage',
+	'label_google_route' => 'Route',
+	'title_center_map' => 'Center map',
+	'title_thumb' => 'Click to open page',
+	'title_zoom_in' => 'Zoom in',
+	'title_zoom_out' => 'Zoom out',
+);
 
 	//--------------------------------------------
 	/**
@@ -94,7 +116,32 @@ var $lang = array();
 		
 		// grrr - Windows
 		$this->PROFILESDIR = realpath(PROFILESDIR).'/';
-		$this->CLASSDIR = realpath(CLASSDIR).'/';
+		$this->CLASSDIR    = realpath(CLASSDIR).'/';
+		
+		$this->langdir = $this->CLASSDIR.'plugins/jlu.map/lang';
+		
+		
+		// get languages (xss)
+		$languages = array();
+		$files = glob($this->langdir.'*.jlu.map.ini');
+		if(is_array($files)) {
+			foreach($files as $f) {
+				$tmp = explode('.', basename($f));
+				$languages[$tmp[0]] = $tmp[0];
+			}
+		}
+
+		// filter Gui lang by languages (xss)
+		$lang = $this->response->html->request()->get('lang', true);
+		if(!isset($lang)) {
+			$lang = $this->language;
+		} else {
+			if(!array_key_exists($lang, $languages)) {
+				$lang = $this->language;
+			}
+		}
+		$this->user->lang = $lang;
+		$this->lang = $this->user->translate($this->lang, $this->langdir, 'jlu.map.ini');
 	}
 
 	//--------------------------------------------
@@ -107,17 +154,16 @@ var $lang = array();
 	function action() {
 	
 		$markers = $this->response->html->request()->get('m', true);
+		$zoom    = $this->response->html->request()->get('zoom', true);
 		$debug   = $this->response->html->request()->get('debug', true);
 
-		$msg = '';
+		// handle center map
+		$top    = array("lon" => 0, "lat" => 0);
+		$bottom = array("lon" => 0, "lat" => 0);
+		$left   = array("lon" => 0, "lat" => 0);
+		$right  = array("lon" => 0, "lat" => 0);
 
-		$top    = array("lon"=>0,"lat"=>0);
-		$bottom = array("lon"=>0,"lat"=>0);
-
-		$X = 0.0;
-		$Y = 0.0;
-		$Z = 0.0;
-
+		$help = '';
 		$script = 'markers=[';
 		if(is_array($markers)) {
 			foreach($markers as $marker) {
@@ -126,82 +172,68 @@ var $lang = array();
 					// handle XSS
 					$marker['lon'] = floatval($marker['lon']);
 					$marker['lat'] = floatval($marker['lat']);
-				
-					$lat = $marker['lat'] * pi() / 180;
-					$lon = $marker['lon'] * pi() / 180;
-					$a = cos($lat) * cos($lon);
-					$b = cos($lat) * sin($lon);
-					$c = sin($lat);
-					$X += $a;
-					$Y += $b;
-					$Z += $c;
+
 					$script .= '["'.$marker['lon'].'","'.$marker['lat'].'"';
+					(isset($marker['title'])) ? $script .= ',"'.htmlentities($marker['title']).'"': $script .= ',""';
+					(isset($marker['link']))  ? $script .= ',"'.htmlspecialchars($marker['link']).'"' : $script .= ',""';
+					(isset($marker['addr']))  ? $script .= ',"'.htmlentities($marker['addr']).'"': $script .= ',""';
+					(isset($marker['thumb'])) ? $script .= ',"'.htmlspecialchars($marker['thumb']).'"': $script .= ',""';
+					$script .= '],';
 					
-					if($marker['lat'] < $bottom['lat'] || $bottom['lat'] === 0) {
-						$bottom['lon'] = $marker['lon'];
-						$bottom['lat'] = $marker['lat'];
-						$bottom[2] = $marker['title'];
-					}
-					
+					// handle top
 					if($marker['lat'] > $top['lat'] || $top['lat'] === 0) {
 						$top['lon'] = $marker['lon'];
 						$top['lat'] = $marker['lat'];
-						$top[2] = $marker['title'];
+					}
+					// handle bottom
+					if($marker['lat'] < $bottom['lat'] || $bottom['lat'] === 0) {
+						$bottom['lon'] = $marker['lon'];
+						$bottom['lat'] = $marker['lat'];
+					}
+					// handle left
+					if($marker['lon'] < $left['lon'] || $left['lon'] === 0) {
+						$left['lon'] = $marker['lon'];
+						$left['lat'] = $marker['lat'];
+					}
+					// handle right
+					if($marker['lon'] > $right['lon'] || $right['lon'] === 0) {
+						$right['lon'] = $marker['lon'];
+						$right['lat'] = $marker['lat'];
 					}
 					
-					(isset($marker['link'])) ? $script .= ',"'.$marker['link'].'"' : $script .= ',""';
-					(isset($marker['title'])) ? $script .= ',"'.htmlentities($marker['title']).'"': $script .= ',""';
-					$script .= '],';
-					
 				} else {
+					// nothing to do
 					continue;
 				}
+				
 			}
 		} else {
-			$msg = '<div class="alert alert-info"><b>Usage</b>: ?m[0][lon]=8.67722&m[0][lat]=50.58038&m[0][title]=Hauptgeb&auml;ude&m[0][link]=http://google.com</div>';
+			// no markers - some help
+			$t = $this->response->html->template($this->CLASSDIR.'plugins/jlu.map/templates/jlu.map.help.html');
+			$vars = array(
+				'title' => $this->title,
+				'cssurl' => $this->cssurl,
+				'jsurl' => $this->jsurl,
+				'imgurl' => $this->imgurl,
+				'label_usage' => $this->lang['label_usage'],
+			);
+			$t->add($vars);
+			$help = $t->get_string();
 		}
 		$script .= '];';
 		
 		if(is_array($markers)) {
-			$num = count($markers);
-			$X /= $num;
-			$Y /= $num;
-			$Z /= $num;
-			$lon = atan2($Y, $X);
-			$hyp = sqrt($X * $X + $Y * $Y);
-			$lat = atan2($Z, $hyp);
-			$lon = $lon * 180 / pi();
-			$lat = $lat * 180 / pi();
-			$script .= 'center=['.$lon.','.$lat.'];';
-			
-			$zoom = 15;
-			$distance = $this->distance($top['lon'],$top['lat'],$bottom['lon'],$bottom['lat'],'K');
-			if($distance > 1000) {
-				$zoom = 2;
-			}
-			if($distance < 1000) {
-				$zoom = 6;
-			}
-			if($distance < 100) {
-				$zoom = 9;
-			}
-			if($distance < 5) {
-				$zoom = 14;
-			}
-			if($distance < 2.5) {
-				$zoom = 15;
-			}
-			if($distance < 0.75) {
-				$zoom = 16;
-			}
-			if($distance < 0.5) {
-				$zoom = 17;
-			}
-			if($distance < 0.25) {
-				$zoom = 18;
-			}
-			$script .= 'zoom='.$zoom.';';
+			//  handle center
+			$lon = $left['lon'] - ( ($left['lon'] - $right['lon']) / 2);
+			$lat = $bottom['lat'] - ( ($bottom['lat'] - $top['lat']) / 2);
 
+			$script .= 'center=['.$lon.','.$lat.'];';
+			if(!isset($zoom)) {
+				$script .= 'var resolution='.( $this->distance($top['lon'],$top['lat'],$bottom['lon'],$bottom['lat'])).';';
+				$script .= 'zoom=15;';
+			} else {
+				$script .= 'zoom='.intval($zoom).';';
+			}
 		} else {
 			$script .= 'center=[8.67722, 50.58038];';
 			$script .= 'zoom=15;';
@@ -212,13 +244,19 @@ var $lang = array();
 		
 		$t = $this->response->html->template($this->CLASSDIR.'plugins/jlu.map/templates/jlu.map.html');
 		$vars = array(
-			'message' => $msg,
+			'help' => $help,
 			'script' => $script,
 			'tileserverurl' => $this->tileserverurl,
+			'googleurl' => $this->googleurl,
 			'title' => $this->title,
 			'cssurl' => $this->cssurl,
 			'jsurl' => $this->jsurl,
 			'imgurl' => $this->imgurl,
+			'label_google_route' => $this->lang['label_google_route'],
+			'title_thumb' => $this->lang['title_thumb'],
+			'title_zoom_in' => $this->lang['title_zoom_in'],
+			'title_zoom_out' => $this->lang['title_zoom_out'],
+			'title_center_map' => $this->lang['title_center_map'],
 		);
 		$t->add($vars);
 		return $t;
@@ -234,7 +272,8 @@ var $lang = array();
 			$dist = acos($dist);
 			$dist = rad2deg($dist);
 			$miles = $dist * 60 * 1.1515;
-			return ($miles * 1.609344);
+			//return ($miles * 1.609344);
+			return $dist * 360;
 		}
 	}
 

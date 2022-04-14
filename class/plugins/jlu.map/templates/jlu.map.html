@@ -6,11 +6,13 @@
 <link rel="stylesheet" type="text/css" href="{cssurl}jlu.map.css">
 </head>
 <body>
-{message}
+
+	{help}
+
 <div style="position:relative;width:calc(100% - 0px);height:calc(100% - 0px);">
 	<div id="map" class="map" style="width:calc(100% - 0px);height:calc(100% - 0px);"></div>
 	<div class="ol-control" style="position:absolute; left: .5em;top:4em; z-Index:5;">
-		<button id="CenterMap" class="ol-zoom-in" title="Center map">
+		<button id="CenterMap" class="ol-zoom-in" title="{title_center_map}">
 		<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bullseye" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 			<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
 			<path fill-rule="evenodd" d="M8 13A5 5 0 1 0 8 3a5 5 0 0 0 0 10zm0 1A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
@@ -19,10 +21,9 @@
 		</svg>
 		</button>
 	</div>
-	<div id="popover" class="popover bs-popover-top" style="background:white;padding:15px;">
+	<div id="popover" class="popover bs-popover-top">
 		<div class="arrow" style=""></div>
-		<!-- <div id="popover-header"><a href="#" id="popup-closer" class="close">&times;</a></div> //-->
-		<div id="popover-body"></div>
+		<div id="popover-body" class="popover-body"></div>
 	</div>
 	<div id="marker"></div>
 </div>
@@ -35,9 +36,12 @@ var View = new ol.View({
 	zoom: zoom,
 	maxZoom: 18,
 });
+if(typeof(resolution) != 'undefined') {
+	View.setResolution(resolution);
+}
 var Controls = [ 
 	new ol.control.ScaleLine({ bar: true, minWidth: 90 }),
-	new ol.control.Zoom(),
+	new ol.control.Zoom({'zoomInTipLabel': '{title_zoom_in}', 'zoomOutTipLabel': '{title_zoom_out}'}),
 	new ol.control.Attribution(),
 ];
 if(typeof(debug) !== 'undefined') {
@@ -55,8 +59,12 @@ var Layers = [
 for (var i = 0; i < markers.length; i++) {
 	var iconFeature = new ol.Feature({
 		geometry: new ol.geom.Point(ol.proj.fromLonLat([markers[i][0],markers[i][1] ])),
-		title: markers[i][3],
-		link: markers[i][2],
+		lon:   markers[i][0],
+		lat:   markers[i][1],
+		title: markers[i][2],
+		link:  markers[i][3],
+		addr:  markers[i][4],
+		thumb: markers[i][5],
 	});
 	var iconImage = new ol.style.Icon({
 		anchor: [0.4, 0.0],
@@ -78,7 +86,7 @@ for (var i = 0; i < markers.length; i++) {
 	});
 	Layers.push(vectorLayer);
 }
-var map = new ol.Map({
+var Map = new ol.Map({
 	target: 'map',
 	layers: Layers,
 	view: View,
@@ -96,26 +104,49 @@ var overlay = new ol.Overlay({
 		duration: 250
 	}
 });
-map.addOverlay(overlay);
+Map.addOverlay(overlay);
 
 // Click handler
-map.on('singleclick', function (event) {
-	if (map.hasFeatureAtPixel(event.pixel) === true) {
-		feature = map.getFeaturesAtPixel(event.pixel);
+Map.on('singleclick', function (event) {
+	if (Map.hasFeatureAtPixel(event.pixel) === true) {
+		feature = Map.getFeaturesAtPixel(event.pixel);
 		title = '';
 		if(typeof(feature[0].getProperties().title) != 'undefined' 
 				&& feature[0].getProperties().title != ''
 			) {
-			title = '<div>'+feature[0].getProperties().title+'</div>';
+			title = '<div class="popover-title">'+feature[0].getProperties().title+'</div>';
 		}
-		link = '';
-		if(typeof(feature[0].getProperties().link) != 'undefined' 
-				&& feature[0].getProperties().link != ''
-			) {
-			link = '<div><a target="_parent" href="'+feature[0].getProperties().link+'">Link</a></div>';
+		thumb = '';
+		if(typeof(feature[0].getProperties().link) != 'undefined' && feature[0].getProperties().link != '') {
+			if(typeof(feature[0].getProperties().thumb) != 'undefined' && feature[0].getProperties().thumb != '') {
+				thumb  = '<div class="popover-thumb">';
+				thumb += '<a target="_parent" href="'+feature[0].getProperties().link+'">';
+				thumb += '<img title="{title_thumb}" src="'+feature[0].getProperties().thumb+'">';
+				thumb += '</a></div>';
+			} else {
+				title = '<div class="popover-title"><a target="_parent" href="'+feature[0].getProperties().link+'">'+title+'</a></div>';
+			}
+		} else {
+			if(typeof(feature[0].getProperties().thumb) != 'undefined' && feature[0].getProperties().thumb != '') {
+				thumb  = '<div class="popover-thumb">';
+				thumb += '<img src="'+feature[0].getProperties().thumb+'">';
+				thumb += '</div>';
+			}
 		}
-		if(title !== '' || link !== '') {
-			content.innerHTML = title+link;
+		addr  = '';
+		route = '';
+		if(typeof(feature[0].getProperties().addr) != 'undefined' && feature[0].getProperties().addr != '') {
+			addr = '<div class="popover-addr">'+feature[0].getProperties().addr+'</div>';
+			// handle route
+			route += '<div class="popover-route">'
+			route += '<a href="{googleurl}'+feature[0].getProperties().addr+'/@';
+			route += feature[0].getProperties().lon+','+feature[0].getProperties().lat;
+			route += '" target="_blank">{label_google_route}</a>';
+			route += '</div>'
+		}
+
+		if(title !== '') {
+			content.innerHTML = thumb+'<div class="popover-box">'+title+addr+'</div>'+route;
 			overlay.setPosition(event.coordinate);
 			overlay.setPositioning('bottom-center');
 		}
@@ -125,10 +156,10 @@ map.on('singleclick', function (event) {
  });
  
 // change mouse cursor when over marker
-map.on('pointermove', function (e) {
-	const pixel = map.getEventPixel(e.originalEvent);
-	const hit = map.hasFeatureAtPixel(pixel);
-	map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+Map.on('pointermove', function (e) {
+	const pixel = Map.getEventPixel(e.originalEvent);
+	const hit = Map.hasFeatureAtPixel(pixel);
+	Map.getTargetElement().style.cursor = hit ? 'pointer' : '';
 });
 
 // center map function
@@ -142,7 +173,7 @@ CenterMap.addEventListener(
 );
 
 // handle external resize
-setInterval(function () { map.updateSize(); }, 100);
+setInterval(function () { Map.updateSize(); }, 100);
 </script>
 </body>
 </html>
