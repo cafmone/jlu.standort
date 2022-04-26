@@ -65,6 +65,7 @@ for (var i = 0; i < markers.length; i++) {
 		link:  markers[i][3],
 		addr:  markers[i][4],
 		thumb: markers[i][5],
+		id:    markers[i][6],
 	});
 	var iconImage = new ol.style.Icon({
 		anchor: [0.4, 0.0],
@@ -98,11 +99,10 @@ var container = document.getElementById('popover');
 var content = document.getElementById('popover-body');
 var closer = document.getElementById('popup-closer');
 var overlay = new ol.Overlay({
+	offset: [0, 0],
 	element: container,
 	autoPan: true,
-	autoPanAnimation: {
-		duration: 250
-	}
+	autoPanAnimation: { duration: 250 },
 });
 Map.addOverlay(overlay);
 
@@ -146,9 +146,17 @@ Map.on('singleclick', function (event) {
 		}
 
 		if(title !== '') {
-			content.innerHTML = thumb+'<div class="popover-box">'+title+addr+'</div>'+route;
+			content.innerHTML  = thumb+'<div class="popover-box">'+title+addr+'</div>'+route;
+			if(typeof(feature[0].getProperties().id) != 'undefined') {
+				content.innerHTML += '<div id="'+feature[0].getProperties().id+'"></div>'
+				// run external function
+				try { mapbuilder.load(feature[0].getProperties().id); } catch(e) { }
+			}
+
 			overlay.setPosition(event.coordinate);
 			overlay.setPositioning('bottom-center');
+			
+
 		}
 	} else {
 		overlay.setPosition(undefined);

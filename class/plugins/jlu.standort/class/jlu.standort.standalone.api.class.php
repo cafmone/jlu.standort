@@ -408,6 +408,7 @@ var $lang = array(
 									$form .= '<input type="hidden" name="m['.$c.'][lat]" value="'.$v['lat'].'">';
 									$form .= '<input type="hidden" name="m['.$c.'][title]" value="'.$tree[$k]['l'].'">';
 									$form .= '<input type="hidden" name="m['.$c.'][link]" value="'.$this->qrcodeurl.'?id='.$k.'">';
+									$form .= '<input type="hidden" name="m['.$c.'][id]" value="'.$k.'">';
 									if(isset($tree[$tree[$k]['p']]['l'])) {
 										$form .= '<input type="hidden" name="m['.$c.'][addr]" value="'.$tree[$tree[$k]['p']]['l'].'">';
 									}

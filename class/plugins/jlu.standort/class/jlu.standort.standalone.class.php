@@ -92,6 +92,12 @@ var $helppage = null;
 */
 var $copyright = null;
 /**
+* default if none given by request
+* @access public
+* @var string
+*/
+var $defaultid;
+/**
 * language
 * default language
 * @access public
@@ -221,6 +227,11 @@ var $lang = array(
 					$url = $this->response->get_url('id',$children[0]).'&lang='.$lang;
 					$this->response->redirect($url);
 				}
+			}
+		} else {
+			// use default id
+			if(isset($this->defaultid) && $this->defaultid !== '') {
+				$id = $this->defaultid;
 			}
 		}
 

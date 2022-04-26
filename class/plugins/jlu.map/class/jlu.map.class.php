@@ -178,6 +178,7 @@ var $lang = array(
 					(isset($marker['link']))  ? $script .= ',"'.htmlspecialchars($marker['link']).'"' : $script .= ',""';
 					(isset($marker['addr']))  ? $script .= ',"'.htmlentities($marker['addr']).'"': $script .= ',""';
 					(isset($marker['thumb'])) ? $script .= ',"'.htmlspecialchars($marker['thumb']).'"': $script .= ',""';
+					(isset($marker['id']))    ? $script .= ',"'.htmlspecialchars($marker['id']).'"': $script .= ',""';
 					$script .= '],';
 					
 					// handle top

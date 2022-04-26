@@ -696,11 +696,22 @@ var mapbuilder = {
 	print : function () {
 		var form_data = $('#MapForm').serializeArray();
 		$('#MapFrame').load('jlu.map.php', form_data);
-		
+	},
+	load : function (id) {
+		//alert(id);
+		//element = document.getElementById(id);
+		//element.innerHTML = id;
+		console.log('mapbuilder.load(\''+id+'\')');
+	},
+}
 
-		var map = document.getElementById('MapFrame');
-		console.log(map);
-		
+
+var TestMe = {
+	//---------------------------------------------
+	// print
+	//---------------------------------------------
+	print : function (element, id) {
+		element.innerHTML = id;
 	},
 }
 
