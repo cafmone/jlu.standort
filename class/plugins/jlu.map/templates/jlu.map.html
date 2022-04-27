@@ -117,21 +117,10 @@ Map.on('singleclick', function (event) {
 			title = '<div class="popover-title">'+feature[0].getProperties().title+'</div>';
 		}
 		thumb = '';
-		if(typeof(feature[0].getProperties().link) != 'undefined' && feature[0].getProperties().link != '') {
-			if(typeof(feature[0].getProperties().thumb) != 'undefined' && feature[0].getProperties().thumb != '') {
-				thumb  = '<div class="popover-thumb">';
-				thumb += '<a target="_parent" href="'+feature[0].getProperties().link+'">';
-				thumb += '<img title="{title_thumb}" src="'+feature[0].getProperties().thumb+'">';
-				thumb += '</a></div>';
-			} else {
-				title = '<div class="popover-title"><a target="_parent" href="'+feature[0].getProperties().link+'">'+title+'</a></div>';
-			}
-		} else {
-			if(typeof(feature[0].getProperties().thumb) != 'undefined' && feature[0].getProperties().thumb != '') {
-				thumb  = '<div class="popover-thumb">';
-				thumb += '<img src="'+feature[0].getProperties().thumb+'">';
-				thumb += '</div>';
-			}
+		if(typeof(feature[0].getProperties().thumb) != 'undefined' && feature[0].getProperties().thumb != '') {
+			thumb  = '<div class="popover-thumb">';
+			thumb += '<img title="{title_thumb}" src="'+feature[0].getProperties().thumb+'">';
+			thumb += '</div>';
 		}
 		addr  = '';
 		route = '';
@@ -146,18 +135,20 @@ Map.on('singleclick', function (event) {
 		}
 
 		if(title !== '') {
-			content.innerHTML  = thumb+'<div class="popover-box">'+title+addr+'</div>'+route;
+			text = thumb+'<div class="popover-box">'+title+addr;
+			if(typeof(feature[0].getProperties().link) != 'undefined' && feature[0].getProperties().link != '') {
+				text = '<a target="_parent" href="'+feature[0].getProperties().link+'">'+text+'</a>';
+			}
+			content.innerHTML = text+'</div>'+route;
 			if(typeof(feature[0].getProperties().id) != 'undefined') {
 				content.innerHTML += '<div id="'+feature[0].getProperties().id+'"></div>'
 				// run external function
 				try { mapbuilder.load(feature[0].getProperties().id); } catch(e) { }
 			}
-
 			overlay.setPosition(event.coordinate);
 			overlay.setPositioning('bottom-center');
-			
-
 		}
+		
 	} else {
 		overlay.setPosition(undefined);
 	}
