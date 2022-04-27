@@ -404,6 +404,7 @@ var $lang = array(
 							$form = '<form id="MapForm" action="jlu.map.php" target="MapFrame" methode="POST">';
 							foreach($geo as $k => $v) {
 								if(array_key_exists($k, $tree)) {
+									$form .= '<input type="hidden" name="lang" value="'.$this->user->lang.'">';
 									$form .= '<input type="hidden" name="m['.$c.'][lon]" value="'.$v['long'].'">';
 									$form .= '<input type="hidden" name="m['.$c.'][lat]" value="'.$v['lat'].'">';
 									$form .= '<input type="hidden" name="m['.$c.'][title]" value="'.$tree[$k]['l'].'">';

@@ -118,9 +118,8 @@ var $lang = array(
 		$this->PROFILESDIR = realpath(PROFILESDIR).'/';
 		$this->CLASSDIR    = realpath(CLASSDIR).'/';
 		
-		$this->langdir = $this->CLASSDIR.'plugins/jlu.map/lang';
-		
-		
+		$this->langdir = $this->CLASSDIR.'plugins/jlu.map/lang/';
+	
 		// get languages (xss)
 		$languages = array();
 		$files = glob($this->langdir.'*.jlu.map.ini');
@@ -133,6 +132,7 @@ var $lang = array(
 
 		// filter Gui lang by languages (xss)
 		$lang = $this->response->html->request()->get('lang', true);
+
 		if(!isset($lang)) {
 			$lang = $this->language;
 		} else {
