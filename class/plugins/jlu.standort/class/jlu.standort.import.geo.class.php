@@ -143,6 +143,8 @@ class jlu_standort_import_geo
 							$error = $this->file->make_ini($this->PROFILESDIR.'jlu.standort/bilder/'.$b, $build, '.geo');
 							if($error !== '') {
 								echo 'ERROR: '.$error.'<br>';
+							} else {
+							 	echo 'SUCESS: Created '.$this->PROFILESDIR.'jlu.standort/bilder/'.$b.'.geo<br>';
 							}
 						}
 					}
@@ -216,6 +218,8 @@ class jlu_standort_import_geo
 
 			if(isset($this->debug)) {
 				echo 'Debug finished';
+			} else {
+				echo 'Parse finished';
 			}
 		}
 		elseif (is_string($result) && $result !== '') {
