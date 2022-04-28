@@ -416,6 +416,12 @@ var $lang = array(
 									if($this->file->exists($this->PROFILESDIR.'/jlu.standort/thumbs/'.$k.'.jpg')) {
 										$form .= '<input type="hidden" name="m['.$c.'][thumb]" value="jlu.standort.api.php?'.$this->actions_name.'=thumb&file='.$k.'.jpg">';
 									}
+									elseif($this->file->exists($this->PROFILESDIR.'/jlu.standort/thumbs/'.$k.'.png')) {
+										$form .= '<input type="hidden" name="m['.$c.'][thumb]" value="jlu.standort.api.php?'.$this->actions_name.'=thumb&file='.$k.'.png">';
+									}
+									elseif($this->file->exists($this->PROFILESDIR.'/jlu.standort/thumbs/noimage.jpg')) {
+										$form .= '<input type="hidden" name="m['.$c.'][thumb]" value="jlu.standort.api.php?'.$this->actions_name.'=thumb&file=noimage.jpg">';
+									}
 									$c++;
 								}
 							}
