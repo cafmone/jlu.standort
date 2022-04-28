@@ -130,7 +130,7 @@ Map.on('singleclick', function (event) {
 			route += '<div class="popover-route">'
 			route += '<a href="{googleurl}'+feature[0].getProperties().addr+'/@';
 			route += feature[0].getProperties().lon+','+feature[0].getProperties().lat;
-			route += '" target="_blank">{label_google_route}</a>';
+			route += '" target="_blank" title="{title_google_route}">{label_google_route}</a>';
 			route += '</div>'
 		}
 
