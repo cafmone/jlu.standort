@@ -118,9 +118,13 @@ var $lang = array(
 		// grrr - Windows
 		$this->PROFILESDIR = realpath(PROFILESDIR).'/';
 		$this->CLASSDIR    = realpath(CLASSDIR).'/';
-		
+
+		// handle derived language
 		$this->langdir = $this->CLASSDIR.'plugins/jlu.map/lang/';
-	
+		if($this->file->exists($this->PROFILESDIR.'jlu.map/lang/de.jlu.map.ini')) {
+			$this->langdir = $this->PROFILESDIR.'jlu.map/lang/';
+		}
+
 		// get languages (xss)
 		$languages = array();
 		$files = glob($this->langdir.'*.jlu.map.ini');
