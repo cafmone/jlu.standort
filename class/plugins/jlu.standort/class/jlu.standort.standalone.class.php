@@ -205,6 +205,10 @@ var $lang = array(
 		$this->user->lang = $lang;
 		$this->translation = $this->user->translate($this->lang, $this->langdir, 'jlu.standort.standalone.ini');
 
+
+		// set default canvas (index)
+		$canvas = '&#160;';
+
 		// escape id (xss)
 		$id = $this->response->html->request()->get('id');
 		if($id !== '') {
@@ -232,6 +236,18 @@ var $lang = array(
 			// use default id
 			if(isset($this->defaultid) && $this->defaultid !== '') {
 				$id = $this->defaultid;
+			}
+			elseif($this->file->exists(PROFILESDIR.'jlu.standort/bilder/index.html')) {
+				$canvas = $this->response->html->template(PROFILESDIR.'jlu.standort/bilder/index.html');
+				$vars = array(
+					'cssurl' => $this->cssurl,
+					'jsurl'  => $this->jsurl,
+					'imgurl' => $this->imgurl,
+				);
+				$canvas->add($vars);
+			}
+			elseif($this->file->exists(PROFILESDIR.'jlu.standort/bilder/index.jpg')) {
+				$canvas = '<div style="text-align:center;"><img src="jlu.standort.api.php?action=image&file=index.jpg"></div>';
 			}
 		}
 
@@ -301,6 +317,7 @@ var $lang = array(
 			'helppage' => $helppage,
 			'lang' => $this->user->lang,
 			'timestamp' => $timestamp,
+			'canvas' => $canvas,
 		);
 		$t->add($vars);
 

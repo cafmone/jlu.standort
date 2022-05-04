@@ -64,11 +64,11 @@ var treebuilder = {
 		// show breadcrumps
 		$('#Breadcrumps').css('display','block');
 
-		// handle content
-		this.__canvas.innerHTML = '&#160;';
-		this.__canvas.style.display = 'block';
-
 		if(typeof id != 'undefined') {
+			// handle content
+			this.__canvas.innerHTML = '&#160;';
+			this.__canvas.style.display = 'block';
+
 			$('#Breadcrumps').css('display','none');
 			// wait
 			this.__canvas.innerHTML = '<div id="ContentWait" class="clearfix">'+$('#Wait .modal-body').html()+'</div>';
@@ -77,7 +77,7 @@ var treebuilder = {
 			this.ajax(id, lang);
 			this.__id = id;
 		} else {
-			this.__canvas.innerHTML = '<div style="text-align:center;"><img src="jlu.standort.api.php?action=image&file=index.jpg"></div>';
+			//this.__canvas.innerHTML = '<div style="text-align:center;"><img src="jlu.standort.api.php?action=image&file=index.jpg"></div>';
 			$('.copylink').hide();
 		}
 
