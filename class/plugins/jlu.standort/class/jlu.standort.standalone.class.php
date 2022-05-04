@@ -243,6 +243,7 @@ var $lang = array(
 					'cssurl' => $this->cssurl,
 					'jsurl'  => $this->jsurl,
 					'imgurl' => $this->imgurl,
+					'lang'   => $this->user->lang,
 				);
 				$canvas->add($vars);
 			}
