@@ -140,7 +140,10 @@ var $lang = array(
 		'language_title' => 'Select Language',
 		'en' => 'English',
 	), 
-
+	'map' => array(
+		'title_thumb' => 'Click to enlarge image',
+		'label_data' => 'Floors',
+	),
 );
 
 	//--------------------------------------------
@@ -265,6 +268,7 @@ var $lang = array(
 		$script .= 'var lang = "'.$this->user->lang.'";'."\n";
 		$script .= 'var languages = '.json_encode($this->translation['lang']).';'."\n";
 		$script .= 'var id = "'.$id.'";'."\n";
+		$script .= 'var maptranslate = '.json_encode($this->translation['map']).';'."\n";
 		$script .= '</script>';
 
 		$copyright = '';

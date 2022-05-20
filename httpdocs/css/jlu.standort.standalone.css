@@ -406,10 +406,13 @@ iframe {
 	padding: 0 15px 0 0; 
 }
 .popover-data a {
-	padding: 0 8px 0 0; 
+	display: inline-block;
+	padding: 0 8px 0 0;
+	white-space: nowrap;
 }
-
-
+.popover-thumb img{
+	cursor: pointer;
+}
 /* ---------------------------------------------------
     HACKS
 ----------------------------------------------------- */

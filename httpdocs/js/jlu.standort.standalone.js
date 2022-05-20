@@ -702,7 +702,6 @@ var mapbuilder = {
 		if(typeof tree[id] != 'undefined') {
 			for( i in tree) {
 				if(tree[i]['p'] == id) {
-					label = identifiers[tree[i]['v']];
 					out   = tree[i]['l']+'[[*]]'+i+'[[*]]'+tree[i]['p'];
 					if (typeof tree[i]['o'] !== 'undefined') {
 						out   = tree[i]['l']+'[[*]]'+i+'[[*]]'+tree[i]['p']+'[[*]]'+tree[i]['o'];
@@ -714,7 +713,7 @@ var mapbuilder = {
 		}
 		str = '';
 		if(children.length > 0) {
-			str += '<strong>'+label+'</strong>';
+			str += '<strong>'+maptranslate['label_data']+'</strong>';
 			// sort voodoo
 			if(order === false) {
 				children.sort( sortAlphaNum );
@@ -729,13 +728,13 @@ var mapbuilder = {
 			}
 			$('.popover-data').html(str);
 			$('.popover-thumb img').on('click', function() { mapbuilder.image(id); } );
+			$('.popover-thumb img').attr('title',  maptranslate['title_thumb']);
 		}
 	},
 	image : function(id) {
 	
 		clone = document.createElement('img'); 
 		clone.src = 'jlu.standort.api.php?action=image&file='+id+'.jpg';
-
 		$('#ImageModal').modal({
 			backdrop: true,
 			keyboard: true,

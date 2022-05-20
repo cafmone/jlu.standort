@@ -16,8 +16,11 @@ nano /etc/apache2/sites-enabled/000-default.conf
 	</Directory>
 
 	ErrorLog /var/www/html/logs/apache_error.log
-	CustomLog /var/www/html/logs/apache_access.log combined
+	CustomLog /var/www/html/logs/apache_access.log "%h %t \"%r\" %>s %b"
 
 </VirtualHost>
 ```
 /etc/init.d/apache2 restart
+
+## Help  
+[Apache2 Log Config](https://httpd.apache.org/docs/2.4/mod/mod_log_config.html)  
