@@ -403,7 +403,8 @@ iframe {
 	padding: 15px 0 0 0; 
 }
 .popover-data strong {
-	padding: 0 15px 0 0; 
+	padding: 0 15px 0 0;
+	cursor: default;
 }
 .popover-data a {
 	display: inline-block;
