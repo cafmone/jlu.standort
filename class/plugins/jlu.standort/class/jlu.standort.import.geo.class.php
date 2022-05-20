@@ -161,9 +161,7 @@ class jlu_standort_import_geo
 				$content = $xlsx->parse($path);
 				if(is_array($content)) {
 					foreach($content as $k => $c) {
-					
 
-					
 						// check values not empty
 						if( $c[$cols['id']] === '' || $c[$cols['parent']] === '') {
 							if(isset($this->debug)) {
@@ -187,6 +185,13 @@ class jlu_standort_import_geo
 								} else {
 									$buildings[$c[$cols['parent']]][$c[$cols['id']]]['long'] = $c[$cols['long']];
 									$buildings[$c[$cols['parent']]][$c[$cols['id']]]['lat']  = $c[$cols['lat']];
+
+									// save geo file for each builing
+									$geo = array('long' => $c[$cols['long']], 'lat' => $c[$cols['lat']]);
+									$error = $this->file->make_ini($this->PROFILESDIR.'jlu.standort/bilder/'.$c[$cols['id']], $geo, '.geo');
+									if($error !== '') {
+										echo 'ERROR: '.$error.'<br>';
+									}
 								}
 							} else {
 								if($i < count($result)) {

@@ -408,7 +408,8 @@ var $lang = array(
 									$form .= '<input type="hidden" name="m['.$c.'][lon]" value="'.$v['long'].'">';
 									$form .= '<input type="hidden" name="m['.$c.'][lat]" value="'.$v['lat'].'">';
 									$form .= '<input type="hidden" name="m['.$c.'][title]" value="'.$tree[$k]['l'].'">';
-									$form .= '<input type="hidden" name="m['.$c.'][link]" value="'.$this->qrcodeurl.'?id='.$k.'">';
+									#$form .= '<input type="hidden" name="m['.$c.'][link]" value="'.$this->qrcodeurl.'?id='.$k.'">';
+									$form .= '<input type="hidden" name="m['.$c.'][link]" value="?id='.$k.'&lang='.$this->user->lang.'">';
 									$form .= '<input type="hidden" name="m['.$c.'][id]" value="'.$k.'">';
 									if(isset($tree[$tree[$k]['p']]['l'])) {
 										$form .= '<input type="hidden" name="m['.$c.'][addr]" value="'.$tree[$tree[$k]['p']]['l'].'">';
@@ -691,22 +692,26 @@ var $lang = array(
 		if($visible === true) {
 			$file = $this->response->html->request()->get('file');
 			$path = $this->PROFILESDIR.'/jlu.standort/'.$folder.'/'.$file;
-			if($this->file->exists($path)) {
-				$file = $this->file->get_fileinfo($path);
-				require_once(realpath(CLASSDIR).'/lib/file/file.mime.class.php');
-				$mime = detect_mime($file['path']);
-				header("Pragma: public");
-				header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-				header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-				header("Cache-Control: must-revalidate");
-				header("Content-type: $mime");
-				header("Content-Length: ".$file['filesize']);
-				header("Content-disposition: inline; filename=".$file['name']);
-				header("Accept-Ranges: ".$file['filesize']);
-				flush();
-				readfile($file['path']);
-				exit(0);
+			if(!$this->file->exists($path)) {
+				$path = $this->PROFILESDIR.'/jlu.standort/'.$folder.'/noimage.jpg';
+				if(!$this->file->exists($path)) {
+					exit(0);
+				}
 			}
+			$file = $this->file->get_fileinfo($path);
+			require_once(realpath(CLASSDIR).'/lib/file/file.mime.class.php');
+			$mime = detect_mime($file['path']);
+			header("Pragma: public");
+			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+			header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+			header("Cache-Control: must-revalidate");
+			header("Content-type: $mime");
+			header("Content-Length: ".$file['filesize']);
+			header("Content-disposition: inline; filename=".$file['name']);
+			header("Accept-Ranges: ".$file['filesize']);
+			flush();
+			readfile($file['path']);
+			exit(0);
 		}
 	}
 
@@ -835,13 +840,13 @@ var $lang = array(
 							}
 						}
 						$name .= $tree[$this->id]['l'].'.pdf';
-
 						$name = html_entity_decode($name);
 
 						// remove ,
 						$name = str_replace(',','',$name);
 
 						$file = $this->response->html->request()->get('file');
+						
 						$path = $this->PROFILESDIR.'/jlu.standort/pdf/'.$file;
 						if($path !== '' && $this->file->exists($path)) {
 							require_once(realpath(CLASSDIR).'/lib/file/file.mime.class.php');

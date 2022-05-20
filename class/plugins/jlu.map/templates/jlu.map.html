@@ -135,13 +135,13 @@ Map.on('singleclick', function (event) {
 		}
 
 		if(title !== '') {
-			text = thumb+'<div class="popover-box">'+title+addr+'</div>';
+			text = '<div class="popover-box">'+title+addr+'</div>';
 			if(typeof(feature[0].getProperties().link) != 'undefined' && feature[0].getProperties().link != '') {
 				text = '<a target="_parent" href="'+feature[0].getProperties().link+'">'+text+'</a>';
 			}
-			content.innerHTML = text+route;
+			content.innerHTML = thumb+text+route;
 			if(typeof(feature[0].getProperties().id) != 'undefined') {
-				content.innerHTML += '<div id="'+feature[0].getProperties().id+'"></div>'
+				content.innerHTML += '<div class="popover-data" id="'+feature[0].getProperties().id+'"></div>'
 				// run external function
 				try { mapbuilder.load(feature[0].getProperties().id); } catch(e) { }
 			}

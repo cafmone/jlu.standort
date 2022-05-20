@@ -698,20 +698,55 @@ var mapbuilder = {
 		$('#MapFrame').load('jlu.map.php', form_data);
 	},
 	load : function (id) {
-		//alert(id);
-		//element = document.getElementById(id);
-		//element.innerHTML = id;
-		console.log('mapbuilder.load(\''+id+'\')');
+		children = [];
+		if(typeof tree[id] != 'undefined') {
+			for( i in tree) {
+				if(tree[i]['p'] == id) {
+					label = identifiers[tree[i]['v']];
+					out   = tree[i]['l']+'[[*]]'+i+'[[*]]'+tree[i]['p'];
+					if (typeof tree[i]['o'] !== 'undefined') {
+						out   = tree[i]['l']+'[[*]]'+i+'[[*]]'+tree[i]['p']+'[[*]]'+tree[i]['o'];
+						order = true;
+					}
+					children.push(out);
+				}
+			}
+		}
+		str = '';
+		if(children.length > 0) {
+			str += '<strong>'+label+'</strong>';
+			// sort voodoo
+			if(order === false) {
+				children.sort( sortAlphaNum );
+			}
+			else if(order === true) {
+				children.sort( sortPos );
+			}
+			for(i in children) {
+				tmp = children[i].split('[[*]]');
+				//str += '<a href="?id='+tmp[1]+'&lang='+lang+'">'+tmp[0]+'</a>';
+				str += '<a href="jlu.standort.api.php?action=image&file='+tmp[1]+'.pdf">'+tmp[0]+'</a>';
+			}
+			$('.popover-data').html(str);
+			$('.popover-thumb img').on('click', function() { mapbuilder.image(id); } );
+		}
 	},
-}
+	image : function(id) {
+	
+		clone = document.createElement('img'); 
+		clone.src = 'jlu.standort.api.php?action=image&file='+id+'.jpg';
 
-
-var TestMe = {
-	//---------------------------------------------
-	// print
-	//---------------------------------------------
-	print : function (element, id) {
-		element.innerHTML = id;
+		$('#ImageModal').modal({
+			backdrop: true,
+			keyboard: true,
+			focus: true,
+		})
+		$('#ImageModal').modal('handleUpdate')
+		$('#ImageBox').html(clone);
+		$('#ImageModal .modal-dialog').css('maxWidth', clone.style.maxWidth);
+		clone.style.cursor = 'default';
+		clone.tabIndex = '-1';
+		clone.focus();
 	},
 }
 
