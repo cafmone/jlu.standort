@@ -725,7 +725,7 @@ var mapbuilder = {
 			for(i in children) {
 				tmp = children[i].split('[[*]]');
 				//str += '<a href="?id='+tmp[1]+'&lang='+lang+'">'+tmp[0]+'</a>';
-				str += '<a href="jlu.standort.api.php?action=image&file='+tmp[1]+'.pdf">'+tmp[0]+'</a>';
+				str += '<a href="?id='+tmp[1]+'&lang='+lang+'">'+tmp[0]+'</a>';
 			}
 			$('.popover-data').html(str);
 			$('.popover-thumb img').on('click', function() { mapbuilder.image(id); } );
