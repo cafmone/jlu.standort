@@ -449,7 +449,6 @@ var $lang = array(
 						$image .= 'onclick="imagebox.init(this);">';
 					}
 					elseif($type === 'pdf') {
-
 						$image  = '<div class="iframe">';
 						$image .= '<iframe src="pdf.viewer.html?file='.urlencode('jlu.standort.api.php?action=image&file=').''.$file['name'].'"></iframe>';
 						#$data  = base64_encode($this->file->get_contents($imgpath));
@@ -461,8 +460,11 @@ var $lang = array(
 					elseif($type === 'svg') {
 						$image = $this->file->get_contents($imgpath);
 					}
-					// one try only
-					break;
+
+					// no retry when image set
+					if(isset($image)) {
+						break;
+					}
 				}
 			}
 			if(!isset($image)) {
