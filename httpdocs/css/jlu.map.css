@@ -389,3 +389,43 @@ color: #212529;
 .popover-route a:hover {
 	color: gray;
 }
+
+/* Map Disclaimer */
+
+
+.mapDisclaimer {
+	width: 400px;
+	border: 1px transparent;
+	margin: 40px auto;
+	vertical-align: middle;
+	display: inline-block;
+}
+.mapDisclaimer .buttonbar {
+	margin: 20px 0 0 0;
+	text-align: center;
+}
+.mapDisclaimer .btn {
+	width: 60px;
+	display: inline-block;
+	font-weight: 400;
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+	text-align: center;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	padding: 0.375rem 0.75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	cursor: pointer;
+}
+.mapDisclaimer .btn:hover {
+	color: #333;
+	background-color: #e6e6e6;
+	border-color: #adadad;
+}

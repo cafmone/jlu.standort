@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{title}</title>
+<link rel="stylesheet" type="text/css" href="{cssurl}jlu.map.css">
+<script>
+function mapConfirm(value) {
+	document.cookie = "useMap="+value+";samesite=Strict";
+	location.reload();
+}
+</script>
+</head>
+<body>
+
+<div style="width:100%; height: 100%;text-align:center;">
+	<div class="mapDisclaimer">
+		{disclaimer}
+		<div class="buttonbar">
+		<button class="btn" onclick="mapConfirm('true');" value="Yes">{button_yes}</button>
+		<button class="btn" onclick="mapConfirm('false');" value="No">{button_no}</button>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

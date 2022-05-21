@@ -45,6 +45,7 @@ $controller->cssurl = 'css/';
 $controller->jssurl = 'js/';
 $controller->imgurl = 'img/';
 $controller->title = 'JLU OpenStreetMap&copy;';
+$controller->disclaimer = true;
 
 echo $controller->action()->get_string();
 ?>

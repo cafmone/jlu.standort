@@ -187,10 +187,12 @@ class jlu_standort_import_geo
 									$buildings[$c[$cols['parent']]][$c[$cols['id']]]['lat']  = $c[$cols['lat']];
 
 									// save geo file for each builing
-									$geo = array('long' => $c[$cols['long']], 'lat' => $c[$cols['lat']]);
+									$geo = array($c[$cols['id']] => array('long' => $c[$cols['long']], 'lat' => $c[$cols['lat']]));
 									$error = $this->file->make_ini($this->PROFILESDIR.'jlu.standort/bilder/'.$c[$cols['id']], $geo, '.geo');
 									if($error !== '') {
 										echo 'ERROR: '.$error.'<br>';
+									} else {
+										echo 'SUCESS: Created Building '.$this->PROFILESDIR.'jlu.standort/bilder/'.$c[$cols['id']].'.geo<br>';
 									}
 								}
 							} else {
