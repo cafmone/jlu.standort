@@ -21,8 +21,7 @@ nano /etc/apache2/sites-enabled/000-default.conf
 </VirtualHost>
 ```
 /etc/init.d/apache2 restart
-
-## Help  
+  
 [Apache2 Log Config](https://httpd.apache.org/docs/2.4/mod/mod_log_config.html)  
   
 ## Openstreetmap via Caching Proxy Server  
@@ -34,13 +33,16 @@ a2enmod expires
 a2enmod proxy  
 a2enmod proxy_http  
 a2enmod ssl  
+  
+mkdir /var/www/html/cache  
+nano /etc/apache2/sites-enabled/proxy.conf
 ```
 Listen 8080
 <VirtualHost *:8080>
    
 # enable caching for all requests; cache content on local disk
 CacheEnable disk /
-CacheRoot /var/cache/apache2/mod_cache_disk/
+CacheRoot /var/www/html/cache/
 
 # common caching directives
 CacheQuickHandler off
@@ -83,3 +85,9 @@ ProxyPassReverse /c https://c.tile.openstreetmap.de/
 
 </VirtualHost>
 ```
+/etc/init.d/apache2 restart  
+nano /var/www/html/httpdocs/jlu.map.php
+```
+$controller->tileserverurl = 'http://localhost:8080/{a-c}/{z}/{x}/{y}.png';
+```
+[jlu.map.php](https://github.com/cafmone/jlu.standort/blob/main/httpdocs/jlu.map.php)  
