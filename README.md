@@ -86,8 +86,7 @@ ProxyPassReverse /c https://c.tile.openstreetmap.de/
 </VirtualHost>
 ```
 /etc/init.d/apache2 restart  
-nano /var/www/html/httpdocs/jlu.map.php
+nano /var/www/html/httpdocs/[jlu.map.php](https://github.com/cafmone/jlu.standort/blob/main/httpdocs/jlu.map.php)
 ```
 $controller->tileserverurl = 'http://localhost:8080/{a-c}/{z}/{x}/{y}.png';
 ```
-[jlu.map.php](https://github.com/cafmone/jlu.standort/blob/main/httpdocs/jlu.map.php)  
