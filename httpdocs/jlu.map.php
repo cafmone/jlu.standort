@@ -40,7 +40,10 @@ $user = new user($file);
 
 require_once($CLASSDIR.'plugins/jlu.map/class/jlu.map.class.php');
 $controller = new jlu_map($file, $html->response(), $query, $user);
-$controller->tileserverurl = 'https://{a-c}.tile.openstreetmap.de/{z}/{x}/{y}.png';
+#$controller->tileserverurl = 'https://{a-c}.tile.openstreetmap.de/{z}/{x}/{y}.png';
+
+$controller->tileserverurl = 'http://localhost:8080/{a-c}/{z}/{x}/{y}.png';
+
 $controller->cssurl = 'css/';
 $controller->jssurl = 'js/';
 $controller->imgurl = 'img/';
