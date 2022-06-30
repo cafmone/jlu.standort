@@ -12,9 +12,9 @@ nano /etc/apache2/sites-enabled/000-default.conf
 	<Directory "/var/www/html/httpdocs">
 		AllowOverride All
 	</Directory>
-	LogFormat %h %t \"%r\" %>s %b" combined
+	LogFormat "%h %t \"%r\" %>s %b" custom
 	ErrorLog "|/usr/bin/rotatelogs /var/www/html/logs/error-%Y-%m-%d.log 86400"
-	CustomLog "|/usr/bin/rotatelogs /var/www/html/logs/access-%Y-%m-%d.log 86400" combined
+	CustomLog "|/usr/bin/rotatelogs /var/www/html/logs/access-%Y-%m-%d.log 86400" custom
 </VirtualHost>
 ```
 /etc/init.d/apache2 restart
