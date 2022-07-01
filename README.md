@@ -32,6 +32,7 @@ a2enmod proxy_http
 a2enmod ssl  
   
 mkdir /var/www/html/cache  
+chmod 0777 /var/www/html/cache  
 nano /etc/apache2/sites-enabled/proxy.conf
 ```
 Listen 8080
