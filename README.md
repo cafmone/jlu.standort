@@ -38,48 +38,50 @@ nano /etc/apache2/sites-enabled/proxy.conf
 Listen 8080
 <VirtualHost *:8080>
    
-# enable caching for all requests; cache content on local disk
-CacheEnable disk /
-CacheRoot /var/www/html/cache/
+	# enable caching for all requests; cache content on local disk
+	CacheEnable disk /a
+	CacheEnable disk /b
+	CacheEnable disk /c
+	CacheRoot /var/www/html/cache/
 
-# common caching directives
-CacheQuickHandler off
-CacheLock on
-CacheLockPath /tmp/mod_cache-lock
-CacheLockMaxAge 5
-CacheHeader On
+	# common caching directives
+	CacheQuickHandler off
+	CacheLock on
+	CacheLockPath /tmp/mod_cache-lock
+	CacheLockMaxAge 5
+	CacheHeader On
 
-# cache control
-CacheIgnoreNoLastMod On
-CacheIgnoreCacheControl On
-CacheStoreNoStore On
+	# cache control
+	CacheIgnoreNoLastMod On
+	CacheIgnoreCacheControl On
+	CacheStoreNoStore On
 
-# unset headers from upstream server
-Header unset Expires
-Header unset Cache-Control
-Header unset Pragma
-   
-# set expiration headers for static content
-ExpiresActive On
-ExpiresByType text/html "access plus 1 years"
-ExpiresByType text/plain "access plus 1 years"
-ExpiresByType image/png "access plus 1 years"
-ExpiresByType application/javascript "access plus 1 years"
+	# unset headers from upstream server
+	Header unset Expires
+	Header unset Cache-Control
+	Header unset Pragma
+	   
+	# set expiration headers for static content
+	ExpiresActive On
+	ExpiresByType text/html "access plus 1 years"
+	ExpiresByType text/plain "access plus 1 years"
+	ExpiresByType image/png "access plus 1 years"
+	ExpiresByType application/javascript "access plus 1 years"
 
-ProxyTimeout 600
+	ProxyTimeout 600
 
-# reverse proxy requests to upstream server
-ProxyRequests On # used for forward proxying
-SSLProxyEngine On # required if proxying to https
- 
-ProxyPass /a https://a.tile.openstreetmap.de/
-ProxyPassReverse /a https://a.tile.openstreetmap.de/
+	# reverse proxy requests to upstream server
+	ProxyRequests On # used for forward proxying
+	SSLProxyEngine On # required if proxying to https
+	 
+	ProxyPass /a https://a.tile.openstreetmap.de/
+	ProxyPassReverse /a https://a.tile.openstreetmap.de/
 
-ProxyPass /b https://b.tile.openstreetmap.de/
-ProxyPassReverse /b https://b.tile.openstreetmap.de/
- 
-ProxyPass /c https://c.tile.openstreetmap.de/
-ProxyPassReverse /c https://c.tile.openstreetmap.de/
+	ProxyPass /b https://b.tile.openstreetmap.de/
+	ProxyPassReverse /b https://b.tile.openstreetmap.de/
+	 
+	ProxyPass /c https://c.tile.openstreetmap.de/
+	ProxyPassReverse /c https://c.tile.openstreetmap.de/
 
 </VirtualHost>
 ```
