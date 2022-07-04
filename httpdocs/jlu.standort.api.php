@@ -5,7 +5,7 @@
  * @package jlu_standort
  * @license ../class/plugins/jlu.standort/LICENSE.TXT
  * @version 1.0
- * @copyright Copyright (c) 2020,
+ * @copyright Copyright (c) 2022,
  * Justus-Liebig-Universitaet Giessen
  * Dezernat E - Liegenschaften, Bau und Technik
  * Abteilung E1 - Flaechenmanagement
@@ -35,8 +35,8 @@ $db = $query;
 // init user object
 $user = new user($file);
 
-require_once($CLASSDIR.'plugins/jlu.standort/class/jlu.standort.standalone.api.class.php');
-$controller = new jlu_standort_standalone_api($file, $html->response(), $query, $user);
+require_once($CLASSDIR.'plugins/jlu.standort/class/jlu.standort.controller.class.php');
+$controller = new jlu_standort_controller($file, $html->response(), $query, $user);
 $controller->language = 'de';
 $controller->treeurl = 'cache/tree.js';
 $controller->cssurl = 'css/';
@@ -44,5 +44,5 @@ $controller->jssurl = 'js/';
 $controller->imgurl = 'img/';
 $controller->qrcodeurl = 'https://www.uni-giessen.de/JLUgeschossplaene/';
 
-$controller->action();
+$controller->api(true);
 ?>

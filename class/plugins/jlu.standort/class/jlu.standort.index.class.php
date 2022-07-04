@@ -1,18 +1,18 @@
 <?php
 /**
- * jlu_standort_standalone
+ * jlu_standort_index
  *
  * @package jlu_standort
  * @license ../LICENSE.TXT
  * @version 1.0
- * @copyright Copyright (c) 2020,
+ * @copyright Copyright (c) 2022,
  * Justus-Liebig-Universitaet Giessen
  * Dezernat E - Liegenschaften, Bau und Technik
  * Abteilung E1 - Flaechenmanagement
  * E1.3 - Projektleitung CAFM-System.
  */
 
-class jlu_standort_standalone
+class jlu_standort_index
 {
 /**
 * name of action buttons
@@ -33,6 +33,7 @@ var $message_param = 'standort_msg';
 */
 var $identifier_name = 'standort_ident';
 
+/* -------------- Urls -------------- */
 /**
 * treeurl
 * path too tree.js
@@ -61,6 +62,8 @@ var $imgurl = 'img/';
 * @var string
 */
 var $jsurl = 'js/';
+
+/* -------------- Links -------------- */
 /**
 * link to contact
 * @access public
@@ -91,12 +94,15 @@ var $helppage = null;
 * @var array
 */
 var $copyright = null;
+
+
 /**
 * default if none given by request
 * @access public
 * @var string
 */
 var $defaultid;
+
 /**
 * language
 * default language
@@ -151,29 +157,22 @@ var $lang = array(
 	 * Constructor
 	 *
 	 * @access public
-	 * @param file $file
-	 * @param htmlobject_response $response
-	 * @param query $db
-	 * @param user $user
+	 * @param object $controller
 	 */
 	//--------------------------------------------
-	function __construct($file, $response, $db, $user) {
-		$this->response    = $response;
-		$this->user        = $user;
-		$this->db          = $db;
-		$this->file        = $file;
-
-		// handle derived language
-		$this->langdir = CLASSDIR.'plugins/jlu.standort/lang/';
-		if($this->file->exists(PROFILESDIR.'jlu.standort/lang/de.jlu.standort.standalone.ini')) {
-			$this->langdir = PROFILESDIR.'jlu.standort/lang/';
-		}
-
-		// handle derived templates
-		$this->tpldir = CLASSDIR.'plugins/jlu.standort/templates/';
-		if($this->file->exists(PROFILESDIR.'jlu.standort/templates/jlu.standort.standalone.html')) {
-			$this->tpldir = PROFILESDIR.'jlu.standort/templates/';
-		}
+	function __construct($controller) {
+	
+		$this->controller = $controller;
+		$this->response   = $controller->response;
+		$this->user       = $controller->user;
+		$this->db         = $controller->db;
+		$this->file       = $controller->file;
+		
+		$this->langdir    = $controller->langdir;
+		$this->tpldir     = $controller->tpldir;
+		
+		$this->profilesdir = $controller->profilesdir;
+		$this->classdir    = $controller->classdir;
 
 	}
 
@@ -188,7 +187,7 @@ var $lang = array(
 
 		// get languages (xss)
 		$languages = array();
-		$files = glob($this->langdir.'*.jlu.standort.standalone.ini');
+		$files = glob($this->langdir.'*.jlu.standort.index.ini');
 		if(is_array($files)) {
 			foreach($files as $f) {
 				$tmp = explode('.', basename($f));
@@ -206,7 +205,7 @@ var $lang = array(
 			}
 		}
 		$this->user->lang = $lang;
-		$this->translation = $this->user->translate($this->lang, $this->langdir, 'jlu.standort.standalone.ini');
+		$this->translation = $this->user->translate($this->lang, $this->langdir, 'jlu.standort.index.ini');
 
 
 		// set default canvas (index)
@@ -294,7 +293,7 @@ var $lang = array(
 		$print = '<a href="javascript:print()" title="'.$this->translation['print_title'].'">'.$this->translation['print'].'</a>';
 		$link  = '<a href="javascript:treebuilder.link()" title="'.$this->translation['link_title'].'">'.$this->translation['link'].'</a>';
 
-		$t = $this->response->html->template($this->tpldir.'jlu.standort.standalone.html');
+		$t = $this->response->html->template($this->tpldir.'jlu.standort.index.html');
 		$vars = array(
 			'script' => $script,
 			'thisfile' => $this->response->html->thisfile,

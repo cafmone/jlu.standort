@@ -1,18 +1,18 @@
 <?php
 /**
- * jlu_standort_standalone_api
+ * jlu_standort_api
  *
  * @package jlu_standort
  * @license ../LICENSE.TXT
  * @version 1.0
- * @copyright Copyright (c) 2020,
+ * @copyright Copyright (c) 2022,
  * Justus-Liebig-Universitaet Giessen
  * Dezernat E - Liegenschaften, Bau und Technik
  * Abteilung E1 - Flaechenmanagement
  * E1.3 - Projektleitung CAFM-System
  */
 
-class jlu_standort_standalone_api
+class jlu_standort_api
 {
 /**
 * name of action buttons
@@ -26,41 +26,6 @@ var $actions_name = 'action';
 * @var string
 */
 var $message_param = 'msg';
-/**
-* treeurl
-* path too tree.js
-* @access public
-* @var string
-*/
-var $treeurl = '';
-/**
-* cssurl
-* path too css directory
-* @access public
-* @var string
-*/
-var $cssurl = 'css/';
-/**
-* imgurl
-* path too image directory
-* @access public
-* @var string
-*/
-var $imgurl = 'img/';
-/**
-* jsurl
-* path to js files
-* @access public
-* @var string
-*/
-var $jsurl = 'js/';
-/**
-* qrcodeurl
-* baseurl for qrcodes
-* @access public
-* @var string
-*/
-var $qrcodeurl;
 
 /**
 * language
@@ -74,7 +39,6 @@ var $language = 'en';
 * @access public
 * @var array
 */
-
 var $lang = array(
 	'print' => 'Print',
 	'print_title' => 'Print Page',
@@ -100,37 +64,26 @@ var $lang = array(
 	 * Constructor
 	 *
 	 * @access public
-	 * @param file $file
-	 * @param htmlobject_response $response
-	 * @param query $db
-	 * @param user $user
+	 * @param object $controller
 	 */
 	//--------------------------------------------
-	function __construct($file, $response, $db, $user) {
-		$this->response    = $response;
-		$this->user        = $user;
-		$this->db          = $db;
-		$this->file        = $file;
-
-		// grrr - Windows
-		$this->PROFILESDIR = realpath(PROFILESDIR).'/';
-		$this->CLASSDIR = realpath(CLASSDIR).'/';
-
-		// handle derived language
-		$this->langdir = $this->CLASSDIR.'plugins/jlu.standort/lang/';
-		if($this->file->exists($this->PROFILESDIR.'jlu.standort/lang/de.jlu.standort.standalone.api.ini')) {
-			$this->langdir = $this->PROFILESDIR.'jlu.standort/lang/';
-		}
-
-		// handle derived templates
-		$this->tpldir = $this->CLASSDIR.'plugins/jlu.standort/templates/';
-		if($this->file->exists($this->PROFILESDIR.'jlu.standort/templates/jlu.standort.standalone.api.html')) {
-			$this->tpldir = $this->PROFILESDIR.'jlu.standort/templates/';
-		}
+	function __construct($controller) {
+	
+		$this->controller = $controller;
+		$this->response   = $controller->response;
+		$this->user       = $controller->user;
+		$this->db         = $controller->db;
+		$this->file       = $controller->file;
+		
+		$this->langdir    = $controller->langdir;
+		$this->tpldir     = $controller->tpldir;
+		
+		$this->profilesdir = $controller->profilesdir;
+		$this->classdir    = $controller->classdir;
 
 		// get languages (xss)
 		$languages = array();
-		$files = glob($this->langdir.'*.jlu.standort.standalone.ini');
+		$files = glob($this->langdir.'*.jlu.standort.index.ini');
 		if(is_array($files)) {
 			foreach($files as $f) {
 				$tmp = explode('.', basename($f));
@@ -148,7 +101,7 @@ var $lang = array(
 			}
 		}
 		$this->user->lang = $lang;
-		$this->translation = $this->user->translate($this->lang, $this->langdir, 'jlu.standort.standalone.api.ini');
+		$this->translation = $this->user->translate($this->lang, $this->langdir, 'jlu.standort.api.ini');
 
 		// escape id (xss)
 		$id = $this->response->html->request()->get('id');
@@ -166,7 +119,7 @@ var $lang = array(
 		// Identifiers
 		$this->identifiers = array();
 		$this->levels = array();
-		$tmp = $this->file->get_ini($this->langdir.$lang.'.jlu.standort.standalone.ini');
+		$tmp = $this->file->get_ini($this->langdir.$lang.'.jlu.standort.index.ini');
 		if(is_array($tmp) && isset($tmp['identifiers'])) {
 			$this->levels = array_keys($tmp['identifiers']);
 			$this->identifiers = $tmp['identifiers'];
@@ -238,8 +191,8 @@ var $lang = array(
 			}
 
 			$content = json_decode($this->file->get_contents($this->response->html->thisdir.'cache/accessibility.json'), true);
-			$lang = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.accessibility.ini');
-			$lang = $this->user->translate($lang, $this->langdir, 'jlu.standort.standalone.accessibility.ini');
+			$lang = $this->file->get_ini($this->langdir.'de.jlu.standort.accessibility.ini');
+			$lang = $this->user->translate($lang, $this->langdir, 'jlu.standort.accessibility.ini');
 
 			// Level
 			$level = 0;
@@ -274,7 +227,7 @@ var $lang = array(
 				$path = $tree[$tmp]['l'].' | '.$path;
 			}
 
-			$t = $this->response->html->template($this->tpldir.'jlu.standort.standalone.api.accessibility.html');
+			$t = $this->response->html->template($this->tpldir.'jlu.standort.api.accessibility.html');
 			$t->add($path, 'path');
 			foreach($lang['headlines'] as $k => $v) {
 				$t->add('<h4>'.$v.'</h4>', 'headline_'.$k);
@@ -395,7 +348,7 @@ var $lang = array(
 				}
 			}
 			// handle image
-			$path = $this->PROFILESDIR.'/jlu.standort/bilder';
+			$path = $this->profilesdir.'/jlu.standort/bilder';
 			$files = $this->file->get_files($path);
 
 			foreach($files as $file) {
@@ -421,13 +374,13 @@ var $lang = array(
 									if(isset($tree[$tree[$k]['p']]['l'])) {
 										$form .= '<input type="hidden" name="m['.$c.'][addr]" value="'.$tree[$tree[$k]['p']]['l'].'">';
 									}
-									if($this->file->exists($this->PROFILESDIR.'/jlu.standort/thumbs/'.$k.'.jpg')) {
+									if($this->file->exists($this->profilesdir.'/jlu.standort/thumbs/'.$k.'.jpg')) {
 										$form .= '<input type="hidden" name="m['.$c.'][thumb]" value="jlu.standort.api.php?'.$this->actions_name.'=thumb&file='.$k.'.jpg">';
 									}
-									elseif($this->file->exists($this->PROFILESDIR.'/jlu.standort/thumbs/'.$k.'.png')) {
+									elseif($this->file->exists($this->profilesdir.'/jlu.standort/thumbs/'.$k.'.png')) {
 										$form .= '<input type="hidden" name="m['.$c.'][thumb]" value="jlu.standort.api.php?'.$this->actions_name.'=thumb&file='.$k.'.png">';
 									}
-									elseif($this->file->exists($this->PROFILESDIR.'/jlu.standort/thumbs/noimage.jpg')) {
+									elseif($this->file->exists($this->profilesdir.'/jlu.standort/thumbs/noimage.jpg')) {
 										$form .= '<input type="hidden" name="m['.$c.'][thumb]" value="jlu.standort.api.php?'.$this->actions_name.'=thumb&file=noimage.jpg">';
 									}
 									$c++;
@@ -479,7 +432,7 @@ var $lang = array(
 
 			// handle datadir
 			$files = '';
-			$datadir = $this->PROFILESDIR.'/jlu.standort/data/'.$this->id;
+			$datadir = $this->profilesdir.'/jlu.standort/data/'.$this->id;
 			if($this->file->exists($datadir)) {
 				$f = $this->file->get_files($datadir);
 				if(is_array($f)) {
@@ -558,7 +511,7 @@ var $lang = array(
 				}
 			}
 
-			$pdfpath = $this->PROFILESDIR.'/jlu.standort/pdf/'.$pdfid.'.pdf';
+			$pdfpath = $this->profilesdir.'/jlu.standort/pdf/'.$pdfid.'.pdf';
 			if($this->file->exists($pdfpath)) {
 				$a = $this->response->html->a();
 				$a->label = $this->translation['print'];
@@ -603,9 +556,9 @@ var $lang = array(
 					}
 
 					$tmp = json_decode($this->file->get_contents($usagepath), true);
-					$lang = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.nutzung.ini');
+					$lang = $this->file->get_ini($this->langdir.'de.jlu.standort.nutzung.ini');
 
-					$usages = $this->user->translate($lang, $this->langdir, 'jlu.standort.standalone.nutzung.ini');
+					$usages = $this->user->translate($lang, $this->langdir, 'jlu.standort.nutzung.ini');
 					asort($usages);
 
 					$used   = array();
@@ -664,7 +617,7 @@ var $lang = array(
 			}
 
 			// template
-			$t = $this->response->html->template($this->tpldir.'jlu.standort.standalone.api.html');
+			$t = $this->response->html->template($this->tpldir.'jlu.standort.api.html');
 			$vars = array(
 				'id' => '',
 				'files' => $files,
@@ -699,9 +652,9 @@ var $lang = array(
 	function image($visible = false, $folder = 'bilder') {
 		if($visible === true) {
 			$file = $this->response->html->request()->get('file');
-			$path = $this->PROFILESDIR.'/jlu.standort/'.$folder.'/'.$file;
+			$path = $this->profilesdir.'/jlu.standort/'.$folder.'/'.$file;
 			if(!$this->file->exists($path)) {
-				$path = $this->PROFILESDIR.'/jlu.standort/'.$folder.'/noimage.jpg';
+				$path = $this->profilesdir.'/jlu.standort/'.$folder.'/noimage.jpg';
 				if(!$this->file->exists($path)) {
 					exit(0);
 				}
@@ -735,7 +688,7 @@ var $lang = array(
 		if($visible === true) {
 			if(isset($this->id)) {
 				$file = $this->response->html->request()->get('file');
-				$path = $this->PROFILESDIR.'/jlu.standort/data/'.$this->id.'/'.$file;
+				$path = $this->profilesdir.'/jlu.standort/data/'.$this->id.'/'.$file;
 				if($path !== '' && $this->file->exists($path)) {
 					require_once(realpath(CLASSDIR).'/lib/file/file.mime.class.php');
 					$mime = detect_mime($path);
@@ -784,7 +737,7 @@ var $lang = array(
 					$url .= '&lang='.$this->user->lang;
 				}
 
-				require_once($this->CLASSDIR.'lib/pdf/tcpdf/tcpdf_barcodes_2d.php');
+				require_once($this->classdir.'lib/pdf/tcpdf/tcpdf_barcodes_2d.php');
 
 				// set the barcode content and type
 				$obj = new TCPDF2DBarcode($url, 'QRCODE,L');
@@ -855,7 +808,7 @@ var $lang = array(
 
 						$file = $this->response->html->request()->get('file');
 						
-						$path = $this->PROFILESDIR.'/jlu.standort/pdf/'.$file;
+						$path = $this->profilesdir.'/jlu.standort/pdf/'.$file;
 						if($path !== '' && $this->file->exists($path)) {
 							require_once(realpath(CLASSDIR).'/lib/file/file.mime.class.php');
 							$mime = detect_mime($path);
