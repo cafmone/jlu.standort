@@ -421,7 +421,7 @@ var treebuilder = {
 		modal = $('#LeftModal');
 
 		searchbox = $('.form-control',modal);
-		searchbox.attr('placeholder', this.__search.placeholder);
+		searchbox.attr('placeholder', translation.search);
 		searchbox.val('');
 		searchbox.on('keyup', function() {
 			var value = $(this).val().toLowerCase();

@@ -268,6 +268,7 @@ var $lang = array(
 		$script .= 'var id = "'.$id.'";'."\n";
 		$script .= 'var maptranslate = '.json_encode($this->translation['map']).';'."\n";
 		$script .= 'var action = "&'.$this->actions_name.'='.$this->controller->action.'";'."\n";
+		$script .= 'var translation = {"search":"'.$this->translation['search'].'"};'."\n";
 		$script .= '</script>';
 
 		$copyright = '';
