@@ -40,9 +40,9 @@ $user = new user($file);
 
 require_once($CLASSDIR.'plugins/jlu.map/class/jlu.map.class.php');
 $controller = new jlu_map($file, $html->response(), $query, $user);
-#$controller->tileserverurl = 'https://{a-c}.tile.openstreetmap.de/{z}/{x}/{y}.png';
+$controller->tileserverurl = 'https://{a-c}.tile.openstreetmap.de/{z}/{x}/{y}.png';
 #$controller->tileserverurl = 'http://134.176.7.40:443/{a-c}/{z}/{x}/{y}.png';
-$controller->tileserverurl = 'http://127.0.0.1/{a-c}/{z}/{x}/{y}.png';
+#$controller->tileserverurl = 'http://127.0.0.1/{a-c}/{z}/{x}/{y}.png';
 #$controller->tileserverurl = 'https://www.uni-giessen.de/JLUgeschossplaene/{a-c}/{z}/{x}/{y}.png';
 $controller->cssurl = 'css/';
 $controller->jssurl = 'js/';
