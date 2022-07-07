@@ -56,18 +56,6 @@ Listen 8080
 	CacheIgnoreCacheControl On
 	CacheStoreNoStore On
 
-	# unset headers from upstream server
-	Header unset Expires
-	Header unset Cache-Control
-	Header unset Pragma
-	   
-	# set expiration headers for static content
-	ExpiresActive On
-	ExpiresByType text/html "access plus 1 years"
-	ExpiresByType text/plain "access plus 1 years"
-	ExpiresByType image/png "access plus 1 years"
-	ExpiresByType application/javascript "access plus 1 years"
-
 	ProxyTimeout 600
 
 	# reverse proxy requests to upstream server
