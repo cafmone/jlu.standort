@@ -207,7 +207,6 @@ var $lang = array(
 		$this->user->lang = $lang;
 		$this->translation = $this->user->translate($this->lang, $this->langdir, 'jlu.standort.index.ini');
 
-
 		// set default canvas (index)
 		$canvas = '&#160;';
 
@@ -268,6 +267,7 @@ var $lang = array(
 		$script .= 'var languages = '.json_encode($this->translation['lang']).';'."\n";
 		$script .= 'var id = "'.$id.'";'."\n";
 		$script .= 'var maptranslate = '.json_encode($this->translation['map']).';'."\n";
+		$script .= 'var action = "&'.$this->actions_name.'='.$this->controller->action.'";'."\n";
 		$script .= '</script>';
 
 		$copyright = '';
@@ -293,6 +293,15 @@ var $lang = array(
 		$print = '<a href="javascript:print()" title="'.$this->translation['print_title'].'">'.$this->translation['print'].'</a>';
 		$link  = '<a href="javascript:treebuilder.link()" title="'.$this->translation['link_title'].'">'.$this->translation['link'].'</a>';
 
+
+		$search = $this->response->html->a();
+		$search->css = 'btn btn-default';
+		$search->title = $this->translation['search_title'];
+		$search->href = '?'.$this->actions_name.'=search&lang='.$this->user->lang;
+		$search->id = 'SearchToggler';
+		$search->label = '<span class="search-icon"><img src="bootstrap-icons/search.svg"></span>';
+
+
 		$t = $this->response->html->template($this->tpldir.'jlu.standort.index.html');
 		$vars = array(
 			'script' => $script,
@@ -304,7 +313,7 @@ var $lang = array(
 			'imgurl' => $this->imgurl,
 			'label' => $this->translation['label'],
 			'search' => $this->translation['search'],
-			'search_title' =>  $this->translation['search_title'],
+			'search_button' => $search,
 			'toggle_left' => $this->translation['toggle_left'],
 			'toggle_right' =>  $this->translation['toggle_right'],
 			'close' =>  $this->translation['close'],

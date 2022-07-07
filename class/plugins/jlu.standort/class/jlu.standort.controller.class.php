@@ -163,7 +163,8 @@ var $defaultid;
 	 */
 	//--------------------------------------------
 	function action($action = null) {
-		$this->action = '';
+
+		$this->action = 'index';
 		$ar = $this->response->html->request()->get($this->actions_name);
 		if($ar !== '') {
 			$this->action = $ar;
@@ -178,12 +179,16 @@ var $defaultid;
 			case '':
 			case 'index':
 			default:
-				return $this->index(true);
+				$content = $this->index(true);
 			break;
 			case 'search':
-				return $this->search(true);
+				$content = $this->search(true);
 			break;
 		}
+
+		#$this->response->html->help($content);
+		
+		return $content;
 	}
 
 	//--------------------------------------------
@@ -191,7 +196,8 @@ var $defaultid;
 	 * Api
 	 *
 	 * @access public
-	 * @return null
+	 * @param bool $visible
+	 * @return htmlobject | empty
 	 */
 	//--------------------------------------------
 	function api( $visible = false ) {
@@ -216,10 +222,10 @@ var $defaultid;
 	 * Index
 	 *
 	 * @access public
-	 * @return null
+	 * @return htmlobject | empty
 	 */
 	//--------------------------------------------
-	function index( $visible = false ) {
+	function index( $visible = false, $raw = false ) {
 		$data = '';
 		if($visible === true) {
 			require_once($this->classdir.'plugins/jlu.standort/class/jlu.standort.index.class.php');
@@ -228,20 +234,25 @@ var $defaultid;
 			$controller->actions_name = $this->actions_name;
 			$controller->identifier_name = $this->identifier_name;
 
+			$controller->language = $this->language;
+
 			$controller->cssurl = $this->cssurl;
 			$controller->jsurl = $this->jsurl;
 			$controller->imgurl = $this->imgurl;
 			$controller->treeurl = $this->treeurl;
-			$controller->language = $this->language;
-
 			$controller->contacturl = $this->contacturl;
 			$controller->imprinturl = $this->imprinturl;
 			$controller->privacynoticeurl = $this->privacynoticeurl;
 			$controller->helppageurl = $this->helppageurl;
 			$controller->copyright = $this->copyright;
 			$controller->defaultid = $this->defaultid;
-			
-			$data = $controller->action();
+
+			if(isset($raw) && $raw === true) {
+				$data = $controller;
+			}
+			elseif(!isset($raw) || $raw === false) {
+				$data = $controller->action();
+			}
 		}
 		return $data;
 	}
@@ -251,18 +262,26 @@ var $defaultid;
 	 * Search
 	 *
 	 * @access public
-	 * @return null
+	 * @return htmlobject | empty
 	 */
 	//--------------------------------------------
 	function search( $visible = false ) {
 		$data = '';
 		if($visible === true) {
+			$obj = $this->index(true, true);
+			$index = $obj->action();
+
 			require_once($this->classdir.'plugins/jlu.standort/class/jlu.standort.search.class.php');
 			$controller = new jlu_standort_search($this);
 			$controller->tpldir = $this->tpldir;
 			$controller->actions_name = $this->actions_name;
 			$controller->identifier_name = $this->identifier_name;
-			$data = $controller->action();
+			$controller->language = $obj->language;
+			$controller->lang = $obj->translation;
+			$tmp = $controller->action();
+			
+			$index->add(array('canvas' => $tmp));
+			$data = $index;
 		}
 		return $data;
 	}

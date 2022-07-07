@@ -260,9 +260,9 @@ var treebuilder = {
 		for( l in languages) {
 			if(l != 'language' && l != 'language_title') {
 				if(typeof id != 'undefined') {
-					params = 'id='+id+'&lang='+l;
+					params = 'id='+id+'&lang='+l+action;
 				} else {
-					params = 'lang='+l;
+					params = 'lang='+l+action;
 				}
 				$('.dropdown-menu', langselect).append('<a title="'+languages[l]+'"onclick="treebuilder.wait();" class="dropdown-item" href="?'+params+'">'+languages[l]+'</a>');
 			}
@@ -495,13 +495,17 @@ var searchbuilder = {
 		this.__search = document.getElementById("Search");
 		this.__header = document.getElementById("SearchHeader");
 		this.__loader = document.getElementById("SearchLoader");
-		this.__footer = document.getElementById("Footer");
+		
+		this.__count = document.getElementById("SearchCount");
 
-		this.__content.style.display = 'none';
-		this.__search.style.display = 'block';
-		this.__footer.style.display = 'none';
+		//this.__footer = document.getElementById("Footer");
+
+		//this.__content.style.display = 'none';
+		//this.__search.style.display = 'block';
+		//this.__footer.style.display = 'none';
 
 		// trigger __init
+		/*
 		if(this.__result.innerHTML == '') {
 			this.__loader.innerHTML = '<input id="SearchTrigger" style="position:absolute;left: -1000px;">';
 			this.__result.innerHTML = '<div id="ContentWait" class="clearfix">'+$('#Wait .modal-body').html()+'</div>';
@@ -513,6 +517,11 @@ var searchbuilder = {
 			this.__header.style.display = 'block';
 			this.__input.focus();
 		}
+		*/
+		
+		this.__header.style.display = 'block';
+		this.__input.focus();
+		
 	},
 
 	close : function() {
@@ -528,7 +537,8 @@ var searchbuilder = {
 		if(filter.length > 2) {
 
 			this.__result.style.display = 'block';
-			links = this.__searchlinks;
+			links = $('#'+this.__result.id+' span');
+
 			regex = new RegExp(filter, "i");
 			for(var i=0; i < links.length; i++) {
 
@@ -546,16 +556,20 @@ var searchbuilder = {
 						ex = new RegExp('('+filter+')', "i");
 						// add highlite
 						links[i].innerHTML = tt.replace(ex, '<strong>$1</strong>');
-	 					links[i].style.display = 'inline-block';
+	 					links[i].parentElement.style.display = 'block';
 
 						hits++;
 
 					} else {
-						links[i].style.display = 'none';
+						links[i].parentElement.style.display = 'none';
 					}
 				//}
 			}
+			
+			this.__count.innerHTML = hits;
+			
 		} else {
+			this.__count.innerHTML = 0;
 			this.__result.style.display = 'none';
 		}
 	},

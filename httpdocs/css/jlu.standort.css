@@ -192,6 +192,17 @@ label {
 	min-height: 400px;
 }
 
+#Search .card:hover {
+	background: #eee;
+}
+#Search a {
+	color: black;
+}
+#Search #SearchResult span {
+	display: block;
+	padding: 8px 0 10px 0;
+}
+
 #Leftbar {
 	min-width: 380px;
 	max-width: 380px;

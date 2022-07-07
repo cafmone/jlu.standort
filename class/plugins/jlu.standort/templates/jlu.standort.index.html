@@ -4,13 +4,9 @@
 <title>{title}</title>
 <meta name=viewport content="width=device-width, initial-scale=1">
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
-
-<!-- <link rel="stylesheet" type="text/css" href="{cssurl}pdf.viewer.css"> //-->
 <link rel="stylesheet" type="text/css" href="{cssurl}bootstrap4.css" media="screen">
-<link rel="stylesheet" type="text/css" href="{cssurl}jlu.standort.standalone.css?_={timestamp}">
-
+<link rel="stylesheet" type="text/css" href="{cssurl}jlu.standort.css?_={timestamp}">
 </head>
-
 <body tabindex="1">
 <div id="Page">
 
@@ -31,16 +27,11 @@
 				</div>
 			</div>
 		</div>
-
 		<div id="Topbar" class="navbar navbar-expand-sm noprint">
 			<button type="button" id="LeftbarToggler" title="{toggle_left}" class="navbar-light btn btn-default" style="color:black;">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-	
-			<button type="button" id="SearchToggler" title="{search_title}" class="btn btn-default" onclick="searchbuilder.init();">
-				<span class="search-icon"><img src="bootstrap-icons/search.svg"></span>
-			</button>
-
+			{search_button}
 			<div class="navbar-nav ml-auto">
 				<div id="Langselect" class="nav-item dropdown">
 					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -80,17 +71,6 @@
 				</nav>
 			</div>
 		</div>
-	</div>
-
-	<div id="Search" style="display:none;">
-		<div id="SearchLoader"></div>
-		<div id="SearchHeader" style="display:none;">
-			<div class="clearfix" style="text-align:center;margin: 0 0 20px 0;">
-				<input style="width: 400px;margin-right:20px;display: block;" id="SearchInput" type="text" class="float-left form-control" placeholder="{search}" onkeyup="searchbuilder.seek()">
-				<button type="button" style="font-size: 14px;padding-top: 12px; float: left !important" title="{close}" onfocus="this.blur();" onclick="searchbuilder.close();" class="float-right close">Suche schließen</button>
-			</div>
-		</div>
-		<div id="SearchResult"></div>
 	</div>
 
 	<div id="Footer" class="clearfix noprint">
@@ -193,20 +173,13 @@
 	</div>
 </div>
 
-<!-- <iframe style="width:100%;" src="pdf.viewer.html?file=EG.pdf"></iframe> //-->
-<!-- {pdfviewer} //-->
-
 <link rel="stylesheet" type="text/css" href="{cssurl}bootstrap-select.css">
-<!-- <link rel="resource" type="application/l10n" href="locale/locale.properties"> //-->
-
 <script src="{jsurl}jquery.min.js"></script>
 <script src="{jsurl}popper.min.js"></script>
 <script src="{jsurl}bootstrap4.min.js"></script>
 <script src="{jsurl}bootstrap-select.min.js"></script>
-<script src="{jsurl}jlu.standort.standalone.js?_={timestamp}"></script>
-<!-- <script src="{jsurl}pdf.viewer.js"></script> //-->
+<script src="{jsurl}jlu.standort.js?_={timestamp}"></script>
 {script}
-
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function () {
 	treebuilder.init();

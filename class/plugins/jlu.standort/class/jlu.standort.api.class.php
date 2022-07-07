@@ -168,6 +168,9 @@ var $lang = array(
 			case 'qrcode':
 				$this->qrcode(true);
 			break;
+			case 'search':
+				$this->search(true);
+			break;
 		}
 	}
 
@@ -651,6 +654,8 @@ var $lang = array(
 	//--------------------------------------------
 	function image($visible = false, $folder = 'bilder') {
 		if($visible === true) {
+			$this->file->date_format = "D, d M Y H:i:s";
+			
 			$file = $this->response->html->request()->get('file');
 			$path = $this->profilesdir.'/jlu.standort/'.$folder.'/'.$file;
 			if(!$this->file->exists($path)) {
@@ -660,12 +665,12 @@ var $lang = array(
 				}
 			}
 			$file = $this->file->get_fileinfo($path);
+
 			require_once(realpath(CLASSDIR).'/lib/file/file.mime.class.php');
 			$mime = detect_mime($file['path']);
-			header("Pragma: public");
-			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-			header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-			header("Cache-Control: must-revalidate");
+
+			header("Last-Modified: " . $file['date'] . " GMT");
+			header("Cache-Control: public");
 			header("Content-type: $mime");
 			header("Content-Length: ".$file['filesize']);
 			header("Content-disposition: inline; filename=".$file['name']);
@@ -829,6 +834,21 @@ var $lang = array(
 					}
 				}
 			}
+		}
+	}
+	
+	//--------------------------------------------
+	/**
+	 * search
+	 *
+	 * @access public
+	 * @return null
+	 */
+	//--------------------------------------------
+	function search($visible = false) {
+		if($visible === true) {
+			$controller = $this->controller->search(true);
+			echo $controller->action();
 		}
 	}
 
