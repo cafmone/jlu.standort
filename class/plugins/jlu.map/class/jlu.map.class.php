@@ -190,14 +190,18 @@ var $lang = array(
 			$confirm = true;
 		} else {
 			if(isset($this->disclaimer) && $this->disclaimer === false) {
-				$cookie_options = array (
-					'expires' => time() + 60*60*24*30,
-					'path' => '/',
-					'secure' => false,
-					'httponly' => false,
-					'samesite' => 'Strict'
-				);
-				setcookie('useMap', 'true', $cookie_options);
+				if(intval(PHP_MAJOR_VERSION.PHP_MINOR_VERSION) >= 73) {
+					$cookie_options = array (
+						'expires' => time() + 60*60*24*30,
+						'path' => '/',
+						'secure' => false,
+						'httponly' => false,
+						'samesite' => 'Strict'
+					);
+					setcookie('useMap', 'true', $cookie_options);
+				} else {
+					setcookie('useMap', 'true', time() + 60*60*24*30, '/', '', false, false);
+				}
 				$confirm = true;
 			}
 		}
