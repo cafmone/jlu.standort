@@ -214,15 +214,10 @@ var $lang = array(
 		$id = $this->response->html->request()->get('id');
 		if($id !== '') {
 			$id = substr(htmlspecialchars($id), 0, 30);
-			// handle tree
-			$treeurl = $this->response->html->thisdir.$this->treeurl;
-			if($this->file->exists($treeurl)) {
-				$tree = json_decode(str_replace('var tree = ', '', $this->file->get_contents($treeurl)), true);
-			}
 			// handle liegenschaft
-			if(isset($tree[$id]) && isset($tree[$id]['v']) && $tree[$id]['v'] === 'liegenschaft') {
+			if(isset($this->tree[$id]) && isset($this->tree[$id]['v']) && $this->tree[$id]['v'] === 'liegenschaft') {
 				$children = array();
-				foreach( $tree as $k => $v ) {
+				foreach( $this->tree as $k => $v ) {
 					if(isset($v['p']) && $v['p'] === $id) {
 						$children[] = $k;
 					}

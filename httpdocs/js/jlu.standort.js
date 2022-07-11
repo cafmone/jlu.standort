@@ -480,7 +480,6 @@ var treebuilder = {
 		}
 
 	},
-
 }
 
 /* SEARCHBUILDER */
@@ -488,6 +487,9 @@ var searchbuilder = {
 	__input : '',
 	__result : '',
 
+	//---------------------------------------------
+	// Init
+	//---------------------------------------------
 	init : function() {
 		this.__input  = document.getElementById("SearchInput");
 		this.__result = document.getElementById("SearchResult");
@@ -495,159 +497,51 @@ var searchbuilder = {
 		this.__search = document.getElementById("Search");
 		this.__header = document.getElementById("SearchHeader");
 		this.__loader = document.getElementById("SearchLoader");
-		
 		this.__count = document.getElementById("SearchCount");
-
-		//this.__footer = document.getElementById("Footer");
-
-		//this.__content.style.display = 'none';
-		//this.__search.style.display = 'block';
-		//this.__footer.style.display = 'none';
-
-		// trigger __init
-		/*
-		if(this.__result.innerHTML == '') {
-			this.__loader.innerHTML = '<input id="SearchTrigger" style="position:absolute;left: -1000px;">';
-			this.__result.innerHTML = '<div id="ContentWait" class="clearfix">'+$('#Wait .modal-body').html()+'</div>';
-			setTimeout(function(){
-				document.getElementById('SearchTrigger').onfocus = function() { searchbuilder.__init(); };
-				document.getElementById('SearchTrigger').focus();
-			},0);
-		} else {
-			this.__header.style.display = 'block';
-			this.__input.focus();
-		}
-		*/
-		
+		this.__ids = document.getElementById("SearchActive");
 		this.__header.style.display = 'block';
 		this.__input.focus();
-		
 	},
 
-	close : function() {
-		this.__search.style.display = 'none';
-		this.__content.style.display = 'block';
-		this.__footer.style.display = 'block';
-	},
-
+	//---------------------------------------------
+	// Seek
+	//---------------------------------------------
 	seek : function() {
 		filter = this.__input.value;
 		hits   = 0;
-
 		if(filter.length > 2) {
-
+			this.__ids.innerHTML = '';
 			this.__result.style.display = 'block';
 			links = $('#'+this.__result.id+' span');
-
 			regex = new RegExp(filter, "i");
 			for(var i=0; i < links.length; i++) {
-
 				tt = links[i].innerHTML;
-				// remove highlite
 				tt = tt.replace(/<strong>(.*)<\/strong>/i, '$1');
-
-				//if(hits < 201) {
-
-					// remove marked block from searching
-					text   = tt.replace(/(<span>[^<>]*<\/span>)/i, "");
-					result = regex.test(text);
-
-					if(result !== false) {
-						ex = new RegExp('('+filter+')', "i");
-						// add highlite
-						links[i].innerHTML = tt.replace(ex, '<strong>$1</strong>');
-	 					links[i].parentElement.style.display = 'block';
-
-						hits++;
-
-					} else {
-						links[i].parentElement.style.display = 'none';
-					}
-				//}
+				// remove marked block from searching
+				text   = tt.replace(/(<span>[^<>]*<\/span>)/i, "");
+				result = regex.test(text);
+				if(result !== false) {
+					ex = new RegExp('('+filter+')', "i");
+					// add highlite
+					links[i].innerHTML = tt.replace(ex, '<strong>$1</strong>');
+ 					links[i].parentElement.style.display = 'block';
+ 					if(this.__ids.innerHTML === '') {
+ 						this.__ids.innerHTML = links[i].parentElement.id;
+ 					} else {
+ 						this.__ids.innerHTML = this.__ids.innerHTML+','+links[i].parentElement.id;
+ 					}
+					hits++;
+				} else {
+					links[i].parentElement.style.display = 'none';
+				}
 			}
-			
 			this.__count.innerHTML = hits;
-			
 		} else {
 			this.__count.innerHTML = 0;
+			this.__ids.innerHTML = '';
 			this.__result.style.display = 'none';
 		}
 	},
-
-	__init : function() {
-
-		// sort voodo part 1
-		container = [];
-		for(idx in tree) {
-			crump = this.__set(idx);
-			container.push(crump+'[[*]]'+idx);
-		}
-
-		// sort voodoo part 2
-		container.sort( sortAlphaNum );
-
-		str = '';
-		for(i in container) {
-
-			tmp   = container[i].split('[[*]]');
-			idx   = tmp[1];
-			label = tmp[0];
-
-			str += '<div style="display:block;">';
-			str += '<a';
-			str += ' href="?id='+idx+'&lang='+lang+'"';
-			str += ' treebuilder.wait();"';
-			str += ' style="display:none;"';
-			str += '>';
-			str += idx+' : '+label;
-			str += '</a>';
-			str += '</div>';
-		}
-
-		this.__result.innerHTML = str;
-		// reset crumps
-		this.__crumps = {};
-		// set searchlinks
-		this.__searchlinks = $('#'+this.__result.id+' a');
-		this.__header.style.display = 'block';
-		this.__input.focus();
-	},
-
-	__set : function(id) {
-		this.__crumps = {};
-		this.__setCrumps(id, 'search');
-		i = 0;
-		crumps = '';
-		for( view in identifiers ) {
-			if(typeof this.__crumps[view] != 'undefined') {
-				// exclude from search start marker
-				if(i == 0) {
-					crumps += '<span>';
-				}
-				if(i != 0) {
-					crumps += ' / ';
-				}
-				// exclude from search stop marker
-				if(i == 2) {
-					crumps += '</span>';
-				}
-				crumps += this.__crumps[view].label;
-			}
-			i = i+1;
-		}
-		return crumps;
-	},
-
-	__setCrumps : function(id) {
-		result = tree[id];
-		if(typeof result != 'undefined') {
-			this.__crumps[result.v] = { 'label':result.l, 'id':id, 'parent':result.p };
-			if(typeof result.p != 'undefined') {
-				this.__setCrumps(result.p);
-			}
-		}
-	},
-
 }
 
 /* IMAGEBOX */
@@ -676,7 +570,7 @@ var imagebox = {
 var usagebuilder = {
 
 	//---------------------------------------------
-	// print
+	// Print
 	//---------------------------------------------
 	print : function() {
 		this.select = document.getElementById('UsageSelect');
@@ -696,6 +590,10 @@ var usagebuilder = {
 			$('.close').trigger('focus');
 		}
 	},
+	
+	//---------------------------------------------
+	// Close
+	//---------------------------------------------
 	close : function() {
 		$('.selectpicker').selectpicker('val', '');
 		$('#UsageModal').modal('hide');
@@ -704,13 +602,18 @@ var usagebuilder = {
 
 /* MAPUILDER */
 var mapbuilder = {
+
 	//---------------------------------------------
-	// print
+	// Print
 	//---------------------------------------------
 	print : function () {
 		var form_data = $('#MapForm').serializeArray();
 		$('#MapFrame').load('jlu.map.php', form_data);
 	},
+	
+	//---------------------------------------------
+	// Close
+	//---------------------------------------------
 	load : function (id) {
 		children = [];
 		if(typeof tree[id] != 'undefined') {
@@ -737,16 +640,18 @@ var mapbuilder = {
 			}
 			for(i in children) {
 				tmp = children[i].split('[[*]]');
-				//str += '<a href="?id='+tmp[1]+'&lang='+lang+'">'+tmp[0]+'</a>';
 				str += '<a href="?id='+tmp[1]+'&lang='+lang+'">'+tmp[0]+'</a>';
 			}
 			$('.popover-data').html(str);
-			$('.popover-thumb img').on('click', function() { mapbuilder.image(id); } );
-			$('.popover-thumb img').attr('title',  maptranslate['title_thumb']);
 		}
+		$('.popover-thumb img').on('click', function() { mapbuilder.image(id); } );
+		$('.popover-thumb img').attr('title',  maptranslate['title_thumb']);
 	},
-	image : function(id) {
 	
+	//---------------------------------------------
+	// Image
+	//---------------------------------------------
+	image : function(id) {
 		clone = document.createElement('img'); 
 		clone.src = 'jlu.standort.api.php?action=image&file='+id+'.jpg';
 		$('#ImageModal').modal({
@@ -767,7 +672,7 @@ var mapbuilder = {
 var qrcodebuilder = {
 
 	//---------------------------------------------
-	// print
+	// Print
 	//---------------------------------------------
 	print : function() {
 		clone = document.getElementById('QRCODE').cloneNode(true);

@@ -45,7 +45,6 @@ var $language = 'en';
 * @access public
 * @var array
 */
-
 var $lang = array();
 
 	//--------------------------------------------
@@ -69,19 +68,14 @@ var $lang = array();
 		$this->classdir    = $controller->classdir;
 		$this->treeurl     = $controller->treeurl;
 
-		// handle tree
-		$treeurl = $this->response->html->thisdir.$this->treeurl;
-		if($this->file->exists($treeurl)) {
-			$this->tree = json_decode(str_replace('var tree = ', '', $this->file->get_contents($treeurl)), true);
-		}
-
 	}
 
 	//--------------------------------------------
 	/**
 	 * Action
 	 *
-	 * Important : expecting "gebauede" in tree 
+	 * Important : expecting "gebauede",
+	 * "geschoss", "raum" as ['v'] in tree 
 	 *
 	 * @access public
 	 * @return htmlobject_template
@@ -90,30 +84,92 @@ var $lang = array();
 	function action() {
 
 		$tree = array();
+		$floors = array();
+		$rooms = array();
+
+		// debug
+		$display = 'none';
+		if(isset($this->controller->debug)) {
+			$display = 'block';
+		}
+
+		// handle tree
 		if(isset($this->tree) && is_array($this->tree)) {
 			foreach($this->tree as $k => $v) {
-				if(isset($v['v']) && $v['v'] === 'gebauede') {
-					$tree[$k] = $this->__parents($v['p'], $v['l']);
-					#break;
+				if(isset($v['v'])) {
+					if($v['v'] === 'gebauede') {
+						$tree[$k] = $this->__parents($v['p'], $v['l']);
+					}
+					elseif($v['v'] === 'geschoss') {
+						$floors[$v['p']][$k] = $v['l'];
+					}
+					elseif($v['v'] === 'raum') {
+						$rooms[$v['p']][$k] = $v['l'];
+					}
 				}
 			}
 		}
 		asort($tree);
+
+		// handle external tags
+		$etags = array();
+		$tagfile = $this->profilesdir.'/jlu.standort/tags.csv';
+		if($this->file->exists($tagfile)) {
+			$fp = @fopen($tagfile, "r");
+			if($fp) {
+				while (($data = fgetcsv($fp, 1000, ";", "\"")) !== FALSE) {
+					if(isset($data[1])) {
+						$etags[$data[0]] = $data[1];
+					}
+				}
+				fclose($fp);
+			}
+		}
+
+		// build content
 		$content = '';
 		foreach($tree as $k => $v) {
 			$parts = explode(' | ', $v);
-		
-			$content .= '<div id="'.$k.'">';
-			$content .= ' <span id="search_'.$k.'">'.$k.' - '.$v.'</span>';
+			$floor = array();
+			$room = array();
+			$tags = '';
+			$crooms = 0;
+			
+			if(isset($floors[$k])) {
+				$floor = $floors[$k];
+				foreach($floors[$k] as $kk => $vv) {
+					if(isset($rooms[$kk])) {
+						$crooms += count($rooms[$kk]);
+						$str = implode(' | ', $rooms[$kk]);
+						preg_match_all('~\((.*?)\)~', $str, $matches);
+						if(count($matches[1]) > 0) {
+							$room = array_merge($room, $matches[1]);
+						}
+					}
+				}
+				$room = array_unique($room);
+				if($tags === '' && count($room) > 0) {
+					$tags .= ' * ';
+				}
+				$tags .= implode(' | ', $room);
+			}
+			
+			// handle external tags
+			if(array_key_exists($k, $etags)) {
+				$tags .= ' x '. $etags[$k];
+			}
+			
+			$content .= '<div id="'.$k.'" style="margin-bottom:10px;">';
+			$content .= ' <span style="display:'.$display.';" id="search_'.$k.'">'.$k.' | '.$parts[count($parts)-2].' | '.$parts[count($parts)-1].' '.$tags.'</span>';
 			$content .= ' <a href="?id='.$k.'&lang='.$this->language.'">';
 			$content .= '  <div class="card">';
 			$content .= '   <div class="card-body">';
 			$content .= '    <div class="card-text clearfix">';
 			$content .= '     <div class="float-left">';
-			$content .= '     '.$parts[count($parts)-1].'<br>';
-			$content .= '     '.$parts[count($parts)-2];
+			$content .= '     '.implode('<br>', $parts);
+			$content .= '      <div style="margin-top:10px;">Etagen: '.count($floor).' R&auml;ume: '.$crooms.'</div>';
 			$content .= '     </div>';
-			$content .= '     <img class="float-right" src="jlu.standort.api.php?action=thumb&file='.$k.'.jpg">';
+			$content .= '     <img class="float-right" title="'.$this->lang['map']['title_thumb'].'" src="jlu.standort.api.php?action=thumb&file='.$k.'.jpg" onclick="mapbuilder.image(\''.$k.'\'); return false;">';
 			$content .= '    </div>';
 			$content .= '   </div>';
 			$content .= '  </div>';
@@ -128,6 +184,7 @@ var $lang = array();
 			'search_title' => $this->lang['search_title'],
 			'close' => $this->lang['close'],
 			'max' => count($tree),
+			'display' => $display,
 		);
 		$t->add($vars);
 		return $t;

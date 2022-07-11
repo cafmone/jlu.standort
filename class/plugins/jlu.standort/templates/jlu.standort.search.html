@@ -6,7 +6,8 @@
 			<div style="display:inline-block;margin: 8px 0 0 0;"><span id="SearchCount">0</span> / <span>{max}</span></div>
 		</div>
 	</div>
-	<div id="SearchResult" style="display:none;">{content}</div>
+	<div id="SearchResult" style="display:{display};">{content}</div>
+	<textarea id="SearchActive" class="form-control" style="width:100%; display:{display};margin-top:10px;" rows="6"></textarea>
 </div>
 
 
@@ -14,5 +15,6 @@
 window.onload = function() {
 	searchbuilder.init();
 	document.getElementById('SearchInput').value = '';
+	$('#Rightbar').toggleClass('active');
 }
 </script>

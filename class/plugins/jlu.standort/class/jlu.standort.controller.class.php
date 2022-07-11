@@ -148,8 +148,14 @@ var $defaultid;
 
 		// handle derived templates
 		$this->tpldir = $this->classdir.'plugins/jlu.standort/templates/';
-		if($this->file->exists($this->profilesdir.'jlu.standort/templates/jlu.standort.standalone.api.html')) {
+		if($this->file->exists($this->profilesdir.'jlu.standort/templates/jlu.standort.index.html')) {
 			$this->tpldir = $this->profilesdir.'jlu.standort/templates/';
+		}
+		
+		// debug
+		$debug = $this->response->html->request()->get('debug', true);
+		if(isset($debug)) {
+			$this->debug = true;
 		}
 	}
 
@@ -228,14 +234,20 @@ var $defaultid;
 	function index( $visible = false, $raw = false ) {
 		$data = '';
 		if($visible === true) {
+		
+			// handle tree
+			$treeurl = $this->response->html->thisdir.$this->treeurl;
+			if($this->file->exists($treeurl)) {
+				$tree = json_decode(str_replace('var tree = ', '', $this->file->get_contents($treeurl)), true);
+				$this->tree = $tree;
+			}
+
 			require_once($this->classdir.'plugins/jlu.standort/class/jlu.standort.index.class.php');
 			$controller = new jlu_standort_index($this);
-
 			$controller->actions_name = $this->actions_name;
 			$controller->identifier_name = $this->identifier_name;
-
 			$controller->language = $this->language;
-
+			$controller->tree = $this->tree;
 			$controller->cssurl = $this->cssurl;
 			$controller->jsurl = $this->jsurl;
 			$controller->imgurl = $this->imgurl;
@@ -278,6 +290,9 @@ var $defaultid;
 			$controller->identifier_name = $this->identifier_name;
 			$controller->language = $obj->language;
 			$controller->lang = $obj->translation;
+			
+			$controller->tree = $obj->tree;
+			
 			$tmp = $controller->action();
 			
 			$index->add(array('canvas' => $tmp));
