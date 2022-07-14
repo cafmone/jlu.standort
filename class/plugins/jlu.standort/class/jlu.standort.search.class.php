@@ -167,7 +167,6 @@ var $lang = array();
 			$content .= '    <div class="card-text clearfix">';
 			$content .= '     <div class="float-left">';
 			$content .= '     '.implode('<br>', $parts);
-			$content .= '      <div style="margin-top:10px;">Etagen: '.count($floor).' R&auml;ume: '.$crooms.'</div>';
 			$content .= '     </div>';
 			$content .= '     <img class="float-right" title="'.$this->lang['map']['title_thumb'].'" src="jlu.standort.api.php?action=thumb&file='.$k.'.jpg" onclick="mapbuilder.image(\''.$k.'\'); return false;">';
 			$content .= '    </div>';
