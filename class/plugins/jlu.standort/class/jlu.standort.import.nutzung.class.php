@@ -57,7 +57,7 @@ class jlu_standort_import_nutzung
 		$result = $this->db->select($file,'*');
 
 
-		$search = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.nutzung.ini');
+		$search = $this->file->get_ini($this->langdir.'de.jlu.standort.nutzung.ini');
 
 
 		if(is_array($result)) {

@@ -6,7 +6,7 @@
  * @package jlu_standort
  * @license ../LICENSE.TXT
  * @version 1.0
- * @copyright Copyright (c) 2020,
+ * @copyright Copyright (c) 2022,
  * Justus-Liebig-Universitaet Giessen
  * Dezernat E - Liegenschaften, Bau und Technik
  * Abteilung E1 - Flaechenmanagement
@@ -61,7 +61,7 @@ var $tpldir;
 
 		// handle derived language
 		$this->langdir = $this->classdir.'plugins/jlu.standort/lang/';
-		if($this->file->exists($this->profilesdir.'jlu.standort/lang/de.jlu.standort.standalone.ini')) {
+		if($this->file->exists($this->profilesdir.'jlu.standort/lang/de.jlu.standort.index.ini')) {
 			$this->langdir = $this->profilesdir.'jlu.standort/lang/';
 		}
 	}
@@ -157,14 +157,14 @@ var $tpldir;
 			echo '<b>Nutzung</b> <a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=nutzung">Parse</a>';
 			echo '<a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=nutzung&debug=true">Debug</a>';
 			echo '<br><br>Translation: ';
-			echo $this->langdir.'de.jlu.standort.standalone.nutzung.ini';
-			$ini = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.nutzung.ini');
+			echo $this->langdir.'de.jlu.standort.nutzung.ini';
+			$ini = $this->file->get_ini($this->langdir.'de.jlu.standort.nutzung.ini');
 			if(is_array($ini)) {
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
 			} else {
-				echo '<br><br><b>Error</b>: Did not find translation in '.$this->langdir.'de.jlu.standort.standalone.nutzung.ini<br><br>';
+				echo '<br><br><b>Error</b>: Did not find translation in '.$this->langdir.'de.jlu.standort.nutzung.ini<br><br>';
 			}
 			echo 'Config: ';
 			echo $this->profilesdir.'jlu.standort.import.nutzung.ini';
@@ -180,14 +180,14 @@ var $tpldir;
 			echo '<b>Barrierefreiheit</b> <a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=accessibility">Parse</a>';
 			echo '<a style="display:inline-block;margin-left:20px;" href="'.$this->response->html->thisfile.'?'.$this->actions_name.'=accessibility&debug=true">Debug</a>';
 			echo '<br><br>Translation: ';
-			echo $this->langdir.'de.jlu.standort.standalone.accessibility.ini';
-			$ini = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.accessibility.ini');
+			echo $this->langdir.'de.jlu.standort.accessibility.ini';
+			$ini = $this->file->get_ini($this->langdir.'de.jlu.standort.accessibility.ini');
 			if(is_array($ini)) {
 				echo '<pre>';
 				print_r($ini);
 				echo '</pre>';
 			} else {
-				echo '<br><br><b>Error</b>: Did not find translation in '.$this->langdir.'de.jlu.standort.standalone.accessibility.ini<br><br>';
+				echo '<br><br><b>Error</b>: Did not find translation in '.$this->langdir.'de.jlu.standort.accessibility.ini<br><br>';
 			}
 			$ini = $this->file->get_ini($this->profilesdir.'jlu.standort.import.accessibility.ini');
 			if(is_array($ini)) {

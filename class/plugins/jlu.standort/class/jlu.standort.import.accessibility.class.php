@@ -56,7 +56,7 @@ class jlu_standort_import_accessibility
 		$file = 'jlu.standort.import.accessibility.ini';
 		$result = $this->db->select($file,'*');
 
-		$search = $this->file->get_ini($this->langdir.'de.jlu.standort.standalone.accessibility.ini');
+		$search = $this->file->get_ini($this->langdir.'de.jlu.standort.accessibility.ini');
 
 		if(is_array($result)) {
 
