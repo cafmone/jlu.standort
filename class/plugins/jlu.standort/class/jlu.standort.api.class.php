@@ -743,20 +743,21 @@ var $lang = array(
 				}
 
 				require_once($this->classdir.'lib/pdf/tcpdf/tcpdf_barcodes_2d.php');
+				require_once($this->classdir.'lib/pdf/custom/custom_tcpdf_barcodes_2d.php');
 
 				// set the barcode content and type
-				$obj = new TCPDF2DBarcode($url, 'QRCODE,L');
+				$obj = new custom_tcpdf_barcodes_2d($url, 'QRCODE,L');
 
 				if($print === true) {
-					$code = $obj->getBarcodePngData(5,5,array(0,0,0));
+					$code = $obj->getBarcodeJpgData(5,5,array(0,0,0));
 
 					// send headers
-					header('Content-Type: image/png');
+					header('Content-Type: image/jpeg');
 					header('Cache-Control: public, must-revalidate, max-age=0'); // HTTP/1.1
 					header('Pragma: public');
 					header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); // Date in the past
 					header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
-					header("Content-disposition: attachment; filename=JLU.Qrcode.".$this->id.".png");
+					header("Content-disposition: attachment; filename=JLU.Qrcode.".$this->id.".jpg");
 					echo $code;
 
 				} else {
