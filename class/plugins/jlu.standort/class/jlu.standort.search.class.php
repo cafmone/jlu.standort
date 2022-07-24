@@ -86,6 +86,12 @@ var $lang = array();
 		$tree = array();
 		$floors = array();
 		$rooms = array();
+		
+		// get search value
+		$value = $this->response->html->request()->get('search');
+		if($value !== '') {
+			$value = htmlentities($value);
+		}
 
 		// debug
 		$display = 'none';
@@ -129,18 +135,16 @@ var $lang = array();
 		// build content
 		$content = '';
 		foreach($tree as $k => $v) {
-			$parts = explode(' | ', $v);
+			$parts = explode('|', $v);
 			$floor = array();
 			$room = array();
-			$tags = '';
-			$crooms = 0;
-			
+			$tags = array();
+
 			if(isset($floors[$k])) {
 				$floor = $floors[$k];
 				foreach($floors[$k] as $kk => $vv) {
 					if(isset($rooms[$kk])) {
-						$crooms += count($rooms[$kk]);
-						$str = implode(' | ', $rooms[$kk]);
+						$str = implode('|', $rooms[$kk]);
 						preg_match_all('~\((.*?)\)~', $str, $matches);
 						if(count($matches[1]) > 0) {
 							$room = array_merge($room, $matches[1]);
@@ -148,26 +152,48 @@ var $lang = array();
 					}
 				}
 				$room = array_unique($room);
-				if($tags === '' && count($room) > 0) {
-					$tags .= ' * ';
-				}
-				$tags .= implode(' | ', $room);
 			}
-			
+
 			// handle external tags
 			if(array_key_exists($k, $etags)) {
-				$tags .= ' x '. $etags[$k];
+				$tags[] = $etags[$k];
 			}
-			
+
 			$content .= '<div id="'.$k.'" style="margin-bottom:10px;">';
-			$content .= ' <span style="display:'.$display.';" id="search_'.$k.'">'.$k.' | '.$parts[count($parts)-2].' | '.$parts[count($parts)-1].' '.$tags.'</span>';
+			$content .= ' <span style="display:'.$display.';" id="search_'.$k.'">'.$k.'|'.$parts[count($parts)-2].'|'.$parts[count($parts)-1].'|+|'.implode('|', $room).'|+|'.implode('|', $tags).'</span>';
 			$content .= ' <a href="?id='.$k.'&lang='.$this->language.'">';
 			$content .= '  <div class="card">';
 			$content .= '   <div class="card-body">';
 			$content .= '    <div class="card-text clearfix">';
 			$content .= '     <div class="float-left">';
-			$content .= '     '.implode('<br>', $parts);
+			$content .= '     <h5>'.$this->lang['identifiers']['gebauede'].'</h5>';
+			$content .= '     <div style="margin-left:10px;">';
+			$i = 1;
+			foreach($parts as $part) {
+				if($i === 3) {
+					$content .= '     <div style="display:inline;" id="'.$k.'-adress">';
+				}
+				$content .= '      '.$part.'<br>';
+				if($i === count($parts)) {
+					$content .= '     </div>';
+				}
+				$i++;
+			}
+			#$content .= '      <br>';
 			$content .= '     </div>';
+			$content .= '     </div>';
+			if(count($room) > 0) {
+				$content .= '     <div class="float-left" style="margin-left: 40px;">';
+				$content .= '     <h5>'.$this->lang['identifiers']['raum'].'</h5>';
+				$content .= '     <div id="'.$k.'-rooms" style="margin-left:10px;">'.implode('<br>', $room).'<br></div>';
+				$content .= '     </div>';
+			}
+			if(count($tags) > 0) {
+				$content .= '     <div class="float-left" style="margin-left: 40px;">';
+				$content .= '     <h5>'.$this->lang['tags'].'</h5>';
+				$content .= '     <div id="'.$k.'-tags" style="margin-left:10px;">'.implode('<br>', $tags).'<br></div>';
+				$content .= '     </div>';
+			}
 			$content .= '     <img class="float-right" title="'.$this->lang['map']['title_thumb'].'" src="jlu.standort.api.php?action=thumb&file='.$k.'.jpg" onclick="mapbuilder.image(\''.$k.'\'); return false;">';
 			$content .= '    </div>';
 			$content .= '   </div>';
@@ -178,12 +204,15 @@ var $lang = array();
 
 		$t = $this->response->html->template($this->tpldir.'jlu.standort.search.html');
 		$vars = array(
-			'content' => $content,
 			'search' => $this->lang['search'],
 			'search_title' => $this->lang['search_title'],
+			'value' => $value,
 			'close' => $this->lang['close'],
+			'loading' => $this->lang['loading'],
 			'max' => count($tree),
 			'display' => $display,
+			'imgurl' => $this->controller->imgurl,
+			'content' => $content,
 		);
 		$t->add($vars);
 		return $t;
@@ -203,7 +232,7 @@ var $lang = array();
 		if(array_key_exists($parent, $this->tree)) {
 			$tmp = $this->tree[$parent];
 			if(isset($tmp['p'])) {
-				return $this->__parents($tmp['p'], $tmp['l'].' | '.$str);
+				return $this->__parents($tmp['p'], $tmp['l'].'|'.$str);
 			} else {
 				return $str;
 			}

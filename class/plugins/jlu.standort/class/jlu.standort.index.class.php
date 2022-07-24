@@ -124,6 +124,7 @@ var $lang = array(
 	'imprint_title' => 'Imprint',
 	'search' => 'Search ...',
 	'search_title' => 'Search',
+	'tags' => 'Tags',
 	'toggle_left' => 'Toggle Left Panel',
 	'toggle_right' => 'Toggle Right Panel',
 	'close' => 'close',

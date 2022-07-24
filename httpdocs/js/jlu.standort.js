@@ -507,32 +507,113 @@ var searchbuilder = {
 	// Seek
 	//---------------------------------------------
 	seek : function() {
-		filter = this.__input.value;
+		needle = this.__input.value;
 		hits   = 0;
-		if(filter.length > 2) {
+		if(needle.length > 2) {
+
+			// GUI
 			this.__ids.innerHTML = '';
 			this.__result.style.display = 'block';
-			links = $('#'+this.__result.id+' span');
-			regex = new RegExp(filter, "i");
-			for(var i=0; i < links.length; i++) {
-				tt = links[i].innerHTML;
+
+			// handle needle escapes
+			needle = needle.replace(/\./gi, '\\.');
+			needle = needle.replace(/\+/gi, '\\+');
+			needle = needle.replace(/\?/gi, '\\?');
+			needle = needle.replace(/\|/gi, '\\|');
+			needle = needle.replace(/\^/gi, '\\^');
+			needle = needle.replace(/\$/gi, '\\$');
+			needle = needle.replace(/\(/gi, '\\(');
+			needle = needle.replace(/\)/gi, '\\)');
+			needle = needle.replace(/\{/gi, '\\{');
+			needle = needle.replace(/\}/gi, '\\}');
+			needle = needle.replace(/\[/gi, '\\[');
+			needle = needle.replace(/\]/gi, '\\]');
+
+			// handle wildcard
+			needle = needle.replace(/\*/gi, '[^<\|]*');
+			//console.log(needle);
+
+			// haystack
+			haystack = $('#'+this.__result.id+' span');
+
+			regex = new RegExp(needle, "i");
+			for(var i=0; i < haystack.length; i++) {
+
+				// get string to search in
+				tt = haystack[i].innerHTML;
+
+				// remove highlite
 				tt = tt.replace(/<strong>(.*)<\/strong>/i, '$1');
-				// remove marked block from searching
-				text   = tt.replace(/(<span>[^<>]*<\/span>)/i, "");
+
+				// remove span from text to search
+				text = tt.replace(/(<span>[^<>]*<\/span>)/i, "");
 				result = regex.test(text);
 				if(result !== false) {
-					ex = new RegExp('('+filter+')', "i");
-					// add highlite
-					links[i].innerHTML = tt.replace(ex, '<strong>$1</strong>');
- 					links[i].parentElement.style.display = 'block';
- 					if(this.__ids.innerHTML === '') {
- 						this.__ids.innerHTML = links[i].parentElement.id;
- 					} else {
- 						this.__ids.innerHTML = this.__ids.innerHTML+','+links[i].parentElement.id;
- 					}
+					parent = haystack[i].parentElement.id;
+
+					// add highlite to haystack string
+					ex = new RegExp('('+needle+')', "i");
+					haystack[i].innerHTML = tt.replace(ex, '<strong>$1</strong>');
+					haystack[i].parentElement.style.display = 'block';
+
+					halt = false;
+					// handle hit highlite in building
+					adress = document.getElementById(parent+'-adress');
+						if(adress !== null) {
+						tmp = adress.innerHTML;
+						tmp = tmp.replace(/<strong>(.*)<\/strong>/i, '$1');
+						c = tmp.length;
+						tmp = tmp.replace(ex, '<strong>$1</strong>');
+						if(c < tmp.length) {
+							halt = true;
+						}
+						adress.innerHTML = tmp;
+						//console.log(adress.innerHTML);
+					}
+
+					// handle hit highlite in rooms
+					rooms = document.getElementById(parent+'-rooms');
+					if(rooms !== null) {
+						tmp = rooms.innerHTML;
+						tmp = tmp.replace(/<strong>(.*)<\/strong>/i, '$1');
+						if(halt === false) {
+							c = tmp.length;
+							tmp = tmp.replace(ex, '<strong>$1</strong>');
+							if(c < tmp.length) {
+								halt = true;
+							}
+						}
+						rooms.innerHTML = tmp;
+						//console.log(rooms.innerHTML);
+					}
+
+					// handle hit highlite in tags
+					tags = document.getElementById(parent+'-tags');
+					if(tags !== null) {
+						tmp = tags.innerHTML;
+						tmp = tmp.replace(/<strong>(.*)<\/strong>/i, '$1');
+						if(halt === false) {
+							c = tmp.length;
+							tmp = tmp.replace(ex, '<strong>$1</strong>');
+							if(c < tmp.length) {
+								halt = true;
+							}
+						}
+						tags.innerHTML = tmp;
+						//console.log(tags.innerHTML);
+					}
+
+					// store id for later use
+					if(this.__ids.innerHTML === '') {
+						this.__ids.innerHTML = parent;
+					} else {
+						this.__ids.innerHTML = this.__ids.innerHTML+','+ parent;
+					}
+
+					// count hits
 					hits++;
 				} else {
-					links[i].parentElement.style.display = 'none';
+					haystack[i].parentElement.style.display = 'none';
 				}
 			}
 			this.__count.innerHTML = hits;

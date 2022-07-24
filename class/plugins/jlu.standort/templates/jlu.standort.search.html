@@ -1,20 +1,42 @@
 <div id="Search" style="display:block;">
-	<div id="SearchLoader"></div>
-	<div id="SearchHeader" style="display:block;">
-		<div class="clearfix" style="margin: 0 0 20px 0;">
-			<input style="width:400px;margin-right:20px;display: block;" id="SearchInput" type="text" class="float-left form-control" title="{search_title}" placeholder="{search}" onkeyup="searchbuilder.seek()">
+
+	<div id="SearchHeader" style="visibility:hidden;text-align:left;">
+		<div class="clearfix" style="margin: 0 0 20px 0; display:inline-block;">
+			<input value="{value}" 
+					style="width:400px;margin-right:20px;display: block;" 
+					id="SearchInput" 
+					type="text" 
+					class="float-left form-control" 
+					title="{search_title}" 
+					placeholder="{search}" 
+					onkeyup="searchbuilder.seek()
+				">
 			<div style="display:inline-block;margin: 8px 0 0 0;"><span id="SearchCount">0</span> / <span>{max}</span></div>
 		</div>
 	</div>
+	
+	<div id="SearchLoader" style="text-align:center;">
+		<div class="modal-body clearfix" style="opacity:0.5;display:inline-block;">
+			<div class="spinner-border float-left"></div>
+			<div class="float-left" style="margin: 5px 0 0 15px;">{loading}</div>
+		</div>
+	</div>
+	
 	<div id="SearchResult" style="display:{display};">{content}</div>
+
 	<textarea id="SearchActive" class="form-control" style="width:100%; display:{display};margin-top:10px;" rows="6"></textarea>
+
 </div>
 
 
 <script>
 window.onload = function() {
-	searchbuilder.init();
-	document.getElementById('SearchInput').value = '';
 	$('#Rightbar').toggleClass('active');
+	document.getElementById('SearchLoader').style.display = 'none';
+	document.getElementById('SearchHeader').style.visibility = 'visible';
+	searchbuilder.init();
+	if(document.getElementById('SearchInput').value !== '') {
+		searchbuilder.seek();
+	}
 }
 </script>
