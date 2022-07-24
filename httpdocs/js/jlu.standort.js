@@ -530,9 +530,9 @@ var searchbuilder = {
 			needle = needle.replace(/\]/gi, '\\]');
 
 			// handle wildcard
-			needle = needle.replace(/\*/gi, '[^<\|]*?');
-			needle = needle.replace(/\[\^<\|\]\*\?$/gi, '[^<\|]*');
-			needle = needle.replace(/^\[\^<\|\]\*\?/gi, '[<\|]?[^<\|]*?');
+			needle = needle.replace(/\*/gi, '[^<\|]+?');
+			needle = needle.replace(/\[\^<\|\]\+\?$/gi, '[^<\|]+');
+			needle = needle.replace(/^\[\^<\|\]\+\?/gi, '[<\|]?[^<\|]+?');
 			console.log(needle);
 
 			// haystack
