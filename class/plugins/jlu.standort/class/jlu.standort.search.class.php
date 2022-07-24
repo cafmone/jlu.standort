@@ -160,7 +160,7 @@ var $lang = array();
 			}
 
 			$content .= '<div id="'.$k.'" style="margin-bottom:10px;">';
-			$content .= ' <span style="display:'.$display.';" id="search_'.$k.'">'.$k.'|'.$parts[count($parts)-2].'|'.$parts[count($parts)-1].'|+|'.implode('|', $room).'|+|'.implode('|', $tags).'</span>';
+			$content .= ' <span style="display:'.$display.';" id="search_'.$k.'">|'.$k.'|'.$parts[count($parts)-2].'|'.$parts[count($parts)-1].'|+|'.implode('|', $room).'|+|'.implode('|', $tags).'</span>';
 			$content .= ' <a href="?id='.$k.'&lang='.$this->language.'">';
 			$content .= '  <div class="card">';
 			$content .= '   <div class="card-body">';

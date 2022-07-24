@@ -531,7 +531,8 @@ var searchbuilder = {
 
 			// handle wildcard
 			needle = needle.replace(/\*/gi, '[^<\|]*?');
-			//console.log(needle);
+			needle = needle.replace(/^\[\^<\|\]*?/gi, '[<\|]?[^<\|]*?');
+			console.log(needle);
 
 			// haystack
 			haystack = $('#'+this.__result.id+' span');
