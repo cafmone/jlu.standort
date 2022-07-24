@@ -533,7 +533,7 @@ var searchbuilder = {
 			needle = needle.replace(/\*/gi, '[^<\|]+?');
 			needle = needle.replace(/\[\^<\|\]\+\?$/gi, '[^<\|]+');
 			needle = needle.replace(/^\[\^<\|\]\+\?/gi, '[<\|]?[^<\|]+?');
-			console.log(needle);
+			//console.log(needle);
 
 			// haystack
 			haystack = $('#'+this.__result.id+' span');
