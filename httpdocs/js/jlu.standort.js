@@ -563,7 +563,7 @@ var searchbuilder = {
 					adress = document.getElementById(parent+'-adress');
 						if(adress !== null) {
 						tmp = adress.innerHTML;
-						tmp = tmp.replace(/<strong>(.*)<\/strong>/i, '$1');
+						tmp = tmp.replace(/<strong>|<\/strong>/gi,'');
 						c = tmp.length;
 						tmp = tmp.replace(ex, '<strong>$1</strong>');
 						if(c < tmp.length) {
@@ -577,7 +577,8 @@ var searchbuilder = {
 					rooms = document.getElementById(parent+'-rooms');
 					if(rooms !== null) {
 						tmp = rooms.innerHTML;
-						tmp = tmp.replace(/<strong>(.*)<\/strong>/i, '$1');
+						tmp = tmp.replace(/<strong>|<\/strong>/gi,'');
+						ex  = new RegExp('('+needle+')', "gi");
 						if(halt === false) {
 							c = tmp.length;
 							tmp = tmp.replace(ex, '<strong>$1</strong>');
@@ -593,7 +594,8 @@ var searchbuilder = {
 					tags = document.getElementById(parent+'-tags');
 					if(tags !== null) {
 						tmp = tags.innerHTML;
-						tmp = tmp.replace(/<strong>(.*)<\/strong>/i, '$1');
+						tmp = tmp.replace(/<strong>|<\/strong>/gi,'');
+						ex  = new RegExp('('+needle+')', "gi");
 						if(halt === false) {
 							c = tmp.length;
 							tmp = tmp.replace(ex, '<strong>$1</strong>');

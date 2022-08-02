@@ -110,7 +110,11 @@ var $lang = array();
 						$floors[$v['p']][$k] = $v['l'];
 					}
 					elseif($v['v'] === 'raum') {
-						$rooms[$v['p']][$k] = $v['l'];
+						// remove rooms without (..)
+						preg_match('~\((.*?)\)~', $v['l'], $matches);
+						if(count($matches) > 0) {
+							$rooms[$v['p']][$k] = $v['l'];
+						}
 					}
 				}
 			}
@@ -133,89 +137,97 @@ var $lang = array();
 		}
 
 		// build content
-		$content = '';
+		$output = '';
 		foreach($tree as $k => $v) {
 			$parts = explode('|', $v);
 			$floor = array();
 			$room = array();
+			$links = array();
 			$tags = array();
 
 			if(isset($floors[$k])) {
 				$floor = $floors[$k];
 				foreach($floors[$k] as $kk => $vv) {
 					if(isset($rooms[$kk])) {
-						$str = implode('|', $rooms[$kk]);
+						sort($rooms[$kk], SORT_NUMERIC);
+						$str = '|'.implode('|', $rooms[$kk]).'|';
+						preg_match_all('~\|?(.*?)\)+~', $str, $matches);
+						if(count($matches[1]) > 0) {
+							foreach($matches[1] as $m) {
+								$pos = strpos($m, '(');
+								if ($pos !== false) {
+									$m = '<div class="number" style="display:inline;">'.substr_replace($m, '</div>', $pos, strlen('('));
+								}
+								$links[] = $m.'<div class="floor" style="display:inline;"><a href="?id='.$kk.'&lang='.$this->language.'">'.$vv.'</a></div>';
+							}
+						}
 						preg_match_all('~\((.*?)\)~', $str, $matches);
 						if(count($matches[1]) > 0) {
-							$room = array_merge($room, $matches[1]);
+							foreach($matches[1] as $m) {
+								$room[] = $m;
+							}
 						}
 					}
 				}
-				$room = array_unique($room);
 			}
 
 			// handle external tags
 			if(array_key_exists($k, $etags)) {
 				$tags[] = $etags[$k];
 			}
-
-			$content .= '<div id="'.$k.'" style="margin-bottom:10px;">';
-			$content .= ' <span style="display:'.$display.';" id="search_'.$k.'">|'.$k.'|'.$parts[count($parts)-2].'|'.$parts[count($parts)-1].'|+|'.implode('|', $room).'|+|'.implode('|', $tags).'</span>';
-			$content .= ' <a href="?id='.$k.'&lang='.$this->language.'">';
-			$content .= '  <div class="card">';
-			$content .= '   <div class="card-body">';
-			$content .= '    <div class="card-text clearfix">';
-			$content .= '     <div class="float-left">';
-			$content .= '     <h5>'.$this->lang['identifiers']['gebauede'].'</h5>';
-			$content .= '     <div style="margin-left:10px;">';
+			// handle gebaeude
+			$strgeb = '';
 			$i = 1;
 			foreach($parts as $part) {
 				if($i === 3) {
-					$content .= '     <div style="display:inline;" id="'.$k.'-adress">';
+					$strgeb .= '<div style="display:inline;" id="'.$k.'-adress">';
 				}
-				$content .= '      '.$part.'<br>';
+				$strgeb .= $part.'<br>';
 				if($i === count($parts)) {
-					$content .= '     </div>';
+					$strgeb .= '</div>';
 				}
 				$i++;
 			}
-			#$content .= '      <br>';
-			$content .= '     </div>';
-			$content .= '     </div>';
+			// handle rooms
+			$strroom = '';
 			if(count($room) > 0) {
-				$content .= '     <div class="float-left" style="margin-left: 40px;">';
-				$content .= '     <h5>'.$this->lang['identifiers']['raum'].'</h5>';
-				$content .= '     <div id="'.$k.'-rooms" style="margin-left:10px;">'.implode('<br>', $room).'<br></div>';
-				$content .= '     </div>';
+				$strroom .= '<div class="rooms float-left">';
+				$strroom .= '<h5>'.$this->lang['search']['rooms'].'</h5>';
+				$strroom .= '<div id="'.$k.'-rooms">'.implode('<br>', $links).'<br></div>';
+				$strroom .= '</div>';
 			}
-			if(count($tags) > 0) {
-				$content .= '     <div class="float-left" style="margin-left: 40px;">';
-				$content .= '     <h5>'.$this->lang['tags'].'</h5>';
-				$content .= '     <div id="'.$k.'-tags" style="margin-left:10px;">'.implode('<br>', $tags).'<br></div>';
-				$content .= '     </div>';
-			}
-			$content .= '     <img class="float-right" title="'.$this->lang['map']['title_thumb'].'" src="jlu.standort.api.php?action=thumb&file='.$k.'.jpg" onclick="mapbuilder.image(\''.$k.'\'); return false;">';
-			$content .= '    </div>';
-			$content .= '   </div>';
-			$content .= '  </div>';
-			$content .= ' </a>';
-			$content .= '</div>';
+
+			$x = $this->response->html->template($this->tpldir.'jlu.standort.search.result.html');
+			$vars = array(
+				'id' => $k,
+				'search' => '|'.$k.'|'.$parts[count($parts)-2].'|'.$parts[count($parts)-1].'|+|'.implode('|', array_unique($room)).'|+|'.implode('|', $tags),
+				'gebaeude' => $strgeb,
+				'rooms' => $strroom,
+				'display' => $display,
+				'href' => '?id='.$k.'&lang='.$this->language,
+				'label_gebaeude' => $this->lang['identifiers']['gebauede'],
+				'img_title' => $this->lang['map']['title_thumb'],
+				'img_src' => 'jlu.standort.api.php?action=thumb&file='.$k.'.jpg',
+			);
+			$x->add($vars);
+			$output = $output.''.$x->get_string();
 		}
 
-		$t = $this->response->html->template($this->tpldir.'jlu.standort.search.html');
+		$tpl = $this->response->html->template($this->tpldir.'jlu.standort.search.html');
 		$vars = array(
-			'search' => $this->lang['search'],
-			'search_title' => $this->lang['search_title'],
+			'search' => $this->lang['search']['search'],
+			'search_title' => $this->lang['search']['search_title'],
+			'help' => $this->lang['search']['help'],
 			'value' => $value,
 			'close' => $this->lang['close'],
 			'loading' => $this->lang['loading'],
 			'max' => count($tree),
 			'display' => $display,
 			'imgurl' => $this->controller->imgurl,
-			'content' => $content,
+			'output' => $output,
 		);
-		$t->add($vars);
-		return $t;
+		$tpl->add($vars);
+		return $tpl->get_string();
 	}
 	
 	//--------------------------------------------

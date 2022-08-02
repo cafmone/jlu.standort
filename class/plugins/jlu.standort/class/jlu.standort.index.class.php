@@ -122,9 +122,6 @@ var $lang = array(
 	'logo_alt' => 'Logo',
 	'imprint' => 'Imprint',
 	'imprint_title' => 'Imprint',
-	'search' => 'Search ...',
-	'search_title' => 'Search',
-	'tags' => 'Tags',
 	'toggle_left' => 'Toggle Left Panel',
 	'toggle_right' => 'Toggle Right Panel',
 	'close' => 'close',
@@ -150,6 +147,13 @@ var $lang = array(
 	'map' => array(
 		'title_thumb' => 'Click to enlarge image',
 		'label_data' => 'Floors',
+	),
+	'search' => array(
+		'search' => 'Search ...',
+		'search_title' => 'Search',
+		'tags' => 'Tags',
+		'rooms' => 'Rooms',
+		'help' => 'Help',
 	),
 );
 
@@ -264,7 +268,7 @@ var $lang = array(
 		$script .= 'var id = "'.$id.'";'."\n";
 		$script .= 'var maptranslate = '.json_encode($this->translation['map']).';'."\n";
 		$script .= 'var action = "&'.$this->actions_name.'='.$this->controller->action.'";'."\n";
-		$script .= 'var translation = {"search":"'.$this->translation['search'].'"};'."\n";
+		$script .= 'var translation = {"search":"'.$this->translation['search']['search'].'"};'."\n";
 		$script .= '</script>';
 
 		$copyright = '';
@@ -293,7 +297,7 @@ var $lang = array(
 
 		$search = $this->response->html->a();
 		$search->css = 'btn btn-default';
-		$search->title = $this->translation['search_title'];
+		$search->title = $this->translation['search']['search_title'];
 		$search->href = '?'.$this->actions_name.'=search&lang='.$this->user->lang;
 		$search->id = 'SearchToggler';
 		$search->label = '<span class="search-icon"><img src="bootstrap-icons/search.svg"></span>';
@@ -309,7 +313,7 @@ var $lang = array(
 			'jsurl' => $this->jsurl,
 			'imgurl' => $this->imgurl,
 			'label' => $this->translation['label'],
-			'search' => $this->translation['search'],
+			'search' => $this->translation['search']['search'],
 			'search_button' => $search,
 			'toggle_left' => $this->translation['toggle_left'],
 			'toggle_right' =>  $this->translation['toggle_right'],

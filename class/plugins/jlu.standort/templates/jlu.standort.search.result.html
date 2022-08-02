@@ -1,0 +1,15 @@
+<div id="{id}" style="margin-bottom:10px;">
+	<span style="display:{display};padding: 0 0 10px 0;" id="search_{id}">{search}</span>
+	<div class="card" onclick="location.href='{href}';">
+		<div class="card-body">
+			<div class="card-text clearfix">
+				<div class="building float-left">
+					<h5>{label_gebaeude}</h5>
+					<div style="margin-left:10px;">{gebaeude}</div>
+				</div>
+				{rooms}
+				<img class="float-right" title="{img_title}" src="{img_src}" onclick="mapbuilder.image('{id}'); event.stopPropagation(); return false;">
+			</div>
+		</div>
+	</div>
+</div>
