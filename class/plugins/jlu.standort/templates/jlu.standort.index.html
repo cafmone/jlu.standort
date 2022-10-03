@@ -19,7 +19,7 @@
 							<img alt="{logo_alt}" src="{imgurl}logo.png">
 						</a>
 					</div>		
-					<div class="sublogo" style="float: right; padding-top: 13px">
+					<div class="sublogo" style="float: right; padding-top: 13px; width: auto;">
 						<a onclick="treebuilder.wait();" tabindex="-1" href="https://www.uni-giessen.de/index.html" title="Zur Startseite der Website der JLU">
 							<img alt="{logo_alt}" src="{imgurl}sublogo.png">
 						</a>
@@ -28,43 +28,44 @@
 			</div>
 		</div>
 		<div id="Topbar" class="navbar navbar-expand-sm noprint">
-			<button type="button" id="LeftbarToggler" title="{toggle_left}" class="navbar-light btn btn-default" style="color:black;">
+			<button type="button" id="LeftbarToggler" title="{toggle_left}" class="btn btn-default" style="color:black;">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			{search_button}
-			<div class="navbar-nav ml-auto">
-				<div id="Langselect" class="nav-item dropdown">
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-						<span class="langlabel"></span>
-					</button>
-					<div class="dropdown-menu" role="menu" style="min-width:100px;"></div>
-				</div>
-				<button type="button" id="RightbarToggler" title="{toggle_right}" class="navbar-light btn btn-default" style="color:black;">
-					<span class="navbar-toggler-icon"></span>
+			<div class="navbar-nav ml-auto"></div>
+			<div id="Langselect" class="nav-item dropdown">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					<span class="langlabel"></span>
 				</button>
+				<div class="dropdown-menu" role="menu" style="min-width:100px;"></div>
 			</div>
+			<button type="button" id="RightbarToggler" title="{toggle_right}" class="navbar-light btn btn-default" style="color:black;">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 		</div>
 	</div>
 
 	<div id="Content">
 		<div style="display: table-row;">
 			<div class="cell1 noprint">
-				<nav id="Leftbar">
+				<nav id="Leftbar" class="active">
 					<div id="navbar-left"></div>
 					<div id="LeftbarContent"></div>
 				</nav>
 			</div>
 			<div class="cell2">
-				<div id="CanvasTopbar">
-					<div class="row">
-						<div id="History" class="noprint"><span class="previous" title="{previous}"></span><span class="next" title="{next}"></span></div>
-						<div id="Breadcrumps">&#160;</div>
+				<div id="Centerbar" class="">
+					<div id="CanvasTopbar">
+						<div class="row">
+							<div id="History" class="noprint"><span class="previous" title="{previous}"></span><span class="next" title="{next}"></span></div>
+							<div id="Breadcrumps">&#160;</div>
+						</div>
 					</div>
+					<div id="Canvas">{canvas}</div>
 				</div>
-				<div id="Canvas">{canvas}</div>
 			</div>
 			<div class="cell3 noprint">
-				<nav id="Rightbar">
+				<nav id="Rightbar" class="active">
 					<span class="copylink">{link}</span>
 					<!-- <span class="print">{print}</span> //-->
 					<div id="RightbarContent"></div>
@@ -184,10 +185,24 @@
 $(document).ready(function () {
 	treebuilder.init();
 	$('#LeftbarToggler').on('click', function () {
-		$('#Leftbar').toggleClass('active');
+		if($('#Leftbar').hasClass('active') === true) {
+			$('#Leftbar').removeClass('active');
+			//if($('#Rightbar').hasClass('active') !== true) {
+				//$('#Centerbar').addClass('active');
+			//}
+		} else {
+			$('#Leftbar').addClass('active');
+			//$('#Centerbar').removeClass('active');
+		}
 	});
 	$('#RightbarToggler').on('click', function () {
-		$('#Rightbar').toggleClass('active');
+		if($('#Rightbar').hasClass('active') === true) {
+			$('#Rightbar').removeClass('active');
+			//$('#Centerbar').addClass('active');
+		} else {
+			$('#Rightbar').addClass('active');
+			//$('#Centerbar').removeClass('active');
+		}
 	});
 });
 </script>

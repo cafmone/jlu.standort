@@ -425,7 +425,7 @@ var $lang = array(
 			}
 			if(!isset($image)) {
 				$image  = '<div style="text-align:center;">';
-				$image .= '<img title="'.$this->translation['no_image'].'" ';
+				$image .= '<img title="'.$this->translation['no_image'].'" style="width:100%; max-width:400px;" ';
 				$image .= 'src="jlu.standort.api.php?action=image&file=noimage.jpg" ';
 				$image .= 'style="" ';
 				$image .= '><br>';

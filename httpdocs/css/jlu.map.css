@@ -136,8 +136,8 @@ html, body {
 	text-decoration:none;
 	font-size:inherit;
 	text-align:center;
-	height:1.375em;
-	width:1.375em;
+	height:24px;
+	width:24px;
 	line-height:.4em;
 	background-color:rgba(0,60,136,.5);
 	border:none;
@@ -220,7 +220,7 @@ html, body {
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	border-radius: 0.3rem;
 	height: auto;
-	width: 370px;
+	width: 345px;
 }
 .popover .arrow {
 	position: absolute;

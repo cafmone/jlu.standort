@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>{title}</title>
 <link rel="stylesheet" type="text/css" href="{cssurl}jlu.map.css">
+<meta name=viewport content="width=device-width, initial-scale=1">
 </head>
 <body>
 
@@ -11,9 +12,9 @@
 
 <div style="position:relative;width:calc(100% - 0px);height:calc(100% - 0px);">
 	<div id="map" class="map" style="width:calc(100% - 0px);height:calc(100% - 0px);"></div>
-	<div class="ol-control" style="position:absolute; left: .5em;top:4em; z-Index:5;">
-		<button id="CenterMap" class="ol-zoom-in" title="{title_center_map}">
-		<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bullseye" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+	<div class="ol-zoom ol-unselectable ol-control" style="position:absolute; left: .5em;top:70px; z-Index:5;">
+		<button type="button" id="CenterMap" class="" title="{title_center_map}">
+		<svg width="24px" height="24px" viewBox="0 0 16 16" class="bi bi-bullseye" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 			<path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
 			<path fill-rule="evenodd" d="M8 13A5 5 0 1 0 8 3a5 5 0 0 0 0 10zm0 1A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
 			<path fill-rule="evenodd" d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
@@ -92,6 +93,7 @@ var Map = new ol.Map({
 	layers: Layers,
 	view: View,
 	controls: Controls,
+	positioning: 'top-center',
 });
 
 // Popup
@@ -101,8 +103,7 @@ var closer = document.getElementById('popup-closer');
 var overlay = new ol.Overlay({
 	offset: [0, 0],
 	element: container,
-	autoPan: true,
-	autoPanAnimation: { duration: 250 },
+	//autoPan: { margin: 10, animation: {duration: 250} },
 });
 Map.addOverlay(overlay);
 
@@ -147,6 +148,7 @@ Map.on('singleclick', function (event) {
 			}
 			overlay.setPosition(event.coordinate);
 			overlay.setPositioning('bottom-center');
+			overlay.panIntoView({ margin: 10, animation: {duration: 250} });
 		}
 		
 	} else {
@@ -172,7 +174,7 @@ CenterMap.addEventListener(
 );
 
 // handle external resize
-setInterval(function () { Map.updateSize(); }, 100);
+setInterval(function () { Map.updateSize(); }, 10);
 </script>
 </body>
 </html>

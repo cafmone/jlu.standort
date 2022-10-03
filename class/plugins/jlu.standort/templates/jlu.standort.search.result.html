@@ -4,11 +4,11 @@
 		<div class="card-body">
 			<div class="card-text clearfix">
 				<div class="building float-left">
-					<h5>{label_gebaeude}</h5>
-					<div style="margin-left:10px;">{gebaeude}</div>
+					<h5 style="width:auto;">{label_gebaeude}</h5>
+					<div style="display:inline-block;">{gebaeude}</div>
 				</div>
 				{rooms}
-				<img class="float-right" title="{img_title}" src="{img_src}" onclick="mapbuilder.image('{id}'); event.stopPropagation(); return false;">
+				<img class="thumb" title="{img_title}" src="{img_src}" onclick="mapbuilder.image('{id}'); event.stopPropagation(); return false;">
 			</div>
 		</div>
 	</div>

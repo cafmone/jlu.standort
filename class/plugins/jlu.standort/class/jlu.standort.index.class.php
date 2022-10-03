@@ -300,7 +300,7 @@ var $lang = array(
 		$search->title = $this->translation['search']['search_title'];
 		$search->href = '?'.$this->actions_name.'=search&lang='.$this->user->lang;
 		$search->id = 'SearchToggler';
-		$search->label = '<span class="search-icon"><img src="bootstrap-icons/search.svg"></span>';
+		$search->label = '<span class="search-icon"></span>';
 
 
 		$t = $this->response->html->template($this->tpldir.'jlu.standort.index.html');
