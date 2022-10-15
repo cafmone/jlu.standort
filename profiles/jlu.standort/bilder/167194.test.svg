@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" version="1.1" baseProfile="full" viewBox="0 0 794 1122" width="794" height="1122" preserveAspectRatio="none" stroke-linecap="round" stroke-linejoin="round" fill-rule="evenodd" xmlns="http://www.w3.org/2000/svg">
+  <defs />
+  <g transform="translate(0,0)">
+    <clipPath id="clipId1">
+      <path d="M24.12,961.61 769.88,961.61 769.88,160.29 24.12,160.29 24.12,961.61  z" />
+    </clipPath>
+    <g clip-path="url(#clipId1)" fill="none">
+      <g vd_layer="Schraffur-Wand">
+        <polygon fill="rgb(173,173,173)" stroke="none" points="24.12,805.37 769.88,804.75 769.88,804.75 769.87,782.16 24.17,782.16 24.12,804.75 24.12,804.75 " />
+        <polygon fill="rgb(173,173,173)" stroke="none" points="24.17,782.16 42.65,782.16 43.59,204.31 25.52,204.31 " />
+        <polygon fill="rgb(173,173,173)" stroke="none" points="42.65,782.16 769.87,782.16 769.87,781.56 769.67,205.45 769.67,204.44 769.67,182.87 602,182.87 602,204.44 751.55,205.45 753.3,781.56 " />
+        <polygon fill="rgb(173,173,173)" stroke="none" points="25.52,204.31 189.15,204.31 189.15,183.64 602,182.87 25.57,182.87 25.57,183.64 " />
+        <polygon fill="rgb(173,173,173)" stroke="none" points="25.57,182.87 769.67,182.87 769.66,179.77 728.46,179.23 25.58,179.23 25.58,179.77 " />
+        <polygon fill="rgb(173,173,173)" stroke="none" points="25.58,179.23 191.23,179.23 25.58,178.67 " />
+        <polygon fill="rgb(173,173,173)" stroke="none" points="191.23,179.23 728.46,179.23 603.13,177.57 603.1,161.02 603.1,160.29 191.11,161.02 191.22,177.57 " />
+      </g>
+      <g vd_layer="Poly-Aussenlinie">
+        <polyline stroke-width="0.58" stroke="rgb(132,132,132)" fill="none" points="24.12,805.37 25.58,178.67 191.23,179.23 191.11,161.02 603.1,160.29 603.13,177.57 769.66,179.77 769.88,804.75 24.12,805.37 " />
+        <title>4. OG</title>
+      </g>
+      <g vd_layer="Poly-Raum">
+        <polyline stroke-width="0.58" stroke="rgb(132,132,132)" fill="none" points="43.59,204.31 42.65,782.16 753.3,781.56 751.55,205.45 602,204.44 602,182.87 189.15,183.64 189.15,204.31 43.59,204.31 " />
+        <title>401</title>
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="257.79,805.18 257.79,843.54 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="664.05,336.49 130.82,335.93 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="389.4,422.12 362.57,422.12 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="103.97,843.54 103.97,961.61 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="257.79,843.54 103.97,843.54 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="42.65,782.16 131.98,650.47 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="396.66,961.61 396.66,843.54 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="315.67,843.54 315.64,805.13 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="396.66,843.54 315.67,843.54 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="103.97,961.61 396.66,961.61 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="375.98,422.12 377.77,423.91 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="388.5,434.64 363.46,434.64 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="664.05,336.49 751.55,205.45 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="664.66,650.07 664.05,336.49 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="388.5,465.95 363.46,465.95 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="664.66,650.07 753.3,781.56 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="388.5,428.38 363.46,428.38 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="131.98,650.47 664.66,650.07 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="130.82,335.93 43.59,204.31 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="363.46,472.21 363.46,422.12 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="362.57,422.12 362.57,472.21 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="388.5,440.9 363.46,440.9 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="130.82,335.93 131.98,650.47 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="388.5,422.12 388.5,472.21 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="362.57,472.21 389.4,472.21 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="389.4,472.21 389.4,422.12 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="388.5,459.68 363.46,459.68 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="375.98,422.12 374.19,423.91 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="388.5,453.42 363.46,453.42 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="375.98,472.21 375.98,422.12 " />
+      </g>
+      <g vd_layer="Symbole">
+        <polyline stroke-width="0.58" stroke="rgb(91,91,91)" fill="none" points="388.5,447.16 363.46,447.16 " />
+      </g>
+      <g vd_layer="IMS_ATTRIBUTE">
+        <g vd_layer="RaumNR">
+          <polygon fill="rgb(0,0,0)" stroke="none" points="397.53,459.25 419.71,459.25 419.71,470.02 397.53,470.02 397.53,459.25 " pointer-events="painted" visibility="hidden" />
+          <text pointer-events="none" transform="matrix(14.73275005 0 0 14.73275005 398.43374201 469.83671898)" font-family="Arial" fill="rgb(0,0,0)" stroke="none" font-size="1.0">401</text>
+        </g>
+        <g vd_layer="RaumFL">
+          <polygon fill="rgb(0,0,0)" stroke="none" points="397.53,507.47 464.84,507.47 464.84,520.22 397.53,520.22 397.53,507.47 " pointer-events="painted" visibility="hidden" />
+          <text pointer-events="none" transform="matrix(14.73275005 0 0 14.73275005 398.00067986 518.13539274)" font-family="Arial" fill="rgb(0,0,0)" stroke="none" font-size="1.0">326,77 m²</text>
+        </g>
+        <g vd_layer="RaumUMF">
+          <polygon fill="rgb(0,0,0)" stroke="none" points="397.53,528.17 450.34,528.17 450.34,540.84 397.53,540.84 397.53,528.17 " pointer-events="painted" visibility="hidden" />
+          <text pointer-events="none" transform="matrix(14.73275005 0 0 14.73275005 397.92011005 538.75170322)" font-family="Arial" fill="rgb(0,0,0)" stroke="none" font-size="1.0">73,09 m</text>
+        </g>
+        <g vd_layer="RaumBEZ">
+          <polygon fill="rgb(0,0,0)" stroke="none" points="397.53,486.13 472.75,486.13 472.75,496.84 397.53,496.84 397.53,486.13 " pointer-events="painted" visibility="hidden" />
+          <text pointer-events="none" transform="matrix(14.73275005 0 0 14.73275005 397.48623861 496.66931551)" font-family="Arial" fill="rgb(0,0,0)" stroke="none" font-size="1.0">Dachboden</text>
+        </g>
+        <g vd_layer="RaumObjID">
+          <polygon fill="rgb(0,0,0)" stroke="none" points="398.13,540.2 398.3,540.2 398.3,540.24 398.13,540.24 398.13,540.2 " pointer-events="painted" visibility="hidden" />
+          <text pointer-events="none" transform="matrix(0.05419463 0 0 0.05419463 398.13156552 540.24157426)" font-family="Arial" fill="rgb(0,0,0)" stroke="none" font-size="1.0">169721</text>
+        </g>
+        <title>401</title>
+      </g>
+    </g>
+  </g>
+</svg>
