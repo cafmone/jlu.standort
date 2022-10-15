@@ -371,7 +371,6 @@ var $lang = array(
 									$form .= '<input type="hidden" name="m['.$c.'][lon]" value="'.$v['long'].'">';
 									$form .= '<input type="hidden" name="m['.$c.'][lat]" value="'.$v['lat'].'">';
 									$form .= '<input type="hidden" name="m['.$c.'][title]" value="'.$tree[$k]['l'].'">';
-									#$form .= '<input type="hidden" name="m['.$c.'][link]" value="'.$this->qrcodeurl.'?id='.$k.'&lang='.$this->user->lang.'">'
 									$form .= '<input type="hidden" name="m['.$c.'][link]" value="?id='.$k.'&lang='.$this->user->lang.'">';
 									$form .= '<input type="hidden" name="m['.$c.'][id]" value="'.$k.'">';
 									if(isset($tree[$tree[$k]['p']]['l'])) {
@@ -382,6 +381,9 @@ var $lang = array(
 									}
 									elseif($this->file->exists($this->profilesdir.'/jlu.standort/thumbs/'.$k.'.png')) {
 										$form .= '<input type="hidden" name="m['.$c.'][thumb]" value="jlu.standort.api.php?'.$this->actions_name.'=thumb&file='.$k.'.png">';
+									}
+									elseif($this->file->exists($this->profilesdir.'/jlu.standort/thumbs/'.$k.'.test.jpg')) {
+										$form .= '<input type="hidden" name="m['.$c.'][thumb]" value="jlu.standort.api.php?'.$this->actions_name.'=thumb&file='.$k.'.test.jpg">';
 									}
 									elseif($this->file->exists($this->profilesdir.'/jlu.standort/thumbs/noimage.jpg')) {
 										$form .= '<input type="hidden" name="m['.$c.'][thumb]" value="jlu.standort.api.php?'.$this->actions_name.'=thumb&file=noimage.jpg">';
@@ -404,6 +406,9 @@ var $lang = array(
 						$image .= 'style="width:100%;'.$width.' height:auto; cursor:pointer;" ';
 						$image .= 'onclick="imagebox.init(this);">';
 					}
+					elseif($type === 'svg') {
+						$image = '<div id="SVGimg">'.$this->file->get_contents($imgpath).'</div>';
+					}
 					elseif($type === 'pdf') {
 						$image  = '<div class="iframe">';
 						$image .= '<iframe src="pdf.viewer.html?file='.urlencode('jlu.standort.api.php?action=image&file=').''.$file['name'].'"></iframe>';
@@ -413,9 +418,7 @@ var $lang = array(
 						#$image .= '<embed src="data:application/pdf;base64,'.$data.'" type="application/pdf" style="heigth:300px;width:100%;" ></embed>';
 						$image .= '</div>';
 					}
-					elseif($type === 'svg') {
-						$image = $this->file->get_contents($imgpath);
-					}
+
 
 					// no retry when image set
 					if(isset($image)) {
@@ -659,9 +662,14 @@ var $lang = array(
 			$file = $this->response->html->request()->get('file');
 			$path = $this->profilesdir.'/jlu.standort/'.$folder.'/'.$file;
 			if(!$this->file->exists($path)) {
-				$path = $this->profilesdir.'/jlu.standort/'.$folder.'/noimage.jpg';
+				// try test file
+				$file = str_replace('.jpg','.test.jpg', $file);
+				$path = $this->profilesdir.'/jlu.standort/'.$folder.'/'.$file;
 				if(!$this->file->exists($path)) {
-					exit(0);
+					$path = $this->profilesdir.'/jlu.standort/'.$folder.'/noimage.jpg';
+					if(!$this->file->exists($path)) {
+						exit(0);
+					}
 				}
 			}
 			$file = $this->file->get_fileinfo($path);

@@ -300,6 +300,12 @@ var treebuilder = {
 					mapbuilder.print();
 				}
 				
+				// handle svg
+				svg = document.getElementById('SVGimg');
+				if(svg) {
+					svgbuilder.print();
+				}
+				
 			}
 		});
 	},
@@ -685,7 +691,7 @@ var usagebuilder = {
 	}
 }
 
-/* MAPUILDER */
+/* MAPBUILDER */
 var mapbuilder = {
 
 	//---------------------------------------------
@@ -751,6 +757,70 @@ var mapbuilder = {
 		clone.tabIndex = '-1';
 		clone.focus();
 	},
+}
+
+/* SVGBUILDER */
+var svgbuilder = {
+
+	layerAttrib : 'vd_layer',
+	polyLayer   : 'Poly-Raum',
+	infoLayer   : 'IMS_ATTRIBUTE',
+	idLayer     : 'RaumObjID',
+
+	//---------------------------------------------
+	// Print
+	//---------------------------------------------
+	print : function () {
+	
+		layers = [];
+		infos  = [];
+	
+		objs = document.getElementById('SVGimg').getElementsByTagName('title');
+		for(i in objs) {
+			parent = objs[i].parentNode;
+			if(typeof parent !== 'undefined') {
+				layer = parent.getAttribute(this.layerAttrib);
+				if(layer === this.polyLayer) {
+					layers[objs[i].innerHTML] = parent;
+				}
+				else if(layer === this.infoLayer) {
+					nodes = parent.getElementsByTagName('g');
+					for(x in nodes) {
+						if(
+							typeof nodes[x] === 'object' && 
+							nodes[x].getAttribute(this.layerAttrib) === this.idLayer
+						) {
+							infos[objs[i].innerHTML] = nodes[x].getElementsByTagName('text')[0].innerHTML;
+						}
+					}
+				}
+			}
+		}
+
+		for(i in infos) {
+			//check tree;
+			if(typeof tree[infos[i]] !== 'undefined') {
+				// check layer
+				if(typeof layers[i] !== 'undefined') {
+					parent = layers[i];
+					parent.setAttribute('cursor', 'pointer');
+					parent.firstElementChild.setAttribute('fill', 'transparent');
+					(function(id, lang) { parent.onclick = function() {
+							location.href = '?id='+id+'&lang='+lang;
+						}
+					})(infos[i], lang);
+					parent.addEventListener("mouseover", function(event) {
+						this.firstElementChild.setAttribute('fill', 'red');
+					})
+					parent.addEventListener("mouseout", function(event) {
+						this.firstElementChild.setAttribute('fill', 'transparent');
+					})
+				}
+			}
+		}
+
+	},
+
 }
 
 /* QRCODEBUILDER */

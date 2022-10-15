@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{title}</title>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<link rel="stylesheet" type="text/css" href="{cssurl}bootstrap4.css" media="screen">
+<link rel="stylesheet" type="text/css" href="{cssurl}jlu.standort.css?_={timestamp}">
+</head>
+<body tabindex="1">
+<div id="Page">
+
+	<div id="Header">
+		<div id="Logobar">
+			<div>
+				<div>
+					<div class="mainlogo">
+						<a onclick="treebuilder.wait();" href="/JLUgeschossplaene" title="Zur Startseite von JLUgeschosspläne">
+							<img alt="{logo_alt}" src="{imgurl}logo.png">
+						</a>
+					</div>		
+					<div class="sublogo" style="float: right; padding-top: 13px; width: auto;">
+						<a onclick="treebuilder.wait();" tabindex="-1" href="https://www.uni-giessen.de/index.html" title="Zur Startseite der Website der JLU">
+							<img alt="{logo_alt}" src="{imgurl}sublogo.png">
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="Topbar" class="navbar navbar-expand-sm noprint">&#160;</div>
+	</div>
+	
+	<div id="Content">
+		<div style="display: table-row;">
+			<div class="cell2">
+				<div id="Centerbar" class="">
+					<div id="Canvas"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+
+</div>
+<script language="JavaScript" type="text/javascript">
+/**
+ * Get Browser Infos
+ * 
+ */
+var BrowserInfo = {
+	swfVersion : function() {
+		var isIE	= (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
+		var isWin   = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
+		var isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
+		var version = "false";	
+		if (navigator.plugins != null && navigator.plugins.length > 0) {
+			if (navigator.plugins["Shockwave Flash 2.0"] || navigator.plugins["Shockwave Flash"]) {
+				var swVer2 = navigator.plugins["Shockwave Flash 2.0"] ? " 2.0" : "";
+				var flashDescription = navigator.plugins["Shockwave Flash" + swVer2].description;
+				var descArray = flashDescription.split(" ");
+				var tempArrayMajor = descArray[2].split(".");
+				var vMa = tempArrayMajor[0];
+				var vMin = tempArrayMajor[1];
+				var vRev = descArray[3];
+				if (vRev == "") {
+					vRev = descArray[4];
+				}
+				if (vRev[0] == "d") {
+					vRev = vRev.substring(1);
+				} else if (vRev[0] == "r") {
+					vRev = vRev.substring(1);
+					if (vRev.indexOf("d") > 0) {
+						vRev = vRev.substring(0, vRev.indexOf("d"));
+					}
+				}
+				version = vMa + "," + vMin + "," + vRev;
+			}
+		}
+		else if (navigator.userAgent.toLowerCase().indexOf("webtv/2.6") != -1) version = 4;
+		else if (navigator.userAgent.toLowerCase().indexOf("webtv/2.5") != -1) version = 3;
+		else if (navigator.userAgent.toLowerCase().indexOf("webtv") != -1) version = 2;
+		else if (isIE && isWin && !isOpera) {
+			try {
+				axo = new ActiveXObject("ShockwaveFlash.ShockwaveFlash.7");
+				version = axo.GetVariable("$version");
+			} catch (e) {}
+			if (!version)
+			{
+				try {
+					axo = new ActiveXObject("ShockwaveFlash.ShockwaveFlash.6");
+					version = "WIN 6,0,21,0";
+					axo.AllowScriptAccess = "always";
+					version = axo.GetVariable("$version");
+				} catch (e) {}
+			}
+			if (!version)
+			{
+				try {
+					axo = new ActiveXObject("ShockwaveFlash.ShockwaveFlash.3");
+					version = axo.GetVariable("$version");
+				} catch (e) {}
+			}
+			if (!version)
+			{
+				try {
+					axo = new ActiveXObject("ShockwaveFlash.ShockwaveFlash.3");
+					version = "WIN 3,0,18,0";
+				} catch (e) {}
+			}
+			if (!version)
+			{
+				try {
+					axo = new ActiveXObject("ShockwaveFlash.ShockwaveFlash");
+					version = "WIN 2,0,0,11";
+				} catch (e) { version = "false"; }
+			}	
+		}
+		version = version.replace(/[a-z ]/gi, ''); 
+		version = version.replace(/,/g, '.'); 
+		return version;
+	},
+	info : function() {
+		info = {
+			USERAGENT    : navigator.userAgent,
+			CODENAME     : navigator.appCodeName,
+			APPNAME      : navigator.appName,
+			VERSION      : navigator.appVersion,
+			PLATFORM     : navigator.platform,
+			LANGUAGE     : navigator.language,
+			COOKIES      : navigator.cookieEnabled,
+			PDFVIEWER    : navigator.pdfViewerEnabled,
+			FLASH        : this.swfVersion(),
+		}
+		return info;
+	},
+	display : function() {
+		ratio = window.devicePixelRatio || 1;
+		display = {
+			RATIO : ratio,
+			DISPLAY    : screen.width +" x "+ screen.height,
+			DEVICE     : (screen.width*ratio) +" x "+ (screen.height*ratio),
+			VIEWPORT   : document.documentElement.clientWidth +" x "+ document.documentElement.clientHeight,
+			COLORDEPTH : screen.colorDepth,
+		}
+		return display;
+	}
+};
+
+var info = BrowserInfo.info();
+var display = BrowserInfo.display();
+var canvas = document.getElementById('Canvas');
+
+var div = document.createElement("h3");
+div.innerHTML = 'BROWSER'
+canvas.appendChild(div);
+for(i in info) {
+	var div = document.createElement("div");
+	div.innerHTML = i+': '+info[i];
+	canvas.appendChild(div);
+}
+var div = document.createElement("h3");
+div.innerHTML = 'DISPLAY'
+canvas.appendChild(div);
+for(i in display) {
+	var div = document.createElement("div");
+	div.innerHTML = i+': '+display[i];
+	canvas.appendChild(div);
+}
+
+</script>
+</body>
+</html>
+

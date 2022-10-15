@@ -190,6 +190,9 @@ var $defaultid;
 			case 'search':
 				$content = $this->search(true);
 			break;
+			case 'debug':
+				$content = $this->debug(true);
+			break;
 		}
 
 		#$this->response->html->help($content);
@@ -297,6 +300,32 @@ var $defaultid;
 			
 			$index->add(array('canvas' => $tmp));
 			$data = $index;
+		}
+		return $data;
+	}
+	
+	//--------------------------------------------
+	/**
+	 * Debug
+	 *
+	 * @access public
+	 * @return htmlobject | empty
+	 */
+	//--------------------------------------------
+	function debug( $visible = false ) {
+		$data = '';
+		if($visible === true) {
+			require_once($this->classdir.'plugins/jlu.standort/class/jlu.standort.debug.class.php');
+			$controller = new jlu_standort_debug($this);
+			$controller->tpldir = $this->tpldir;
+			$controller->actions_name = $this->actions_name;
+			$controller->identifier_name = $this->identifier_name;
+			$controller->language = $obj->language;
+			$controller->lang = $obj->translation;
+			$controller->cssurl = $this->cssurl;
+			$controller->jsurl = $this->jsurl;
+			$controller->imgurl = $this->imgurl;
+			$data = $controller->action();
 		}
 		return $data;
 	}
