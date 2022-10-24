@@ -781,6 +781,28 @@ var svgbuilder = {
 			if(typeof parent !== 'undefined') {
 				layer = parent.getAttribute(this.layerAttrib);
 				if(layer === this.polyLayer) {
+					// count ploylines
+					lines = parent.getElementsByTagName('polyline');
+					if(lines.length > 1) {
+						count = 0;
+						first = 0;
+						for(l in lines) {
+							if(typeof lines[l].points !== 'undefined') {
+								lines[l].setAttribute('stroke', 'none');
+								lines[l].setAttribute('fill', 'none');
+								if(count === 0) {
+									first = l;
+									count = 1;
+								} else {
+									for(c=0;c<lines[l].points.length;c++) {
+										lines[first].points.appendItem(lines[l].points[c]);
+									}
+								}
+							}
+						}
+					} else {
+						lines[0].setAttribute('stroke', 'none');
+					}
 					layers[objs[i].innerHTML] = parent;
 				}
 				else if(layer === this.infoLayer) {

@@ -407,7 +407,7 @@ var $lang = array(
 						$image .= 'onclick="imagebox.init(this);">';
 					}
 					elseif($type === 'svg') {
-						$image = '<div id="SVGimg">'.$this->file->get_contents($imgpath).'</div>';
+						$image = '<div id="SVGimg" style="text-align:center;">'.$this->file->get_contents($imgpath).'</div>';
 					}
 					elseif($type === 'pdf') {
 						$image  = '<div class="iframe">';
@@ -418,7 +418,6 @@ var $lang = array(
 						#$image .= '<embed src="data:application/pdf;base64,'.$data.'" type="application/pdf" style="heigth:300px;width:100%;" ></embed>';
 						$image .= '</div>';
 					}
-
 
 					// no retry when image set
 					if(isset($image)) {
