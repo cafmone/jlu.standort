@@ -407,7 +407,7 @@ var $lang = array(
 						$image .= 'onclick="imagebox.init(this);">';
 					}
 					elseif($type === 'svg') {
-						$image = '<div id="SVGimg" style="text-align:center;">'.$this->file->get_contents($imgpath).'</div>';
+						$image = '<div id="SVGimg"><div id="SVGbox">'.$this->file->get_contents($imgpath).'</div></div>';
 					}
 					elseif($type === 'pdf') {
 						$image  = '<div class="iframe">';

@@ -766,6 +766,7 @@ var svgbuilder = {
 	polyLayer   : 'Poly-Raum',
 	infoLayer   : 'IMS_ATTRIBUTE',
 	idLayer     : 'RaumObjID',
+	labelLayer  : 'RaumNR',
 
 	//---------------------------------------------
 	// Print
@@ -774,7 +775,13 @@ var svgbuilder = {
 	
 		layers = [];
 		infos  = [];
-	
+
+var style = window.getComputedStyle(document.getElementById('SVGimg'), null);
+SVGimg = {};
+SVGimg.height = style.getPropertyValue("height");
+SVGimg.width  = style.getPropertyValue("width");
+console.log(SVGimg);
+
 		objs = document.getElementById('SVGimg').getElementsByTagName('title');
 		for(i in objs) {
 			parent = objs[i].parentNode;
@@ -806,14 +813,29 @@ var svgbuilder = {
 					layers[objs[i].innerHTML] = parent;
 				}
 				else if(layer === this.infoLayer) {
+					infos[objs[i].innerHTML] = {};
 					nodes = parent.getElementsByTagName('g');
 					for(x in nodes) {
 						if(
 							typeof nodes[x] === 'object' && 
 							nodes[x].getAttribute(this.layerAttrib) === this.idLayer
 						) {
-							infos[objs[i].innerHTML] = nodes[x].getElementsByTagName('text')[0].innerHTML;
+							infos[objs[i].innerHTML].id = nodes[x].getElementsByTagName('text')[0].innerHTML;
 						}
+						else if(
+							typeof nodes[x] === 'object' && 
+							nodes[x].getAttribute(this.layerAttrib) === this.labelLayer
+						) {
+							transform = nodes[x].getElementsByTagName('text')[0].getAttribute('transform');
+							div = document.createElement('div');
+							div.innerHTML = nodes[x].getElementsByTagName('text')[0].innerHTML;
+							box = document.createElementNS("http://www.w3.org/2000/svg","foreignObject");
+							box.setAttribute('transform', transform);
+							box.setAttribute('class', 'label');
+							box.appendChild(div);
+							infos[objs[i].innerHTML].box = box;
+						}
+						parent.style.display = 'none'; 
 					}
 				}
 			}
@@ -821,25 +843,50 @@ var svgbuilder = {
 
 		for(i in infos) {
 			//check tree;
-			if(typeof tree[infos[i]] !== 'undefined') {
+			if(typeof tree[infos[i].id] !== 'undefined') {
 				// check layer
 				if(typeof layers[i] !== 'undefined') {
 					parent = layers[i];
-					parent.setAttribute('cursor', 'pointer');
 					parent.firstElementChild.setAttribute('fill', 'transparent');
-					(function(id, lang) { parent.onclick = function() {
+					if(infos[i].id === id) {
+						parent.firstElementChild.setAttribute('class', 'room active');
+					} else {
+						parent.firstElementChild.setAttribute('class', 'room');
+					}
+					parent.firstElementChild.setAttribute('id', infos[i].id);
+					parent.getElementsByTagName('title')[0].innerHTML = identifiers['raum']+' '+tree[infos[i].id].l;
+					box = infos[i].box;
+					(function(id, lang) { box.onclick = function() {
 							location.href = '?id='+id+'&lang='+lang;
 						}
-					})(infos[i], lang);
-					parent.addEventListener("mouseover", function(event) {
-						this.firstElementChild.setAttribute('fill', 'red');
-					})
-					parent.addEventListener("mouseout", function(event) {
-						this.firstElementChild.setAttribute('fill', 'transparent');
-					})
+					})(infos[i].id, lang);
+					parent.appendChild(box);
 				}
 			}
 		}
+
+		plus = document.createElement('button');
+		plus.setAttribute('class', 'btn btn-sm btn-default plus');
+		plus.innerHTML = '+';
+		plus.addEventListener("click", function(event) {
+			elem = document.getElementById('SVGimg').getElementsByTagName('svg')[0];
+			elem.setAttribute('width', parseInt(elem.getAttribute('width')) + 100);
+		})
+		minus = document.createElement('button');
+		minus.setAttribute('class', 'btn btn-sm btn-default minus');
+		minus.innerHTML = '-';
+		minus.addEventListener("click", function(event) {
+			elem = document.getElementById('SVGimg').getElementsByTagName('svg')[0];
+			elem.setAttribute('width', parseInt(elem.getAttribute('width')) - 100);
+		})
+
+		document.getElementById('SVGimg').getElementsByTagName('svg')[0].removeAttribute('height');
+		//document.getElementById('SVGimg').getElementsByTagName('svg')[0].setAttribute('id', 'SVGbox');
+		document.getElementById('SVGimg').getElementsByTagName('svg')[0].setAttribute('style', 'top:0;left:0;');
+		document.getElementById('SVGimg').appendChild(plus);
+		document.getElementById('SVGimg').appendChild(minus);
+		
+		dragElement(document.getElementById("SVGbox"));
 
 	},
 
@@ -959,3 +1006,39 @@ function sortPos(a,b) {
 	return a > b ? 1 : -1;
 }
 
+//---------------------------------------------
+// Drag Element
+//---------------------------------------------
+function dragElement(elmnt) {
+	var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+	elmnt.onmousedown = dragMouseDown;
+	function dragMouseDown(e) {
+		e = e || window.event;
+		e.preventDefault();
+		// get the mouse cursor position at startup:
+		pos3 = e.clientX;
+		pos4 = e.clientY;
+		document.onmouseup = closeDragElement;
+		// call a function whenever the cursor moves:
+		document.onmousemove = elementDrag;
+		elmnt.style.cursor = 'grabbing';
+	}
+	function elementDrag(e) {
+		e = e || window.event;
+		e.preventDefault();
+		// calculate the new cursor position:
+		pos1 = pos3 - e.clientX;
+		pos2 = pos4 - e.clientY;
+		pos3 = e.clientX;
+		pos4 = e.clientY;
+		// set the element's new position:
+		elmnt.setAttribute('style','top:'+ (elmnt.offsetTop - pos2) +'px; left:'+ (elmnt.offsetLeft - pos1) +'px');
+		elmnt.style.cursor = 'grabbing';
+	}
+	function closeDragElement() {
+		// stop moving when mouse button is released:
+		document.onmouseup = null;
+		document.onmousemove = null;
+		elmnt.style.cursor = '';
+	}
+}

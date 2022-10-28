@@ -700,6 +700,64 @@ searchbuilder.close {
 }
 
 /* ---------------------------------------------------
+    SVG
+----------------------------------------------------- */
+#SVGimg {
+	position: relative;
+	text-align: center;
+	width: 100%;
+	border: 1px solid #DADADA;
+	/*max-width: calc(100vw - 30px);*/
+	overflow: hidden;
+	height: calc(100vh - 280px);
+}
+#SVGbox {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+}
+#SVGimg svg{
+	/*width: 100%;*/
+}
+#SVGimg button {
+	height: 30px;
+	width: 30px;
+}
+#SVGimg .plus{
+	position: absolute;
+	right: 50px;
+	top: 10px;
+}
+#SVGimg .minus{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+#SVGimg .room.active {
+	fill: red;
+	opacity: 0.5;
+}
+#SVGimg .room.hover,
+#SVGimg .room:hover {
+	fill: blue;
+	opacity: 0.5;
+}
+#SVGimg .label {
+	width: 2pt;
+	height: 1pt;
+}
+#SVGimg .label div {
+	background: yellow;
+	opacity: 1;
+	font-weight: 900;
+	cursor: pointer;
+	font-size: 0.7pt;
+	height: 100%;
+	overflow: auto;
+}
+
+/* ---------------------------------------------------
     PRINT
 ----------------------------------------------------- */
 @media print {
