@@ -817,38 +817,11 @@ searchbuilder.close {
 /* ---------------------------------------------------
     MEDIAQUERIES  Landscape
 ----------------------------------------------------- */
-@media (max-width: 768px) {
-/*
-	#Leftbar {
-		margin-left: -450px;
-	}
+@media (max-width: 1600px) {
 	#Leftbar.active {
-		margin-left: 0;
+		position: absolute;
+		left: -500px;
 	}
-	#Rightbar {
-		margin-right: -300px;
-	}
-	#Rightbar.active {
-		margin-right: 0;
-	}
-	#Header .sublogo {
-		display: none;
-	}
-	#Header .mainlogo {
-		width: 100px !important;
-	}
-	#Header .mainlogo img{
-		width: 100px;
-		height: auto;
-	}
-	#Logobar #Label a {
-		font-size: 1.1em;
-	}
-	#Logobar div div div {
-		height: 70px;
-		padding: 15px 25px 15px 15px;
-	}
-*/
 }
 
 /* ---------------------------------------------------
