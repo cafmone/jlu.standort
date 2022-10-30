@@ -776,12 +776,6 @@ var svgbuilder = {
 		layers = [];
 		infos  = [];
 
-var style = window.getComputedStyle(document.getElementById('SVGimg'), null);
-SVGimg = {};
-SVGimg.height = style.getPropertyValue("height");
-SVGimg.width  = style.getPropertyValue("width");
-console.log(SVGimg);
-
 		objs = document.getElementById('SVGimg').getElementsByTagName('title');
 		for(i in objs) {
 			parent = objs[i].parentNode;
@@ -860,6 +854,14 @@ console.log(SVGimg);
 							location.href = '?id='+id+'&lang='+lang;
 						}
 					})(infos[i].id, lang);
+					(function(id) { box.onmouseover = function() {
+							document.getElementById(id).classList.add('hover');
+						}
+					})(infos[i].id);
+					(function(id) { box.onmouseout = function() {
+							document.getElementById(id).classList.remove('hover');
+						}
+					})(infos[i].id);
 					parent.appendChild(box);
 				}
 			}
@@ -867,26 +869,85 @@ console.log(SVGimg);
 
 		plus = document.createElement('button');
 		plus.setAttribute('class', 'btn btn-sm btn-default plus');
+		plus.setAttribute('id', 'SVGimgPlus');
 		plus.innerHTML = '+';
 		plus.addEventListener("click", function(event) {
 			elem = document.getElementById('SVGimg').getElementsByTagName('svg')[0];
-			elem.setAttribute('width', parseInt(elem.getAttribute('width')) + 100);
+			width  = parseInt(elem.getAttribute('width'));
+			width = width + 100;
+			elem.setAttribute('width', width );
+			/* Position */
+			elem = document.getElementById('SVGbox');
+			left = parseInt(elem.style.left) -50 +'px';
+			elem.style.left = left;
 		})
 		minus = document.createElement('button');
 		minus.setAttribute('class', 'btn btn-sm btn-default minus');
 		minus.innerHTML = '-';
 		minus.addEventListener("click", function(event) {
 			elem = document.getElementById('SVGimg').getElementsByTagName('svg')[0];
-			elem.setAttribute('width', parseInt(elem.getAttribute('width')) - 100);
+			width  = parseInt(elem.getAttribute('width'));
+			width = width - 100;
+			elem.setAttribute('width', width );
+			/* Position */
+			elem = document.getElementById('SVGbox');
+			left = parseInt(elem.style.left) +50 +'px';
+			elem.style.left = left;
 		})
-
-		document.getElementById('SVGimg').getElementsByTagName('svg')[0].removeAttribute('height');
-		//document.getElementById('SVGimg').getElementsByTagName('svg')[0].setAttribute('id', 'SVGbox');
-		document.getElementById('SVGimg').getElementsByTagName('svg')[0].setAttribute('style', 'top:0;left:0;');
-		document.getElementById('SVGimg').appendChild(plus);
-		document.getElementById('SVGimg').appendChild(minus);
+		fit = document.createElement('button');
+		fit.setAttribute('class', 'btn btn-sm btn-default fit');
+		fit.innerHTML = '1:1';
+		fit.addEventListener("click", function(event) {
+			svgbuilder.fit();
+		})
 		
-		dragElement(document.getElementById("SVGbox"));
+		div = document.createElement('div');
+		div.setAttribute('class', 'btn-group menu');
+		div.appendChild(plus);
+		div.appendChild(minus);
+		div.appendChild(fit);
+
+		document.getElementById('SVGimg').appendChild(div);
+		document.getElementById('SVGimgPlus').focus();
+		this.fit();
+	},
+	
+	fit : function() {
+		/* Initial Size */
+		svg = document.getElementById('SVGimg').getElementsByTagName('svg')[0];
+		width  = parseInt(svg.getAttribute('width'));
+		height = parseInt(svg.getAttribute('height'));
+		SVGimg = window.getComputedStyle(document.getElementById('SVGimg'), null);
+		x = parseInt(SVGimg.getPropertyValue("width"));
+		y = parseInt(SVGimg.getPropertyValue("height"));
+		if(Number.isNaN(height)) {
+			height = parseInt(window.getComputedStyle(svg, null).getPropertyValue("height"));
+		}
+		if(height < y) {
+			factor = height / y;
+			height = y;
+			width = Math.round(width / factor);
+		}
+		if(width > x) {
+			factor = width / x;
+			width = x;
+			height = Math.round(height / factor);
+		}
+		if(height > y) {
+			factor = height / y;
+			height = y;
+			width = Math.round(width / factor);
+		}
+		
+		left = (x / 2) - (width / 2)+'px';
+		
+		
+		svg.setAttribute('width', width);
+		svg.removeAttribute('height')
+		drag = document.getElementById("SVGbox");
+		drag.setAttribute('style', 'top:0;left:'+left+';');
+		dragElement(drag);
+		
 
 	},
 

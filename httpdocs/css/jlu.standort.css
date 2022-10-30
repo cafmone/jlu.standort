@@ -724,24 +724,29 @@ searchbuilder.close {
 	height: 30px;
 	width: 30px;
 }
-#SVGimg .plus{
-	position: absolute;
-	right: 50px;
-	top: 10px;
-}
-#SVGimg .minus{
+
+#SVGimg .menu{
 	position: absolute;
 	right: 10px;
 	top: 10px;
+}
+#SVGimg .menu .fit{
+	font-size: 0.5rem;
+}
+#SVGimg .menu .minus{
+
 }
 #SVGimg .room.active {
 	fill: red;
 	opacity: 0.5;
 }
-#SVGimg .room.hover,
-#SVGimg .room:hover {
+#SVGimg .room.hover{
 	fill: blue;
 	opacity: 0.5;
+}
+#SVGimg .room:hover {
+	fill: blue;
+	opacity: 0.4;
 }
 #SVGimg .label {
 	width: 2pt;
