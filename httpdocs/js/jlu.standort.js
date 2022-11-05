@@ -865,8 +865,10 @@ var svgbuilder = {
 					// handle label box
 					box = infos[i].box;
 					box.getElementsByTagName('div')[0].innerHTML = str;
+					if(infos[i].id === id) {
+						box.getElementsByTagName('div')[0].setAttribute('class', 'active');
+					}
 
-					
 					(function(id, lang) { box.onclick = function() {
 							location.href = '?id='+id+'&lang='+lang;
 						}

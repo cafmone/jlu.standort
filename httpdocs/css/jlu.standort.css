@@ -771,6 +771,9 @@ searchbuilder.close {
 	height: 100%;
 	width: 100%;
 }
+#SVGimg .label div.active {
+	color: white;
+}
 
 /* ---------------------------------------------------
     PRINT
