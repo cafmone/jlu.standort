@@ -299,6 +299,9 @@ label {
 #Search #SearchResult .number::after {
 	content:'-';
 }
+#Search #SearchResult .floor {
+	display: inline;
+}
 #Search #SearchResult .floor a {
 	color: #0056b3;
 }

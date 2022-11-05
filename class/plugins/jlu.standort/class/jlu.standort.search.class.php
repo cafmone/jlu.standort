@@ -136,6 +136,8 @@ var $lang = array();
 			}
 		}
 
+
+
 		// build content
 		$output = '';
 		foreach($tree as $k => $v) {
@@ -147,24 +149,29 @@ var $lang = array();
 
 			if(isset($floors[$k])) {
 				$floor = $floors[$k];
-				foreach($floors[$k] as $kk => $vv) {
-					if(isset($rooms[$kk])) {
-						sort($rooms[$kk], SORT_NUMERIC);
-						$str = '|'.implode('|', $rooms[$kk]).'|';
-						preg_match_all('~\|?(.*?)\)+~', $str, $matches);
-						if(count($matches[1]) > 0) {
-							foreach($matches[1] as $m) {
-								$pos = strpos($m, '(');
-								if ($pos !== false) {
-									$m = '<div class="number" style="display:inline;">'.substr_replace($m, '</div>', $pos, strlen('('));
+				foreach($floors[$k] as $floorid => $floorv) {
+					// handle rooms
+					if(isset($rooms[$floorid])) {
+						asort($rooms[$floorid], SORT_NUMERIC);
+						$str = '|'.implode('|', $rooms[$floorid]).'|';
+						foreach($rooms[$floorid] as $roomid => $roomv) {
+							preg_match_all('~\|?(.*?)\)+~', $roomv, $matches);
+							if(count($matches[1]) > 0) {
+								foreach($matches[1] as $m) {
+									// devide match from number
+									$pos = strpos($m, '(');
+									if ($pos !== false) {
+										$m = '<div class="number" style="display:inline;">'.substr_replace($m, '</div>', $pos, strlen('('));
+									}
+									$l = '<a class="room" id="'.$roomid.'" href="?id='.$roomid.'&lang='.$this->language.'">'.$m.'</a>';
+									$links[] = $l.'<div class="floor" id="'.$floorid.'"><a href="?id='.$floorid.'&lang='.$this->language.'">'.$floorv.'</a></div>';
 								}
-								$links[] = $m.'<div class="floor" style="display:inline;"><a href="?id='.$kk.'&lang='.$this->language.'">'.$vv.'</a></div>';
 							}
-						}
-						preg_match_all('~\((.*?)\)~', $str, $matches);
-						if(count($matches[1]) > 0) {
-							foreach($matches[1] as $m) {
-								$room[] = $m;
+							preg_match_all('~\((.*?)\)~', $roomv, $matches);
+							if(count($matches[1]) > 0) {
+								foreach($matches[1] as $m) {
+									$room[] = $m;
+								}
 							}
 						}
 					}
