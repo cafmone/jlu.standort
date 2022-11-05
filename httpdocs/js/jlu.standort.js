@@ -826,6 +826,8 @@ var svgbuilder = {
 							box = document.createElementNS("http://www.w3.org/2000/svg","foreignObject");
 							box.setAttribute('transform', transform);
 							box.setAttribute('class', 'label');
+							box.setAttribute('width', '1');
+							box.setAttribute('height', '1');
 							box.appendChild(div);
 							infos[objs[i].innerHTML].box = box;
 						}
@@ -849,7 +851,22 @@ var svgbuilder = {
 					}
 					parent.firstElementChild.setAttribute('id', infos[i].id);
 					parent.getElementsByTagName('title')[0].innerHTML = identifiers['raum']+' '+tree[infos[i].id].l;
+					parent.firstElementChild.setAttribute('style', 'cursor:pointer;');
+
+					// make layer clickable
+					(function(id, lang) { parent.firstElementChild.onclick = function() {
+							location.href = '?id='+id+'&lang='+lang;
+						}
+					})(infos[i].id, lang);
+
+					str = tree[infos[i].id].l.replace('(','');
+					str = str.replace(')','');
+					
+					// handle label box
 					box = infos[i].box;
+					box.getElementsByTagName('div')[0].innerHTML = str;
+
+					
 					(function(id, lang) { box.onclick = function() {
 							location.href = '?id='+id+'&lang='+lang;
 						}
@@ -900,18 +917,29 @@ var svgbuilder = {
 		fit.addEventListener("click", function(event) {
 			svgbuilder.fit();
 		})
+		grab = document.createElement('button');
+		grab.setAttribute('id', 'SVGgrab');
+		grab.setAttribute('class', 'btn btn-sm btn-default grab');
+		grab.innerHTML = '';
+		grab.addEventListener("click", function(event) {
+			svgbuilder.grab();
+		})
 		
 		div = document.createElement('div');
 		div.setAttribute('class', 'btn-group menu');
 		div.appendChild(plus);
 		div.appendChild(minus);
 		div.appendChild(fit);
+		div.appendChild(grab);
 
 		document.getElementById('SVGimg').appendChild(div);
-		document.getElementById('SVGimgPlus').focus();
+		//document.getElementById('SVGimgPlus').focus();
 		this.fit();
 	},
-	
+
+	//---------------------------------------------
+	// Fit
+	//---------------------------------------------
 	fit : function() {
 		/* Initial Size */
 		svg = document.getElementById('SVGimg').getElementsByTagName('svg')[0];
@@ -938,18 +966,54 @@ var svgbuilder = {
 			height = y;
 			width = Math.round(width / factor);
 		}
-		
 		left = (x / 2) - (width / 2)+'px';
-		
-		
 		svg.setAttribute('width', width);
 		svg.removeAttribute('height')
-		drag = document.getElementById("SVGbox");
-		drag.setAttribute('style', 'top:0;left:'+left+';');
-		dragElement(drag);
-		
-
+		// center
+		box = document.getElementById("SVGbox");
+		box.setAttribute('style', 'top:0;left:'+left+';');
 	},
+
+	//---------------------------------------------
+	// Grab
+	//---------------------------------------------
+	grab : function() {
+		drag  = document.getElementById("SVGbox");
+		rooms = document.getElementById('SVGimg').getElementsByTagName('svg')[0].getElementsByClassName('room');
+		if (drag.onmousedown === null) {
+			dragElement(drag);
+			drag.style.cursor = 'grab';
+			document.getElementById('SVGgrab').classList.add('active');
+			// handle layer click
+			for(i in rooms) {
+				if(typeof rooms[i].id !== 'undefined') {
+					if(rooms[i].onclick !== null) {
+						rooms[i].onclick = null;
+						rooms[i].setAttribute('style', '');
+					}
+				}
+			}
+		} else {
+			drag.onmousedown = null;
+			document.onmouseup = null;
+			document.onmousemove = null;
+			drag.style.cursor = '';
+			document.getElementById('SVGgrab').classList.remove('active');
+			// handle layer click
+			for(i in rooms) {
+				if(typeof rooms[i].id !== 'undefined') {
+					if(rooms[i].onclick === null) {
+						rooms[i].onclick = null;
+						(function(id, lang) { rooms[i].onclick = function() {
+								location.href = '?id='+id+'&lang='+lang;
+							}
+						})(rooms[i].id, lang);
+						rooms[i].setAttribute('style', 'cursor:pointer;');
+					}
+				}
+			}
+		}
+	}
 
 }
 
@@ -1082,7 +1146,7 @@ function dragElement(elmnt) {
 		document.onmouseup = closeDragElement;
 		// call a function whenever the cursor moves:
 		document.onmousemove = elementDrag;
-		elmnt.style.cursor = 'grabbing';
+		elmnt.style.cursor = 'grab';
 	}
 	function elementDrag(e) {
 		e = e || window.event;
@@ -1100,6 +1164,6 @@ function dragElement(elmnt) {
 		// stop moving when mouse button is released:
 		document.onmouseup = null;
 		document.onmousemove = null;
-		elmnt.style.cursor = '';
+		elmnt.style.cursor = 'grab';
 	}
 }

@@ -710,7 +710,6 @@ searchbuilder.close {
 	text-align: center;
 	width: 100%;
 	border: 1px solid #DADADA;
-	/*max-width: calc(100vw - 30px);*/
 	overflow: hidden;
 	height: calc(100vh - 280px);
 }
@@ -727,7 +726,6 @@ searchbuilder.close {
 	height: 30px;
 	width: 30px;
 }
-
 #SVGimg .menu{
 	position: absolute;
 	right: 10px;
@@ -735,34 +733,43 @@ searchbuilder.close {
 }
 #SVGimg .menu .fit{
 	font-size: 0.5rem;
+	margin-left: 10px;
 }
-#SVGimg .menu .minus{
-
+#SVGimg .menu .grab{
+	margin-left: 10px;
+	padding: 3px 3px 0 0;
+}
+#SVGimg .menu .grab:before{
+	opacity: 0.4;
+	content: url("../bootstrap-icons/hand-index-thumb.svg");
+}
+#SVGimg .menu .grab.active{
+	background: lime;
 }
 #SVGimg .room.active {
-	fill: red;
+	fill: #0069b3;
 	opacity: 0.5;
 }
 #SVGimg .room.hover{
-	fill: blue;
+	fill: #dce6eb;
 	opacity: 0.5;
 }
 #SVGimg .room:hover {
-	fill: blue;
+	fill: #dce6eb;
 	opacity: 0.4;
 }
 #SVGimg .label {
-	width: 2pt;
-	height: 1pt;
+	overflow: visible;
 }
 #SVGimg .label div {
-	background: yellow;
+	background: transparent;
 	opacity: 1;
-	font-weight: 900;
+	font-weight: 800;
 	cursor: pointer;
-	font-size: 0.7pt;
+	font-size: 0.6pt;
+	line-height: 0.6pt;
 	height: 100%;
-	overflow: auto;
+	width: 100%;
 }
 
 /* ---------------------------------------------------
