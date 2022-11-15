@@ -744,7 +744,12 @@ searchbuilder.close {
 	content: url("../bootstrap-icons/hand-index-thumb.svg");
 }
 #SVGimg .menu .grab.active{
+	border-color: #adadad;
 	background: lime;
+}
+#SVGimg .menu .grab.active:before{
+	opacity: 0.4;
+	content: url("../bootstrap-icons/hand-index.svg");
 }
 #SVGimg .room.active {
 	fill: #0069b3;
@@ -773,6 +778,16 @@ searchbuilder.close {
 }
 #SVGimg .label div.active {
 	color: white;
+}
+#SVGimg .btn {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+#SVGimg .btn:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
 }
 
 /* ---------------------------------------------------

@@ -887,7 +887,7 @@ var svgbuilder = {
 		}
 
 		plus = document.createElement('button');
-		plus.setAttribute('class', 'btn btn-sm btn-default plus');
+		plus.setAttribute('class', 'btn btn-sm shadow-none plus');
 		plus.setAttribute('id', 'SVGimgPlus');
 		plus.innerHTML = '+';
 		plus.addEventListener("click", function(event) {
@@ -901,7 +901,7 @@ var svgbuilder = {
 			elem.style.left = left;
 		})
 		minus = document.createElement('button');
-		minus.setAttribute('class', 'btn btn-sm btn-default minus');
+		minus.setAttribute('class', 'btn btn-sm shadow-none minus');
 		minus.innerHTML = '-';
 		minus.addEventListener("click", function(event) {
 			elem = document.getElementById('SVGimg').getElementsByTagName('svg')[0];
@@ -914,14 +914,14 @@ var svgbuilder = {
 			elem.style.left = left;
 		})
 		fit = document.createElement('button');
-		fit.setAttribute('class', 'btn btn-sm btn-default fit');
+		fit.setAttribute('class', 'btn btn-sm shadow-none fit');
 		fit.innerHTML = '1:1';
 		fit.addEventListener("click", function(event) {
 			svgbuilder.fit();
 		})
 		grab = document.createElement('button');
 		grab.setAttribute('id', 'SVGgrab');
-		grab.setAttribute('class', 'btn btn-sm btn-default grab');
+		grab.setAttribute('class', 'btn btn-sm shadow-none grab');
 		grab.innerHTML = '';
 		grab.addEventListener("click", function(event) {
 			svgbuilder.grab();
@@ -1148,7 +1148,7 @@ function dragElement(elmnt) {
 		document.onmouseup = closeDragElement;
 		// call a function whenever the cursor moves:
 		document.onmousemove = elementDrag;
-		elmnt.style.cursor = 'grab';
+		elmnt.style.cursor = 'grabbing';
 	}
 	function elementDrag(e) {
 		e = e || window.event;
