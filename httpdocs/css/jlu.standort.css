@@ -749,7 +749,7 @@ searchbuilder.close {
 }
 #SVGimg .menu .grab.active:before{
 	opacity: 0.4;
-	content: url("../bootstrap-icons/hand-index.svg");
+	content: url("../img/hand-grab.svg");
 }
 #SVGimg .room.active {
 	fill: #0069b3;
