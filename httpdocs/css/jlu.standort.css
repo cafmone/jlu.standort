@@ -251,7 +251,7 @@ label {
 #Rightbar span {
 	display: block;
 	background-size: 150px;
-	margin-bottom: 20px;
+	margin-bottom: 25px;
 }
 #Rightbar a.disabled {
 	opacity: 0.3;
@@ -305,6 +305,9 @@ label {
 #Search #SearchResult .floor a {
 	color: #0056b3;
 }
+#Search #SearchResult .rooms a {
+	color: #0056b3;
+}
 #Search #SearchResult .floor::before {
 	content:' (';
 }
@@ -339,11 +342,11 @@ iframe {
 /* ---------------------------------------------------
     ICONS
 ----------------------------------------------------- */
-#Rightbar a:after {
+/*#Rightbar a:after {
 	content:url("../bootstrap-icons/chat-dots.svg");
 	padding: 0 0 0 5px;
 	opacity: 0.5;
-}
+}*/
 #Rightbar .copylink a{
 	display: inline-block;
 	background-image: url("../bootstrap-icons/box-arrow-down-right.svg");
@@ -698,10 +701,6 @@ searchbuilder.close {
   background-color: #dce6eb;
 }
 
-#raum-select {
-	display: none;
-}
-
 /* ---------------------------------------------------
     SVG
 ----------------------------------------------------- */
@@ -745,7 +744,7 @@ searchbuilder.close {
 }
 #SVGimg .menu .grab.active{
 	border-color: #adadad;
-	background: lime;
+	background: #dce6eb;
 }
 #SVGimg .menu .grab.active:before{
 	opacity: 0.4;
@@ -753,7 +752,6 @@ searchbuilder.close {
 }
 #SVGimg .room.active {
 	fill: #0069b3;
-	opacity: 0.5;
 }
 #SVGimg .room.hover{
 	fill: #dce6eb;
