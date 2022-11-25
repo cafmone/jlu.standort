@@ -845,8 +845,10 @@ searchbuilder.close {
 ----------------------------------------------------- */
 @media (max-width: 1600px) {
 	#Leftbar.active {
-		position: absolute;
-		left: -500px;
+		margin-left: -500px;
+	}
+	#Leftbar:not(.active) {
+		margin-left: 0;
 	}
 }
 
