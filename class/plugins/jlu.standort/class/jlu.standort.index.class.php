@@ -62,47 +62,20 @@ var $imgurl = 'img/';
 * @var string
 */
 var $jsurl = 'js/';
-
-/* -------------- Links -------------- */
 /**
-* link to contact
+* homeurl
+* path to homefolder
 * @access public
-* @var array
+* @var string
 */
-var $contacturl = null;
+var $homeurl = '';
 /**
-* link to imprint
-* @access public
-* @var array
-*/
-var $imprinturl = null;
-/**
-* link to privacy notice
-* @access public
-* @var array
-*/
-var $privacynoticeurl = null;
-/**
-* copyright notice
-* @access public
-* @var array
-*/
-var $helppage = null;
-/**
-* copyright notice
-* @access public
-* @var array
-*/
-var $copyright = null;
-
-
-/**
-* default if none given by request
+* defaultid
+* default id
 * @access public
 * @var string
 */
 var $defaultid;
-
 /**
 * language
 * default language
@@ -124,8 +97,11 @@ var $lang = array(
 	'imprint_title' => 'Imprint',
 	'toggle_left' => 'Toggle Left Panel',
 	'toggle_right' => 'Toggle Right Panel',
+	'backlink_title' => 'Back to Main page',
+	'homelink_title' => 'Home',
 	'close' => 'close',
 	'contact' => 'Contact',
+	'copyright' => '&copy; %s',
 	'contact_title' => 'Contact',
 	'loading' => 'Loading ...',
 	'privacynotice' => 'Privacy',
@@ -271,37 +247,35 @@ var $lang = array(
 		$script .= 'var translation = {"search":"'.$this->translation['search']['search'].'"};'."\n";
 		$script .= '</script>';
 
-		$copyright = '';
-		if(isset($this->copyright) && $this->copyright !== '') {
-			$copyright = $this->copyright;
-		}
+		/* LINKS */
 		$contact = '';
-		if(isset($this->contacturl) && $this->contacturl !== '') {
-			$contact = '<a href="'.$this->contacturl.'" title="'.$this->translation['contact_title'].'">'.$this->translation['contact'].'</a>';
+		if(isset($this->settings['links']['contact']) && $this->settings['links']['contact'] !== '') {
+			$contact = '<a href="'.$this->settings['links']['contact'].'" title="'.$this->translation['contact_title'].'">'.$this->translation['contact'].'</a>';
 		}
 		$privacynotice = '';
-		if(isset($this->privacynoticeurl) && $this->privacynoticeurl !== '') {
-			$privacynotice = '<a onclick="treebuilder.wait();" href="'.$this->privacynoticeurl.'" title="'.$this->translation['privacynotice_title'].'">'.$this->translation['privacynotice'].'</a>';
+		if(isset($this->settings['links']['privacynotice']) && $this->settings['links']['privacynotice'] !== '') {
+			$privacynotice = '<a onclick="treebuilder.wait();" href="'.$this->settings['links']['privacynotice'].'" title="'.$this->translation['privacynotice_title'].'">'.$this->translation['privacynotice'].'</a>';
 		}
 		$helppage = '';
-		if(isset($this->helppageurl) && $this->helppageurl !== '') {
-			$helppage = '<a onclick="treebuilder.wait();" href="'.$this->helppageurl.'" title="'.$this->translation['helppage_title'].'">'.$this->translation['helppage'].'</a>';
+		if(isset($this->settings['links']['helppage']) && $this->settings['links']['helppage'] !== '') {
+			$helppage = '<a onclick="treebuilder.wait();" href="'.$this->settings['links']['helppage'].'" title="'.$this->translation['helppage_title'].'">'.$this->translation['helppage'].'</a>';
 		}
 		$imprint = '';
-		if(isset($this->imprinturl) && $this->imprinturl !== '') {
-			$imprint = '<a onclick="treebuilder.wait();" href="'.$this->imprinturl.'" title="'.$this->translation['imprint_title'].'">'.$this->translation['imprint'].'</a>';
+		if(isset($this->settings['links']['imprint']) && $this->settings['links']['imprint'] !== '') {
+			$imprint = '<a onclick="treebuilder.wait();" href="'.$this->settings['links']['imprint'].'" title="'.$this->translation['imprint_title'].'">'.$this->translation['imprint'].'</a>';
 		}
 		$print = '<a href="javascript:print()" title="'.$this->translation['print_title'].'">'.$this->translation['print'].'</a>';
 		$link  = '<a href="javascript:treebuilder.link()" title="'.$this->translation['link_title'].'">'.$this->translation['link'].'</a>';
+		$copyright = sprintf($this->translation['copyright'], date('Y', time()));
 
 
+		/* SEARCH */
 		$search = $this->response->html->a();
 		$search->css = 'btn btn-default';
 		$search->title = $this->translation['search']['search_title'];
 		$search->href = '?'.$this->actions_name.'=search&lang='.$this->user->lang;
 		$search->id = 'SearchToggler';
 		$search->label = '<span class="search-icon"></span>';
-
 
 		$t = $this->response->html->template($this->tpldir.'jlu.standort.index.html');
 		$vars = array(
@@ -312,6 +286,9 @@ var $lang = array(
 			'cssurl' => $this->cssurl,
 			'jsurl' => $this->jsurl,
 			'imgurl' => $this->imgurl,
+
+			'homeurl' => $this->homeurl,
+
 			'label' => $this->translation['label'],
 			'search' => $this->translation['search']['search'],
 			'search_button' => $search,
@@ -321,6 +298,8 @@ var $lang = array(
 			'loading' => $this->translation['loading'],
 			'previous' => $this->translation['previous'],
 			'next' => $this->translation['next'],
+			'homelink_title' => $this->translation['homelink_title'],
+			'backlink_title' => $this->translation['backlink_title'],
 			'accessibility' => $this->translation['accessibility'],
 			'print' => $print,
 			'copyright' => $copyright,

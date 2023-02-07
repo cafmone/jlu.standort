@@ -37,17 +37,5 @@ $user = new user($file);
 
 require_once($CLASSDIR.'plugins/jlu.standort/class/jlu.standort.controller.class.php');
 $controller = new jlu_standort_controller($file, $html->response(), $query, $user);
-$controller->language = 'de';
-$controller->treeurl = 'cache/tree.js';
-$controller->cssurl = 'css/';
-$controller->jssurl = 'js/';
-$controller->imgurl = 'img/';
-
-$controller->imprinturl = 'https://www.uni-giessen.de/ueber-uns/impressum';
-$controller->privacynoticeurl = 'https://www.uni-giessen.de/ueber-uns/datenschutz';
-$controller->contacturl = 'mailto:flaechenmanagement@admin.uni-giessen.de';
-$controller->helppageurl = 'https://www.uni-giessen.de/org/admin/dez/e/1/JLUmaps';
-$controller->copyright = '&copy;JLU Gie&szlig;en '.date('Y', time());
-
 echo $controller->action()->get_string();
 ?>

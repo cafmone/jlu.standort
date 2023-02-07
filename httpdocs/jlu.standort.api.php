@@ -37,12 +37,5 @@ $user = new user($file);
 
 require_once($CLASSDIR.'plugins/jlu.standort/class/jlu.standort.controller.class.php');
 $controller = new jlu_standort_controller($file, $html->response(), $query, $user);
-$controller->language = 'de';
-$controller->treeurl = 'cache/tree.js';
-$controller->cssurl = 'css/';
-$controller->jssurl = 'js/';
-$controller->imgurl = 'img/';
-$controller->qrcodeurl = 'https://www.uni-giessen.de/JLUgeschossplaene/';
-
 $controller->api(true);
 ?>

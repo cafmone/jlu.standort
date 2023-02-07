@@ -140,6 +140,14 @@ var $defaultid;
 		$this->profilesdir = realpath(PROFILESDIR).'/';
 		$this->classdir    = realpath(CLASSDIR).'/';
 
+		// Settings
+		if($this->file->exists($this->profilesdir.'jlu.standort.settings.ini')) {
+			$this->settings = $this->file->get_ini($this->profilesdir.'jlu.standort.settings.ini');
+		} else {
+			echo 'Error: Settings missing !';
+			die;
+		}
+
 		// handle derived language
 		$this->langdir = $this->classdir.'plugins/jlu.standort/lang/';
 		if($this->file->exists($this->profilesdir.'jlu.standort/lang/de.jlu.standort.index.ini')) {
@@ -215,11 +223,25 @@ var $defaultid;
 			require_once($this->classdir.'plugins/jlu.standort/class/jlu.standort.api.class.php');
 			$controller = new jlu_standort_api($this);
 
-			$controller->cssurl = $this->cssurl;
-			$controller->jsurl = $this->jsurl;
-			$controller->imgurl = $this->imgurl;
-			$controller->treeurl = $this->treeurl;
-			$controller->language = $this->language;
+			/* URLS */
+			if(isset($this->settings['config']['language'])) {
+				$controller->language = $this->settings['config']['language'];
+			}
+			if(isset($this->settings['urls']['treeurl'])) {
+				$controller->treeurl = $this->settings['urls']['treeurl'];
+			}
+			if(isset($this->settings['urls']['jsurl'])) {
+				$controller->jsurl = $this->settings['urls']['jsurl'];
+			}
+			if(isset($this->settings['urls']['cssurl'])) {
+				$controller->cssurl = $this->settings['urls']['cssurl'];
+			}
+			if(isset($this->settings['urls']['imgurl'])) {
+				$controller->imgurl = $this->settings['urls']['imgurl'];
+			}
+			if(isset($this->settings['urls']['qrcodeurl'])) {
+				$controller->qrcodeurl = $this->settings['urls']['qrcodeurl'];
+			}
 
 			$data = $controller->action();
 		}
@@ -239,7 +261,7 @@ var $defaultid;
 		if($visible === true) {
 		
 			// handle tree
-			$treeurl = $this->response->html->thisdir.$this->treeurl;
+			$treeurl = $this->response->html->thisdir.$this->settings['urls']['treeurl'];
 			if($this->file->exists($treeurl)) {
 				$tree = json_decode(str_replace('var tree = ', '', $this->file->get_contents($treeurl)), true);
 				$this->tree = $tree;
@@ -249,18 +271,34 @@ var $defaultid;
 			$controller = new jlu_standort_index($this);
 			$controller->actions_name = $this->actions_name;
 			$controller->identifier_name = $this->identifier_name;
-			$controller->language = $this->language;
-			$controller->tree = $this->tree;
-			$controller->cssurl = $this->cssurl;
-			$controller->jsurl = $this->jsurl;
-			$controller->imgurl = $this->imgurl;
-			$controller->treeurl = $this->treeurl;
-			$controller->contacturl = $this->contacturl;
-			$controller->imprinturl = $this->imprinturl;
-			$controller->privacynoticeurl = $this->privacynoticeurl;
-			$controller->helppageurl = $this->helppageurl;
-			$controller->copyright = $this->copyright;
+			
+			$controller->settings = $this->settings;
 			$controller->defaultid = $this->defaultid;
+			$controller->tree = $this->tree;
+			
+			if(isset($this->settings['config']['language'])) {
+				$controller->language = $this->settings['config']['language'];
+			}
+
+			/* URLS */
+			if(isset($this->settings['urls']['treeurl'])) {
+				$controller->treeurl = $this->settings['urls']['treeurl'];
+			}
+			if(isset($this->settings['urls']['jsurl'])) {
+				$controller->jsurl = $this->settings['urls']['jsurl'];
+			}
+			if(isset($this->settings['urls']['cssurl'])) {
+				$controller->cssurl = $this->settings['urls']['cssurl'];
+			}
+			if(isset($this->settings['urls']['imgurl'])) {
+				$controller->imgurl = $this->settings['urls']['imgurl'];
+			}
+			if(isset($this->settings['urls']['homeurl'])) {
+				$controller->homeurl = $this->settings['urls']['homeurl'];
+			}
+			if(isset($this->settings['urls']['qrcodeurl'])) {
+				$controller->qrcodeurl = $this->settings['urls']['qrcodeurl'];
+			}
 
 			if(isset($raw) && $raw === true) {
 				$data = $controller;
@@ -293,9 +331,7 @@ var $defaultid;
 			$controller->identifier_name = $this->identifier_name;
 			$controller->language = $obj->language;
 			$controller->lang = $obj->translation;
-			
 			$controller->tree = $obj->tree;
-			
 			$tmp = $controller->action();
 			
 			$index->add(array('canvas' => $tmp));
@@ -320,8 +356,6 @@ var $defaultid;
 			$controller->tpldir = $this->tpldir;
 			$controller->actions_name = $this->actions_name;
 			$controller->identifier_name = $this->identifier_name;
-			$controller->language = $obj->language;
-			$controller->lang = $obj->translation;
 			$controller->cssurl = $this->cssurl;
 			$controller->jsurl = $this->jsurl;
 			$controller->imgurl = $this->imgurl;
