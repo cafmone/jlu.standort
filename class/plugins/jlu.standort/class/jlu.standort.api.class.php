@@ -327,7 +327,7 @@ var $lang = array(
 					$level = '';
 				}
 			}
-			
+
 			// handle map disclaimer
 			$usemap = false;
 			if(!isset($_COOKIE['useMap'])) {
@@ -391,6 +391,16 @@ var $lang = array(
 									$c++;
 								}
 							}
+
+							// handle parking lots (campusbereich)
+							if($level === 1) {
+								if($this->file->exists($this->profilesdir.'/jlu.standort/thumbs/'.$k.'.test.jpg')) {
+								
+								
+								}
+								var_dump($level);
+							}
+
 							$form .= '</form>';
 							$image = $form.'<div id="MapFrame" style="width:calc(100% -1px);height:calc(70vh);"></div>';
 						}

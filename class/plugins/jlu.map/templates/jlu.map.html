@@ -67,6 +67,7 @@ for (var i = 0; i < markers.length; i++) {
 		addr:  markers[i][4],
 		thumb: markers[i][5],
 		id:    markers[i][6],
+		text:  markers[i][7],
 	});
 	var iconImage = new ol.style.Icon({
 		anchor: [0.4, 0.0],
@@ -134,13 +135,19 @@ Map.on('singleclick', function (event) {
 			route += '" target="_blank" title="{title_google_route}">{label_google_route}</a>';
 			route += '</div>'
 		}
+		text = '';
+		if(typeof(feature[0].getProperties().text) != 'undefined' && feature[0].getProperties().text != '') {
+			text  = '<div class="popover-text">';
+			text += feature[0].getProperties().text;
+			text += '</div>';
+		}
 
 		if(title !== '') {
-			text = '<div class="popover-box">'+title+addr+'</div>';
+			head = '<div class="popover-box">'+title+addr+'</div>';
 			if(typeof(feature[0].getProperties().link) != 'undefined' && feature[0].getProperties().link != '') {
-				text = '<a target="_parent" title="{title_address}" href="'+feature[0].getProperties().link+'">'+text+'</a>';
+				head = '<a target="_parent" title="{title_address}" href="'+feature[0].getProperties().link+'">'+head+'</a>';
 			}
-			content.innerHTML = thumb+text+route;
+			content.innerHTML = thumb+head+text+route;
 			if(typeof(feature[0].getProperties().id) != 'undefined') {
 				content.innerHTML += '<div class="popover-data" title="{title_floors}" id="'+feature[0].getProperties().id+'"></div>'
 				// run external function
