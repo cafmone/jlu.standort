@@ -373,6 +373,10 @@ var $lang = array(
 									$form .= '<input type="hidden" name="m['.$c.'][title]" value="'.$tree[$k]['l'].'">';
 									$form .= '<input type="hidden" name="m['.$c.'][link]" value="?id='.$k.'&lang='.$this->user->lang.'">';
 									$form .= '<input type="hidden" name="m['.$c.'][id]" value="'.$k.'">';
+									
+									### TODO
+									$form .= '<input type="hidden" name="m['.$c.'][tag]" value="Geb&auml;ude">';
+									
 									if(isset($tree[$tree[$k]['p']]['l'])) {
 										$form .= '<input type="hidden" name="m['.$c.'][addr]" value="'.$tree[$tree[$k]['p']]['l'].'">';
 									}
@@ -394,15 +398,46 @@ var $lang = array(
 
 							// handle parking lots (campusbereich)
 							if($level === 1) {
-								if($this->file->exists($this->profilesdir.'/jlu.standort/thumbs/'.$k.'.test.jpg')) {
+								$data = '';
+								if($this->file->exists($this->profilesdir.'/jlu.standort/parkplaetze.csv')) {
 								
 								
 								}
-								var_dump($level);
+								elseif($this->file->exists($this->profilesdir.'/jlu.standort/parkplaetze.test.csv')) {
+									$data = $this->file->get_contents($this->profilesdir.'/jlu.standort/parkplaetze.test.csv');
+									if($data !== '') {
+										$data = str_replace("\n\r", "\n", $data);
+										$data = explode("\n", $data);
+										$x = 1000;
+										foreach ($data as $d) {
+											$line = str_getcsv($d);
+											if(isset($line[2]) && $line[2] === $this->id) {
+												
+												$lon = str_replace(',','.', $line[12]);
+												$lat = str_replace(',','.', $line[11]);
+											
+												$form .= '<input type="hidden" name="lang" value="'.$this->user->lang.'">';
+												$form .= '<input type="hidden" name="m['.$x.'][lon]" value="'.$lon.'">';
+												$form .= '<input type="hidden" name="m['.$x.'][lat]" value="'.$lat.'">';
+												$form .= '<input type="hidden" name="m['.$x.'][title]" value="'.$line[0].'">';
+												$form .= '<input type="hidden" name="m['.$x.'][text]" value="'.$line[6].'">';
+												$form .= '<input type="hidden" name="m['.$x.'][icon]" value="marker-red.png">';
+									### TODO
+									$form .= '<input type="hidden" name="m['.$x.'][tag]" value="Parkpl&auml;tze">';
+												
+												$x = $x+1;
+												#var_dump($line);
+											}
+										}
+									
+									
+									}
+									//var_dump($data);
+								}
 							}
 
 							$form .= '</form>';
-							$image = $form.'<div id="MapFrame" style="width:calc(100% -1px);height:calc(70vh);"></div>';
+							$image = $form.'<div id="MapFrame" style="width:calc(100% - 1px);height:calc(70vh);"></div>';
 						}
 					}
 					elseif($type === 'jpg' || $type === 'png') {

@@ -208,6 +208,7 @@ var $lang = array(
 
 		if($confirm === true) {
 			$help = '';
+			$tags = array();
 			$script = 'markers=[';
 			if(is_array($markers)) {
 				foreach($markers as $marker) {
@@ -217,12 +218,13 @@ var $lang = array(
 						$marker['lon'] = floatval($marker['lon']);
 						$marker['lat'] = floatval($marker['lat']);
 
-						$script .= '["'.$marker['lon'].'","'.$marker['lat'].'"';
-						(isset($marker['title'])) ? $script .= ',"'.htmlentities($marker['title']).'"': $script .= ',""';
-						(isset($marker['link']))  ? $script .= ',"'.htmlspecialchars($marker['link']).'"' : $script .= ',""';
-						(isset($marker['addr']))  ? $script .= ',"'.htmlentities($marker['addr']).'"': $script .= ',""';
-						(isset($marker['thumb'])) ? $script .= ',"'.htmlspecialchars($marker['thumb']).'"': $script .= ',""';
-						(isset($marker['id']))    ? $script .= ',"'.htmlspecialchars($marker['id']).'"': $script .= ',""';
+						$script .= '{"lon":"'.$marker['lon'].'","lat":"'.$marker['lat'].'"';
+						(isset($marker['title'])) ? $script .= ',"title":"'.htmlentities($marker['title']).'"': '"title":""';
+						(isset($marker['link']))  ? $script .= ',"link":"'.htmlspecialchars($marker['link']).'"' : '"link":""';
+						(isset($marker['addr']))  ? $script .= ',"addr":"'.htmlentities($marker['addr']).'"': '"addr":""';
+						(isset($marker['thumb'])) ? $script .= ',"thumb":"'.htmlspecialchars($marker['thumb']).'"': '"thumb":""';
+						(isset($marker['icon']))  ? $script .= ',"icon":"'.htmlentities($marker['icon']).'"': '"icon":""';
+						(isset($marker['id']))    ? $script .= ',"id":"'.htmlspecialchars($marker['id']).'"': '"id":""';
 						if(isset($marker['text'])){
 							// test ?m[0][lon]=8.67722&m[0][lat]=50.58038&m[0][title]=cc&m[0][text]=<b>Text</b> <span>me</span> in " " <b>bold</b> <u>test</u> empty
 							$tmp = preg_replace('~(.*)\<(b|i|u|p)>(.*)~U', "$1[[$2]]$3", $marker['text'] );
@@ -230,11 +232,19 @@ var $lang = array(
 							$tmp = htmlentities($tmp);
 							$tmp = preg_replace('~(.*)\[\[(b|i|u|p)\]\](.*)~U', "$1<$2>$3", $tmp );
 							$tmp = preg_replace('~(.*)\[\[/(b|i|u|p)\]\](.*)~U', "$1</$2>$3", $tmp );
-							$script .= ',"'.$tmp.'"';
+							$script .= ',"text":"'.$tmp.'"';
 						} else {
-							$script .= ',""';
+							$script .= ',"text":""';
 						}
-						$script .= '],';
+						if(isset($marker['tag'])) {
+							$tag = htmlentities($marker['tag']);
+							$script .= ',"tag":"'.$tag.'"';
+							$tags[$tag] = $tag;
+							
+						} else {
+							$script .= ',"tag":""';
+						}
+						$script .= '},';
 						
 						// handle top
 						if($marker['lat'] > $top['lat'] || $top['lat'] === 0) {
@@ -283,20 +293,30 @@ var $lang = array(
 				$lon = $left['lon'] - ( ($left['lon'] - $right['lon']) / 2);
 				$lat = $bottom['lat'] - ( ($bottom['lat'] - $top['lat']) / 2);
 
-				$script .= 'center=['.$lon.','.$lat.'];';
+				$script .= "\n".'center=['.$lon.','.$lat.'];';
 				if(!isset($zoom)) {
-					$script .= 'var resolution='.( $this->distance($top['lon'],$top['lat'],$bottom['lon'],$bottom['lat'])).';';
-					$script .= 'zoom=15;';
+					$script .= "\n".'var resolution='.( $this->distance($top['lon'],$top['lat'],$bottom['lon'],$bottom['lat'])).';';
+					$script .= "\n".'zoom=15;';
 				} else {
-					$script .= 'zoom='.intval($zoom).';';
+					$script .= "\n".'zoom='.intval($zoom).';';
 				}
 			} else {
-				$script .= 'center=[8.67722, 50.58038];';
-				$script .= 'zoom=15;';
+				$script .= "\n".'center=[8.67722, 50.58038];';
+				$script .= "\n".'zoom=15;';
 			}
 			if(isset($debug)) {
-				$script .= 'debug=true;';
+				$script .= "\n".'debug=true;';
 			}
+
+
+#$tags['x'] = 'X';
+
+			if(count($tags) > 1) {
+				$script .= "\n".'tags=["'.implode('","',$tags).'"];';
+			}
+			
+			
+			
 			
 			$t = $this->response->html->template($this->CLASSDIR.'plugins/jlu.map/templates/jlu.map.html');
 			$vars = array(

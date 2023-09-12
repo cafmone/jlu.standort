@@ -28,9 +28,70 @@
 	</div>
 	<div id="marker"></div>
 </div>
-<script src="{jsurl}ol.v6.13.0.js"></script>
+<script src="{jsurl}ol.v8.1.0.js"></script>
 <script>
 {script}
+
+// Layer buttons
+class layerSwitch extends ol.control.Control {
+	/**
+	* @param {Object} [opt_options] Control options.
+	*/
+	constructor(opt_options, tags) {
+		const options = opt_options || {};
+		if(typeof(tags) === 'object') {
+			const box = document.createElement('div');
+			box.style.position = "absolute";
+			box.style.right = "20px";
+			box.style.top = "20px";
+			box.className = 'tagbox ol-unselectable ol-control';
+
+			super({
+				element: box,
+				target: options.target,
+			});
+
+			for(const tag in tags) {
+				const button = document.createElement('button');
+				button.className = 'active';
+				button.id = 'tag_'+tags[tag];
+				button.innerHTML = tags[tag];
+				button.addEventListener('click', function(){ this.switchLayer(tags[tag]); }.bind(this), false);
+				box.appendChild(button);
+			}
+		}
+	}
+
+	init(tags) {
+		if(typeof(tags) === 'object') {
+			for(const tag in tags) {
+				if(tag > 0) {
+					this.switchLayer(tags[tag]);
+				}
+			}
+		}
+	}
+
+	switchLayer(tag) {
+		const lay = this.getMap().getLayers().getArray();
+		for (var i = 0; i < lay.length; i++) {
+			const hastag = lay[i].get('tag');
+			if(typeof(hastag) !== 'undefined' && hastag === tag ) {
+				const button = document.getElementById('tag_'+tag);
+				if(lay[i].isVisible() == true) {
+					lay[i].setVisible(false);
+					button.className = '';
+				} else {
+					lay[i].setVisible(true);
+					button.className = 'active';
+				}
+			}
+		}
+	}
+}
+
+
+
 var View = new ol.View({
 	//projection: 'EPSG:4326',
 	center: ol.proj.fromLonLat(center),
@@ -40,11 +101,19 @@ var View = new ol.View({
 if(typeof(resolution) != 'undefined') {
 	View.setResolution(resolution);
 }
+
 var Controls = [ 
 	new ol.control.ScaleLine({ bar: true, minWidth: 90 }),
 	new ol.control.Zoom({'zoomInTipLabel': '{title_zoom_in}', 'zoomOutTipLabel': '{title_zoom_out}'}),
 	new ol.control.Attribution(),
 ];
+
+if(typeof(tags) !== 'undefined') {
+	sw = new layerSwitch({},tags);
+	Controls.push(sw);
+	
+}
+
 if(typeof(debug) !== 'undefined') {
 	Controls.push(new ol.control.MousePosition({projection: 'EPSG:4326'}));
 }
@@ -57,24 +126,31 @@ var Layers = [
 		}))
 	})
 ];
+
 for (var i = 0; i < markers.length; i++) {
 	var iconFeature = new ol.Feature({
-		geometry: new ol.geom.Point(ol.proj.fromLonLat([markers[i][0],markers[i][1] ])),
-		lon:   markers[i][0],
-		lat:   markers[i][1],
-		title: markers[i][2],
-		link:  markers[i][3],
-		addr:  markers[i][4],
-		thumb: markers[i][5],
-		id:    markers[i][6],
-		text:  markers[i][7],
+		geometry: new ol.geom.Point(ol.proj.fromLonLat([markers[i].lon,markers[i].lat ])),
+		lon:   markers[i].lon,
+		lat:   markers[i].lat,
+		title: markers[i].title,
+		link:  markers[i].link,
+		addr:  markers[i].addr,
+		thumb: markers[i].thumb,
+		id:    markers[i].id,
+		text:  markers[i].text,
 	});
+	// handle icon
+	if(typeof(markers[i].icon) != 'undefined')  {
+		icon = '{imgurl}'+markers[i].icon;
+	} else {
+		icon = '{imgurl}marker.png';
+	}
 	var iconImage = new ol.style.Icon({
 		anchor: [0.4, 0.0],
 		anchorXUnits: 'fraction',
 		anchorYUnits: 'fraction',
 		anchorOrigin: 'bottom-left',
-		src: '{imgurl}marker.png',
+		src: icon,
 	});
 	var iconStyle = new ol.style.Style({
 		image: iconImage
@@ -85,10 +161,11 @@ for (var i = 0; i < markers.length; i++) {
 	});
 	var vectorLayer = new ol.layer.Vector({
 		source: vectorSource,
-		//minZoom: 10,
+		tag: markers[i].tag,
 	});
 	Layers.push(vectorLayer);
 }
+
 var Map = new ol.Map({
 	target: 'map',
 	layers: Layers,
@@ -96,6 +173,12 @@ var Map = new ol.Map({
 	controls: Controls,
 	positioning: 'top-center',
 });
+
+
+//
+if(typeof(sw) === 'object') {
+	sw.init(tags);
+}
 
 // Popup
 var container = document.getElementById('popover');
