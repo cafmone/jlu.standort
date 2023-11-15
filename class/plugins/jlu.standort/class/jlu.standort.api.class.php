@@ -398,41 +398,12 @@ var $lang = array(
 
 							// handle parking lots (campusbereich)
 							if($level === 1) {
-								$data = '';
-								if($this->file->exists($this->profilesdir.'/jlu.standort/parkplaetze.csv')) {
-								
-								
-								}
-								elseif($this->file->exists($this->profilesdir.'/jlu.standort/parkplaetze.test.csv')) {
-									$data = $this->file->get_contents($this->profilesdir.'/jlu.standort/parkplaetze.test.csv');
-									if($data !== '') {
-										$data = str_replace("\n\r", "\n", $data);
-										$data = explode("\n", $data);
-										$x = 1000;
-										foreach ($data as $d) {
-											$line = str_getcsv($d);
-											if(isset($line[2]) && $line[2] === $this->id) {
-												
-												$lon = str_replace(',','.', $line[12]);
-												$lat = str_replace(',','.', $line[11]);
-											
-												$form .= '<input type="hidden" name="lang" value="'.$this->user->lang.'">';
-												$form .= '<input type="hidden" name="m['.$x.'][lon]" value="'.$lon.'">';
-												$form .= '<input type="hidden" name="m['.$x.'][lat]" value="'.$lat.'">';
-												$form .= '<input type="hidden" name="m['.$x.'][title]" value="'.$line[0].'">';
-												$form .= '<input type="hidden" name="m['.$x.'][text]" value="'.$line[6].'">';
-												$form .= '<input type="hidden" name="m['.$x.'][icon]" value="marker-red.png">';
-									### TODO
-									$form .= '<input type="hidden" name="m['.$x.'][tag]" value="Parkpl&auml;tze">';
-												
-												$x = $x+1;
-												#var_dump($line);
-											}
-										}
-									
-									
-									}
-									//var_dump($data);
+								require_once($this->classdir.'plugins/jlu.standort/class/jlu.standort.api.parkplatz.class.php');
+								$parkplatz = new jlu_standort_api_parkplatz($this->file, $this->user);
+								$parkplatz->profilesdir = $this->profilesdir;
+								$data = $parkplatz->action($this->id);
+								if($data !== '') {
+									$form .= $data;
 								}
 							}
 

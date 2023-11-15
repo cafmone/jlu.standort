@@ -227,10 +227,10 @@ var $lang = array(
 						(isset($marker['id']))    ? $script .= ',"id":"'.htmlspecialchars($marker['id']).'"': '"id":""';
 						if(isset($marker['text'])){
 							// test ?m[0][lon]=8.67722&m[0][lat]=50.58038&m[0][title]=cc&m[0][text]=<b>Text</b> <span>me</span> in " " <b>bold</b> <u>test</u> empty
-							$tmp = preg_replace('~(.*)\<(b|i|u|p)>(.*)~U', "$1[[$2]]$3", $marker['text'] );
+							$tmp = preg_replace('~(.*)\<(br|b|i|u|p)>(.*)~U', "$1[[$2]]$3", $marker['text'] );
 							$tmp = preg_replace('~(.*)\</(b|i|u|p)>(.*)~U', "$1[[/$2]]$3", $tmp );
 							$tmp = htmlentities($tmp);
-							$tmp = preg_replace('~(.*)\[\[(b|i|u|p)\]\](.*)~U', "$1<$2>$3", $tmp );
+							$tmp = preg_replace('~(.*)\[\[(br|i|u|p)\]\](.*)~U', "$1<$2>$3", $tmp );
 							$tmp = preg_replace('~(.*)\[\[/(b|i|u|p)\]\](.*)~U', "$1</$2>$3", $tmp );
 							$script .= ',"text":"'.$tmp.'"';
 						} else {
