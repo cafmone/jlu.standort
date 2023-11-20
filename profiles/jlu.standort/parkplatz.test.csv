@@ -13,7 +13,7 @@ M3;530445;189860;;Nein;16;Pflaster/ Breite 230 cm;2;;;;50,57166965;8,666202307;
 M4;530446;189860;;Nein;5;nur Personal resp. Liferverkehr/ Asphalt/ Breite 250 cm;0;;;;50,57118926;8,666121841;
 M5;530447;189860;;Nein;6;Pflaster;0;;;;50,57123355;8,664941669;
 M6;530448;189860;;Ja;57;Asphalt/ Breite 221 cm;0;;;;50,57021824;8,66575706;
-M7;530449;189860;;Ja;255;Im Vermieteten Bereich der Zahnklinik befinden sich weitere 207 Parkpl‰tze die formal der JLU gehˆren/ Asphalt/ Breite 221 cm;0;;;;50,56984686;8,66870749;
+M7;530449;189860;;Ja;255;Im Vermieteten Bereich der Zahnklinik befinden sich weitere 207 Parkpl√§tze die formal der JLU geh√∂ren/ Asphalt/ Breite 221 cm;0;;;;50,56984686;8,66870749;
 M8;530450;189860;;Ja;65;Pflaster/ Breite 240 cm;1;;;;50,57063495;8,667915702;
 P1;530464;189854;;Nein;218;exkl. 5 auf Gehweg, mit Schranke/ Asphalt/ Breite 220 cm;3;;;;50,57546831;8,694526434;
 P11;530474;189854;;Ja;2;Pflaster/ Breite 348 cm;2;;;;50,57613341;8,693697095;
@@ -46,13 +46,13 @@ S5;530435;189859;;Ja;15;Asphalt/ Breite 219 cm;3;;;;50,570587;8,671338201;
 S6;530436;189859;;Nein;91;Pflaster/ Breite 244 cm;0;;;;50,56869703;8,672973703;
 S7;530437;189859;;Ja;7;Asphalt/ Breite 270 cm;0;;;;50,56869603;8,673489332;
 S8;530438;189859;;Nein;20;Asphalt/ Breite 334 cm;2;;;;50,56883573;8,675763845;
-U1;530488;189852;;Ja;8;Pflaster/ Breite 353 cm;0;;;;50,58012509;8,677038431;Goethestraﬂe 44, 35390 Gieﬂen
-U2;530489;189852;;Ja;75;Asphalt/ Breite 212 cm;2;Bei alter Villa;;;50,58001608;8,678068399;Stephanstraﬂe 24, 35390 Gieﬂen
-U3;530490;189852;;Ja;70;45 Schotter/Gitterst./ 25 Asphalt/ Breite 237 cm;0;;;;50,58017959;8,678545833;Stephanstraﬂe 24, 35390 Gieﬂen
-U4;530491;189852;;Ja;53;Rasenparkpl‰tze/ Breite 232 cm;1;;;;50,5809358;8,67825079;
+U1;530488;189852;;Ja;8;Pflaster/ Breite 353 cm;0;;;;50,58012509;8,677038431;Goethestra√üe 44, 35390 Gie√üen
+U2;530489;189852;;Ja;75;Asphalt/ Breite 212 cm;2;Bei alter Villa;;;50,58001608;8,678068399;Stephanstra√üe 24, 35390 Gie√üen
+U3;530490;189852;;Ja;70;45 Schotter/Gitterst./ 25 Asphalt/ Breite 237 cm;0;;;;50,58017959;8,678545833;Stephanstra√üe 24, 35390 Gie√üen
+U4;530491;189852;;Ja;53;Rasenparkpl√§tze/ Breite 232 cm;1;;;;50,5809358;8,67825079;
 U5;530492;189852;;Ja;70;Pflaster(neu)/ Breite 250 cm;4;;;;50,57873264;8,678424597;
-U6;530493;189852;;Ja;21;Schranke - manuelle Schlieﬂung/ Pflaster/ Breite 218cm;0;;;;50,58004413;8,680205584;
-U7;530494;189852;;Ja;15;Schranke - manuelle Schlieﬂung/ Asphalt/ Breite 228 cm;0;;;;50,57963195;8,681106806;
+U6;530493;189852;;Ja;21;Schranke - manuelle Schlie√üung/ Pflaster/ Breite 218cm;0;;;;50,58004413;8,680205584;
+U7;530494;189852;;Ja;15;Schranke - manuelle Schlie√üung/ Asphalt/ Breite 228 cm;0;;;;50,57963195;8,681106806;
 U8;530495;189852;;Ja;12;Asphalt/ Breite 228 cm;0;;;;50,58266017;8,681820273;
 V1;530455;189861;;Ja;23;Asphalt/ Breite 226 cm;0;;;;50,57475019;8,661880111;
 V2;530456;189861;;Ja;114;44 Schotter/ 70 Asphalt/ Breite 267 cm;0;;;;50,57456282;8,660367345;
