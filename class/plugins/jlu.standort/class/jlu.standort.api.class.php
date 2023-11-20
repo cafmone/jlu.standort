@@ -40,23 +40,38 @@ var $language = 'en';
 * @var array
 */
 var $lang = array(
-	'print' => 'Print',
-	'print_title' => 'Print Page',
-	'save' => 'save',
-	'qrcode' => 'Qrcode',
-	'qrcode_title' => 'Qrcode title',
-	'zlisurl' => 'Link 1',
-	'zlisurl_title' => '',
-	'jlucourl' => 'Link 2',
-	'jlucourl_title' => '',
-	'googlemapsurl' => 'Google Maps',
-	'googlemapsurl_title' => '',
-	'accessibility' => 'Accessibility',
-	'accessibility_title' => '',
-	'usage' => 'Usage',
-	'room' => 'Room %s',
-	'no_image' => 'No Image found!',
-	'no_building' => 'Please select a building first!',
+	'rightbar' => array(
+		'print' => 'Print',
+		'print_title' => 'Print Page',
+		'save' => 'save',
+		'qrcode' => 'Qrcode',
+		'qrcode_title' => 'Qrcode title',
+		'zlisurl' => 'Link 1',
+		'zlisurl_title' => '',
+		'jlucourl' => 'Link 2',
+		'jlucourl_title' => '',
+		'googlemapsurl' => 'Google Maps',
+		'googlemapsurl_title' => '',
+		'accessibility' => 'Accessibility',
+		'accessibility_title' => '',
+		'usage' => 'Usage',
+		'room' => 'Room %s',
+		'no_image' => 'No Image found!',
+		'no_building' => 'Please select a building first!',
+	),
+	'gebaeude' => array(
+		'label' => 'Buildings',
+	),
+	'parkplatz' => array(
+		'label' => 'Parking',
+		'P-Stellplaetze' => 'P-Stellplaetze',
+		'P-Schranke' => 'P-Schranke',
+		'P-Bemerkungen' => 'P-Bemerkungen',
+		'P-Stellplaetze-behin' => 'P-Stellplaetze-behin',
+		'P-Bemerkungen-behin' => 'P-Bemerkungen-behin',
+		'P-Stellplaetze-Eltern-Kind' => 'P-Stellplaetze-Eltern-Kind',
+		'P-Bemerkungen-Eltern-Kind' => 'P-Bemerkungen-Eltern-Kind',
+	),
 );
 
 	//--------------------------------------------
@@ -218,7 +233,7 @@ var $lang = array(
 				$id = $this->id;
 			}
 			elseif($level < 3) {
-				echo $this->translation['no_building'];
+				echo $this->translation['rightbar']['no_building'];
 				exit();
 			}
 
@@ -262,7 +277,7 @@ var $lang = array(
 						foreach($rooms as $k => $room) {
 							if(isset($content[$k])) {
 								$str .= '<div style="margin: 0 0 8px 0">';
-								$str .= '<div>'.$floor['l'].', '.sprintf($this->translation['room'], $room['l']) .'</div>';
+								$str .= '<div>'.$floor['l'].', '.sprintf($this->translation['rightbar']['room'], $room['l']) .'</div>';
 								foreach($lang['raum'] as $l => $v) {
 									if(isset($content[$k][$l])) {
 										$str .= '<strong>'.$v.':</strong> '.$content[$k][$l].'<br>';
@@ -375,7 +390,7 @@ var $lang = array(
 									$form .= '<input type="hidden" name="m['.$c.'][id]" value="'.$k.'">';
 									
 									### TODO
-									$form .= '<input type="hidden" name="m['.$c.'][tag]" value="Geb&auml;ude">';
+									$form .= '<input type="hidden" name="m['.$c.'][tag]" value="'.$this->translation['gebaeude']['label'].'">';
 									
 									if(isset($tree[$tree[$k]['p']]['l'])) {
 										$form .= '<input type="hidden" name="m['.$c.'][addr]" value="'.$tree[$tree[$k]['p']]['l'].'">';
@@ -401,6 +416,7 @@ var $lang = array(
 								require_once($this->classdir.'plugins/jlu.standort/class/jlu.standort.api.parkplatz.class.php');
 								$parkplatz = new jlu_standort_api_parkplatz($this->file, $this->user);
 								$parkplatz->profilesdir = $this->profilesdir;
+								$parkplatz->lang = $this->translation['parkplatz'];
 								$data = $parkplatz->action($this->id);
 								if($data !== '') {
 									$form .= $data;
@@ -443,11 +459,11 @@ var $lang = array(
 			}
 			if(!isset($image)) {
 				$image  = '<div style="text-align:center;">';
-				$image .= '<img title="'.$this->translation['no_image'].'" style="width:100%; max-width:400px;" ';
+				$image .= '<img title="'.$this->translation['rightbar']['no_image'].'" style="width:100%; max-width:400px;" ';
 				$image .= 'src="jlu.standort.api.php?action=image&file=noimage.jpg" ';
 				$image .= 'style="" ';
 				$image .= '><br>';
-				$image .= $this->translation['no_image'];
+				$image .= $this->translation['rightbar']['no_image'];
 				$image .= '</div>';
 			}
 
@@ -471,8 +487,8 @@ var $lang = array(
 
 			// handle qrcode
 			$a = $this->response->html->a();
-			$a->label = $this->translation['qrcode'];
-			$a->title = $this->translation['qrcode_title'];
+			$a->label = $this->translation['rightbar']['qrcode'];
+			$a->title = $this->translation['rightbar']['qrcode_title'];
 			$a->href = '#';
 			$a->handler = 'onclick="qrcodebuilder.print();"';
 
@@ -484,7 +500,7 @@ var $lang = array(
 			$rightbar .= '<span class="qrcode">'.$a->get_string().'</span>';
 			$rightbar .= '<div id="QRCODE" style="display:none;">';
 			$rightbar .= $this->qrcode(true, false);
-			$rightbar .= '<div style="margin-top:15px;"><a href="'.$url.'">'.$this->translation['save'].'</a></div>';
+			$rightbar .= '<div style="margin-top:15px;"><a href="'.$url.'">'.$this->translation['rightbar']['save'].'</a></div>';
 			$rightbar .= '</div>';
 
 
@@ -515,9 +531,9 @@ var $lang = array(
 					}
 					// build link
 					if(isset($tmp[$linkid]) && $tmp[$linkid][$k] !== '') {
-						$rightbar .= '<span class="'.$k.'"><a title="'.$this->translation[$k.'_title'].'" href="'.$tmp[$linkid][$k].'" target="_blank">'.$this->translation[$k].'</a></span>';
+						$rightbar .= '<span class="'.$k.'"><a title="'.$this->translation['rightbar'][$k.'_title'].'" href="'.$tmp[$linkid][$k].'" target="_blank">'.$this->translation['rightbar'][$k].'</a></span>';
 					} else {
-						$rightbar .= '<span class="'.$k.'"><a class="disabled" title="'.$this->translation[$k.'_title'].'">'.$this->translation[$k].'</a></span>';
+						$rightbar .= '<span class="'.$k.'"><a class="disabled" title="'.$this->translation['rightbar'][$k.'_title'].'">'.$this->translation['rightbar'][$k].'</a></span>';
 					}
 				}
 			}
@@ -541,17 +557,17 @@ var $lang = array(
 				$rightbar .= '<span class="print">'.$a->get_string().'</span>';
 			} else {
 				$a = $this->response->html->a();
-				$a->label = $this->translation['print'];
-				$a->title = $this->translation['print_title'];
+				$a->label = $this->translation['rightbar']['print'];
+				$a->title = $this->translation['rightbar']['print_title'];
 				$a->css = 'disabled';
 				$rightbar .= '<span class="print">'.$a->get_string().'</span>';
 			}
 
 			// handle accessibility
 			if($level >= 3) {
-				$rightbar .= '<span class="access"><a href="#" onclick="accessbuilder.init('.$this->id.');" title="'.$this->translation['accessibility_title'].'">'.$this->translation['accessibility'].'</a></span>';
+				$rightbar .= '<span class="access"><a href="#" onclick="accessbuilder.init('.$this->id.');" title="'.$this->translation['rightbar']['accessibility_title'].'">'.$this->translation['rightbar']['accessibility'].'</a></span>';
 			} else {
-				$rightbar .= '<span class="access"><a class="disabled" title="'.$this->translation['accessibility_title'].'">'.$this->translation['accessibility'].'</a></span>';
+				$rightbar .= '<span class="access"><a class="disabled" title="'.$this->translation['rightbar']['accessibility_title'].'">'.$this->translation['rightbar']['accessibility'].'</a></span>';
 			}
 
 
@@ -591,14 +607,14 @@ var $lang = array(
 							if($level === 3 || $level === 4 || $level === 5) {
 								foreach($tmp[$k] as $n) {
 									$used[] = $n;
-									$rooms[md5($n)][] = '<li><a href="?id='.$k.'" onclick="usagebuilder.close();">'.$tree[$tree[$k]['p']]['l'].', '.sprintf($this->translation['room'], $tree[$k]['l']).'</a></li>';
+									$rooms[md5($n)][] = '<li><a href="?id='.$k.'" onclick="usagebuilder.close();">'.$tree[$tree[$k]['p']]['l'].', '.sprintf($this->translation['rightbar']['room'], $tree[$k]['l']).'</a></li>';
 								}
 							}
 						}
 					}
 
 					$leftbar  = '<div id="UsageBox" class="noprint">';
-					$leftbar .= '<label>'.$this->translation['usage'].'</label>';
+					$leftbar .= '<label>'.$this->translation['rightbar']['usage'].'</label>';
 					$leftbar .= '<select id="UsageSelect" class="form-control selectpicker" title="&#160;" onchange="usagebuilder.print()">';
 					foreach($usages as $k => $u) {
 						if($u !== '') {

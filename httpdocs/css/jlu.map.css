@@ -468,9 +468,10 @@ color: #212529;
 }
 .popover-addr {
 	margin-top: 5px;
+	margin-bottom: 8px;
 }
 .popover-route {
-	margin-top: 20px;
+	margin-top: 15px;
 }
 
 /* Icons */
