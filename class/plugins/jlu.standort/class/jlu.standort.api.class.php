@@ -416,6 +416,7 @@ var $lang = array(
 								require_once($this->classdir.'plugins/jlu.standort/class/jlu.standort.api.parkplatz.class.php');
 								$parkplatz = new jlu_standort_api_parkplatz($this->file, $this->user);
 								$parkplatz->profilesdir = $this->profilesdir;
+								$parkplatz->actions_name = $this->actions_name;
 								$parkplatz->lang = $this->translation['parkplatz'];
 								$data = $parkplatz->action($this->id);
 								if($data !== '') {

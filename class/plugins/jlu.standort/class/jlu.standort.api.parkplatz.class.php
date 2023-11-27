@@ -78,27 +78,28 @@ var $lang = array(
 						$lon = str_replace(',','.', $data[$head['coord_y']]);
 						$lat = str_replace(',','.', $data[$head['coord_x']]);
 
+						// text
 						$txt = '';
 						if(isset($data[$head['P-Stellplaetze']]) && $data[$head['P-Stellplaetze']] !== '') {
-							$txt  = $this->lang['P-Stellplaetze'].': '.$data[$head['P-Stellplaetze']].'<br>';
+							$txt  = '<b>'.$this->lang['P-Stellplaetze'].'</b>: '.$data[$head['P-Stellplaetze']].'<br>';
 						}
 						if(isset($data[$head['P-Schranke']]) && $data[$head['P-Schranke']] !== '') {
-							$txt .= $this->lang['P-Schranke'].': '.$data[$head['P-Schranke']].'<br>';
+							$txt .= '<b>'.$this->lang['P-Schranke'].'</b>: '.$data[$head['P-Schranke']].'<br>';
 						}
 						if(isset($data[$head['P-Stellplaetze-behin']]) && $data[$head['P-Stellplaetze-behin']] !== '') {
-							$txt .= $this->lang['P-Stellplaetze-behin'].': '.$data[$head['P-Stellplaetze-behin']].'<br>';
+							$txt .= '<b>'.$this->lang['P-Stellplaetze-behin'].'</b>: '.$data[$head['P-Stellplaetze-behin']].'<br>';
 						}
 						if(isset($data[$head['P-Bemerkungen-behin']]) && $data[$head['P-Bemerkungen-behin']] !== '') {
-							$txt .= $this->lang['P-Bemerkungen-behin'].': '.htmlentities($data[$head['P-Bemerkungen-behin']]).'<br>';
+							$txt .= '<b>'.$this->lang['P-Bemerkungen-behin'].'</b>: '.htmlentities($data[$head['P-Bemerkungen-behin']]).'<br>';
 						}
 						if(isset($data[$head['P-Bemerkungen']]) && $data[$head['P-Bemerkungen']] !== '') {
-							$txt .= $this->lang['P-Bemerkungen'].': '.htmlentities($data[$head['P-Bemerkungen']]).'<br>';
+							$txt .= '<b>'.$this->lang['P-Bemerkungen'].'</b>: '.htmlentities($data[$head['P-Bemerkungen']]).'<br>';
 						}
 						if(isset($data[$head['P-Stellplaetze-Eltern-Kind']]) && $data[$head['P-Stellplaetze-Eltern-Kind']] !== '') {
-							$txt .= $this->lang['P-Stellplaetze-Eltern-Kind'].': '.$data[$head['P-Stellplaetze-Eltern-Kind']].'<br>';
+							$txt .= '<b>'.$this->lang['P-Stellplaetze-Eltern-Kind'].'</b>: '.$data[$head['P-Stellplaetze-Eltern-Kind']].'<br>';
 						}
 						if(isset($data[$head['P-Bemerkungen-Eltern-Kind']]) && $data[$head['P-Bemerkungen-Eltern-Kind']] !== '') {
-							$txt .= $this->lang['P-Bemerkungen-Eltern-Kind'].': '.htmlentities($data[$head['P-Bemerkungen-Eltern-Kind']]).'<br>';
+							$txt .= '<b>'.$this->lang['P-Bemerkungen-Eltern-Kind'].'</b>: '.htmlentities($data[$head['P-Bemerkungen-Eltern-Kind']]).'<br>';
 						}
 
 						$form .= '<input type="hidden" name="lang" value="'.$this->user->lang.'">';
@@ -109,10 +110,23 @@ var $lang = array(
 						$form .= '<input type="hidden" name="m[p'.$i.'][icon]" value="'.$icon.'">';
 						$form .= '<input type="hidden" name="m[p'.$i.'][tag]" value="'.$this->lang['label'].'">';
 
+						// adress
 						if(isset($data[$head['P-Adresse']]) && $data[$head['P-Adresse']] !== '') {
 							$form .= '<input type="hidden" name="m[p'.$i.'][addr]" value="'.htmlentities($data[$head['P-Adresse']]).'">';
 						}
 
+						// thumb
+						if(isset($data[$head['P-Obj-ID']]) && $data[$head['P-Obj-ID']] !== '') {
+							$ident = $data[$head['P-Obj-ID']];
+							$file  = $this->profilesdir.'jlu.standort/thumbs/'.$ident;
+							if($this->file->exists($file.'.jpg')) {
+								$form .= '<input type="hidden" name="m[p'.$i.'][thumb]" value="jlu.standort.api.php?'.$this->actions_name.'=thumb&file='.$ident.'.jpg">';
+							}
+							elseif($this->file->exists($file.'.test.jpg')) {
+								$form .= '<input type="hidden" name="m[p'.$i.'][thumb]" value="jlu.standort.api.php?'.$this->actions_name.'=thumb&file='.$ident.'.test.jpg">';
+							}
+							$form .= '<input type="hidden" name="m[p'.$i.'][id]" value="'.$ident.'">';
+						}
 					}
 				}
 				$i++;

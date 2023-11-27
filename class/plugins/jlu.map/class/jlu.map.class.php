@@ -230,7 +230,7 @@ var $lang = array(
 							$tmp = preg_replace('~(.*)\<(br|b|i|u|p)>(.*)~U', "$1[[$2]]$3", $marker['text'] );
 							$tmp = preg_replace('~(.*)\</(b|i|u|p)>(.*)~U', "$1[[/$2]]$3", $tmp );
 							$tmp = htmlentities($tmp);
-							$tmp = preg_replace('~(.*)\[\[(br|i|u|p)\]\](.*)~U', "$1<$2>$3", $tmp );
+							$tmp = preg_replace('~(.*)\[\[(br|b|i|u|p)\]\](.*)~U', "$1<$2>$3", $tmp );
 							$tmp = preg_replace('~(.*)\[\[/(b|i|u|p)\]\](.*)~U', "$1</$2>$3", $tmp );
 							$script .= ',"text":"'.$tmp.'"';
 						} else {
