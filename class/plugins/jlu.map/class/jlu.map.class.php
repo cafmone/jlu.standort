@@ -307,19 +307,22 @@ var $lang = array(
 			if(isset($debug)) {
 				$script .= "\n".'debug=true;';
 			}
-
-
-#$tags['x'] = 'X';
-
 			if(count($tags) > 1) {
 				$script .= "\n".'tags=["'.implode('","',$tags).'"];';
 			}
-			
-			
-			
-			
+
+			// timestamp
+			if(!isset($this->timestamp)) {
+				$this->timestamp = 0;
+				$timefile = $this->response->html->thisdir.$this->cssurl.'jlu.map.css';
+				if($this->file->exists($timefile)) {
+					$this->timestamp = filemtime($timefile);
+				}
+			}
+
 			$t = $this->response->html->template($this->CLASSDIR.'plugins/jlu.map/templates/jlu.map.html');
 			$vars = array(
+				'timestamp' => $this->timestamp,
 				'help' => $help,
 				'script' => $script,
 				'tileserverurl' => $this->tileserverurl,
