@@ -72,7 +72,11 @@ var $lang = array(
 		'P-Stellplaetze-Eltern-Kind' => 'P-Stellplaetze-Eltern-Kind',
 		'P-Bemerkungen-Eltern-Kind' => 'P-Bemerkungen-Eltern-Kind',
 	),
-
+	'barrierefrei' => array(
+		'tag-eingang' => 'Accessibility',
+		'BE-Bemerkungen1' => 'BE-Bemerkungen1',
+		'BE-Bemerkungen2' => 'BE-Bemerkungen2',
+	),
 );
 
 	//--------------------------------------------
@@ -420,6 +424,20 @@ var $lang = array(
 								$parkplatz->actions_name = $this->actions_name;
 								$parkplatz->lang = $this->translation['parkplatz'];
 								$data = $parkplatz->action($this->id);
+								if($data !== '') {
+									$form .= $data;
+								}
+							}
+
+							// handle barrier-free (campusbereich)
+							if($level === 1) {
+								require_once($this->classdir.'plugins/jlu.standort/class/jlu.standort.api.barrierefrei.class.php');
+								$barrier = new jlu_standort_api_barrierefrei($this->file, $this->user);
+								$barrier->profilesdir = $this->profilesdir;
+								$barrier->actions_name = $this->actions_name;
+								$barrier->lang = $this->translation['barrierefrei'];
+								// Eingang
+								$data = $barrier->entrance($this->id);
 								if($data !== '') {
 									$form .= $data;
 								}
