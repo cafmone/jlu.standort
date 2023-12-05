@@ -63,7 +63,7 @@ var $lang = array(
 		'label' => 'Buildings',
 	),
 	'parkplatz' => array(
-		'label' => 'Parking',
+		'tag' => 'Parking',
 		'P-Stellplaetze' => 'P-Stellplaetze',
 		'P-Schranke' => 'P-Schranke',
 		'P-Bemerkungen' => 'P-Bemerkungen',
@@ -72,6 +72,7 @@ var $lang = array(
 		'P-Stellplaetze-Eltern-Kind' => 'P-Stellplaetze-Eltern-Kind',
 		'P-Bemerkungen-Eltern-Kind' => 'P-Bemerkungen-Eltern-Kind',
 	),
+
 );
 
 	//--------------------------------------------

@@ -215,10 +215,15 @@ html, body {
   top: 5.5em;
 }
 
-.ol-control button:hover,
-.ol-control button:focus {
+.ol-control button:hover {
   text-decoration: none;
   outline: 1px solid var(--ol-subtle-foreground-color);
+  color: var(--ol-foreground-color);
+}
+
+.ol-control button:focus {
+  text-decoration: none;
+  outline: none;
   color: var(--ol-foreground-color);
 }
 

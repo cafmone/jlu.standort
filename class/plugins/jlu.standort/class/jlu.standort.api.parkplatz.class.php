@@ -108,7 +108,7 @@ var $lang = array(
 						$form .= '<input type="hidden" name="m[p'.$i.'][title]" value="'.$data[$head['P-Bezeichnung']].'">';
 						$form .= '<input type="hidden" name="m[p'.$i.'][text]" value="'.$txt.'">';
 						$form .= '<input type="hidden" name="m[p'.$i.'][icon]" value="'.$icon.'">';
-						$form .= '<input type="hidden" name="m[p'.$i.'][tag]" value="'.$this->lang['label'].'">';
+						$form .= '<input type="hidden" name="m[p'.$i.'][tag]" value="'.$this->lang['tag'].'">';
 
 						// adress
 						if(isset($data[$head['P-Adresse']]) && $data[$head['P-Adresse']] !== '') {
